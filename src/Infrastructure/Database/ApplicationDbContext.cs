@@ -1,5 +1,6 @@
 using Application.Abstractions.Data;
 using Domain.Doctors;
+using Domain.Favorites;
 using Domain.Todos;
 using Domain.Users;
 using Infrastructure.DomainEvents;
@@ -25,6 +26,7 @@ public sealed class ApplicationDbContext(
     public DbSet<OtpSession> OtpSessions { get; set; }
     public DbSet<ESignature> ESignatures { get; set; }
     public DbSet<Qualification> Qualifications { get; set; }
+    public DbSet<FavoriteMedicine> FavoriteMedicines { get; set; }
 
 
 

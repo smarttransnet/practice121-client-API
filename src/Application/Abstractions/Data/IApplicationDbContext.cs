@@ -1,4 +1,5 @@
 using Domain.Doctors;
+using Domain.Favorites;
 using Domain.Todos;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ public interface IApplicationDbContext
     DbSet<OtpSession> OtpSessions { get; }
     DbSet<ESignature> ESignatures { get; }
     DbSet<Qualification> Qualifications { get; }
+    DbSet<FavoriteMedicine> FavoriteMedicines { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
