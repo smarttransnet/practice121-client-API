@@ -14,8 +14,10 @@ internal sealed class CreatePlaceCommandHandler(IApplicationDbContext dbContext)
 {
     public async Task<Result<Guid>> Handle(CreatePlaceCommand request, CancellationToken cancellationToken)
     {
+#pragma warning disable CA1862, CA1304, CA1311
         var existingPlace = await dbContext.Places
-            .FirstOrDefaultAsync(p => p.MohAreaId == request.MohAreaId && string.Equals(p.Name, request.Name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+            .FirstOrDefaultAsync(p => p.MohAreaId == request.MohAreaId && p.Name.ToLower() == request.Name.ToLower(), cancellationToken);
+#pragma warning restore CA1862, CA1304, CA1311
 
         if (existingPlace != null)
         {

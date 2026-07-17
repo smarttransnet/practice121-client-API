@@ -18,7 +18,7 @@ internal sealed class GetPlacesQueryHandler(IApplicationDbContext dbContext)
     {
         var places = await dbContext.Places
             .AsNoTracking()
-            .Where(p => p.MohAreaId == request.MohAreaId)
+            .Where(p => p.MohAreaId == request.MohAreaId && p.IsVerified)
             .OrderBy(p => p.Name)
             .Select(p => new PlaceResponse(p.Id, p.Name, p.IsVerified))
             .ToListAsync(cancellationToken);
