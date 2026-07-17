@@ -28,7 +28,14 @@ public sealed class ApplicationDbContext(
     public DbSet<Qualification> Qualifications { get; set; }
     public DbSet<FavoriteMedicine> FavoriteMedicines { get; set; }
 
-
+    public DbSet<Domain.Locations.District> Districts { get; set; }
+    public DbSet<Domain.Locations.MohArea> MohAreas { get; set; }
+    public DbSet<Domain.Locations.Place> Places { get; set; }
+    
+    public DbSet<Domain.PracticeCentres.PracticeCentre> PracticeCentres { get; set; }
+    public DbSet<Domain.PracticeCentres.SessionGroup> SessionGroups { get; set; }
+    public DbSet<Domain.PracticeCentres.TimeBlock> TimeBlocks { get; set; }
+    public DbSet<Domain.PracticeCentres.Nurse> Nurses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -20,6 +20,15 @@ public interface IApplicationDbContext
     DbSet<Qualification> Qualifications { get; }
     DbSet<FavoriteMedicine> FavoriteMedicines { get; }
 
+    DbSet<Domain.Locations.District> Districts { get; }
+    DbSet<Domain.Locations.MohArea> MohAreas { get; }
+    DbSet<Domain.Locations.Place> Places { get; }
+    
+    DbSet<Domain.PracticeCentres.PracticeCentre> PracticeCentres { get; }
+    DbSet<Domain.PracticeCentres.SessionGroup> SessionGroups { get; }
+    DbSet<Domain.PracticeCentres.TimeBlock> TimeBlocks { get; }
+    DbSet<Domain.PracticeCentres.Nurse> Nurses { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
 

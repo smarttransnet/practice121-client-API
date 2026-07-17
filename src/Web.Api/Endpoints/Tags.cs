@@ -9,4 +9,6 @@ public static class Tags
     public const string Public = "Public";
     public const string VerifyProcess = "VerifyProcess";
     public const string Favorites = "Favorites";
+    public const string Locations = "Locations";
+    public const string PracticeCentres = "PracticeCentres";
 }
