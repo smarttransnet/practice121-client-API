@@ -42,6 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerWithUi();
 
     app.ApplyMigrations();
+    await Infrastructure.Database.DatabaseSeeder.SeedAsync(app.Services);
 }
 
 app.MapHealthChecks("health", new HealthCheckOptions
