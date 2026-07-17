@@ -3,6 +3,7 @@ using Domain.Doctors;
 using Domain.Favorites;
 using Domain.Todos;
 using Domain.Users;
+using Domain.Patients;
 using Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
@@ -27,6 +28,9 @@ public sealed class ApplicationDbContext(
     public DbSet<ESignature> ESignatures { get; set; }
     public DbSet<Qualification> Qualifications { get; set; }
     public DbSet<FavoriteMedicine> FavoriteMedicines { get; set; }
+
+    public DbSet<PatientAccount> PatientAccounts { get; set; }
+    public DbSet<PatientDocument> PatientDocuments { get; set; }
 
     public DbSet<Domain.Locations.District> Districts { get; set; }
     public DbSet<Domain.Locations.MohArea> MohAreas { get; set; }
