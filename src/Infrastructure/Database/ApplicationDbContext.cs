@@ -8,6 +8,8 @@ using Infrastructure.DomainEvents;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
+using Domain.PatientQueue;
+
 namespace Infrastructure.Database;
 
 public sealed class ApplicationDbContext(
@@ -30,6 +32,7 @@ public sealed class ApplicationDbContext(
     public DbSet<FavoriteMedicine> FavoriteMedicines { get; set; }
 
     public DbSet<PatientAccount> PatientAccounts { get; set; }
+    public DbSet<PatientQueueTicket> PatientQueueTickets { get; set; }
     public DbSet<PatientDocument> PatientDocuments { get; set; }
 
     public DbSet<Domain.Locations.District> Districts { get; set; }

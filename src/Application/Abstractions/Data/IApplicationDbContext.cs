@@ -3,6 +3,7 @@ using Domain.Favorites;
 using Domain.Todos;
 using Domain.Users;
 using Domain.Patients;
+using Domain.PatientQueue;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Abstractions.Data;
@@ -23,6 +24,7 @@ public interface IApplicationDbContext
 
     DbSet<PatientAccount> PatientAccounts { get; }
     DbSet<PatientDocument> PatientDocuments { get; }
+    DbSet<PatientQueueTicket> PatientQueueTickets { get; }
 
     DbSet<Domain.Locations.District> Districts { get; }
     DbSet<Domain.Locations.MohArea> MohAreas { get; }

@@ -11,7 +11,9 @@ public record GetPracticeCentresQuery(Guid DoctorId) : IQuery<List<PracticeCentr
 
 public record PracticeCentreResponse(
     Guid Id,
+    Guid DoctorId,
     string ClinicName,
+    Guid PlaceId,
     string DistrictName,
     string MohAreaName,
     string PlaceName,
@@ -54,7 +56,9 @@ internal sealed class GetPracticeCentresQueryHandler(IApplicationDbContext dbCon
 
         return centres.Select(pc => new PracticeCentreResponse(
             pc.Id,
+            pc.DoctorId,
             pc.ClinicName,
+            pc.PlaceId,
             pc.Place.MohArea.District.Name,
             pc.Place.MohArea.Name,
             pc.Place.Name,
