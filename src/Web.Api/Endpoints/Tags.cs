@@ -12,4 +12,5 @@ public static class Tags
     public const string Locations = "Locations";
     public const string PracticeCentres = "PracticeCentres";
     public const string Patients = "Patients";
+    public const string PatientQueue = "PatientQueue";
 }

@@ -1,0 +1,55 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - 'feature/waiting-list-api'
+      - 'feature/waiting-list-frontend'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-api:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./Client-API
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+      - name: Restore dependencies
+        run: dotnet restore src/Web.Api/Web.Api.csproj
+      - name: Build API
+        run: dotnet build src/Web.Api/Web.Api.csproj --configuration Release --no-restore
+      - name: Test API
+        run: dotnet test tests/Practice121.Tests/Practice121.Tests.csproj --no-build --verbosity normal
+      - name: Publish API
+        run: dotnet publish src/Web.Api/Web.Api.csproj -c Release -o publish
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: build-api
+    defaults:
+      run:
+        working-directory: ./Client-FE
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build frontend
+        run: npm run build
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: dist
