@@ -18,7 +18,7 @@ public class GetPublicDoctor : IEndpoint
             var query = new GetPublicDoctorQuery(accountId);
             var result = await handler.Handle(query, cancellationToken);
 
-            return result.IsSuccess ? Results.Ok(result) : Results.NotFound(result);
+            return result.IsSuccess ? Results.Ok(result.Value) : Web.Api.Infrastructure.CustomResults.Problem(result);
         })
         .WithTags("Public")
         .AllowAnonymous();
