@@ -14,7 +14,8 @@ public record AddPatientQueueTicketCommand(
     string PatientMobile,
     Guid DoctorId,
     Guid PracticeCentreId,
-    PatientQueuePriority Priority) : ICommand<Guid>;
+    PatientQueuePriority Priority,
+    DateTime? VisitDate) : ICommand<Guid>;
 
 internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext dbContext)
     : ICommandHandler<AddPatientQueueTicketCommand, Guid>
@@ -22,20 +23,30 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
     public async Task<Result<Guid>> Handle(AddPatientQueueTicketCommand request, CancellationToken cancellationToken)
     {
         // Check if doctor/practice centre exists
-        var practiceCentreExists = await dbContext.PracticeCentres
-            .AnyAsync(pc => pc.Id == request.PracticeCentreId, cancellationToken);
-        if (!practiceCentreExists)
+        var practiceCentre = await dbContext.PracticeCentres
+            .Include(pc => pc.SessionGroups)
+            .FirstOrDefaultAsync(pc => pc.Id == request.PracticeCentreId, cancellationToken);
+        if (practiceCentre == null)
         {
             return Result.Failure<Guid>(new Error("PatientQueueTicket.PracticeCentreNotFound", "The specified Practice Centre does not exist.", ErrorType.NotFound));
         }
 
-        var today = DateTime.UtcNow.Date;
+        var visitDate = request.VisitDate?.Date ?? DateTime.UtcNow.Date;
 
-        // Get max queue number/order for today, filtered by practice centre and doctor
+        // Validate doctor availability for selected date
+        var dayOfWeekString = visitDate.DayOfWeek.ToString().Substring(0, 3).ToUpperInvariant();
+        var hasSession = practiceCentre.SessionGroups.Any(sg => 
+            sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)));
+        if (!hasSession)
+        {
+            return Result.Failure<Guid>(new Error("PatientQueueTicket.NoSessionOnSelectedDate", "No session group is scheduled for the selected date's day of week.", ErrorType.Validation));
+        }
+
+        // Get max queue number/order for visitDate, filtered by practice centre and doctor
         var lastTicket = await dbContext.PatientQueueTickets
             .Where(q => q.PracticeCentreId == request.PracticeCentreId 
                         && q.DoctorId == request.DoctorId 
-                        && q.VisitDate == today)
+                        && q.VisitDate == visitDate)
             .OrderByDescending(q => q.QueueOrder)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -50,7 +61,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             PatientMobile = request.PatientMobile,
             DoctorId = request.DoctorId,
             PracticeCentreId = request.PracticeCentreId,
-            VisitDate = today,
+            VisitDate = visitDate,
             Status = PatientQueueStatus.Waiting,
             Priority = request.Priority,
             CreatedAt = DateTime.UtcNow

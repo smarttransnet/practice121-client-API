@@ -16,7 +16,8 @@ internal sealed class AddTicket : IEndpoint
         string PatientMobile,
         Guid DoctorId,
         Guid PracticeCentreId,
-        PatientQueuePriority Priority);
+        PatientQueuePriority Priority,
+        DateTime? VisitDate);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -29,7 +30,8 @@ internal sealed class AddTicket : IEndpoint
                 request.PatientMobile,
                 request.DoctorId,
                 request.PracticeCentreId,
-                request.Priority);
+                request.Priority,
+                request.VisitDate);
 
             Result<Guid> result = await handler.Handle(command, cancellationToken);
             return result.Match(Results.Ok, CustomResults.Problem);
