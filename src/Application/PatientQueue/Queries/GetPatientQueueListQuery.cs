@@ -56,7 +56,12 @@ internal sealed class GetPatientQueueListQueryHandler(IApplicationDbContext dbCo
             .Where(p => patientMobiles.Contains(p.MobileNumber))
             .ToListAsync(cancellationToken);
 
-        var patientDict = patients.ToDictionary(p => p.MobileNumber, p => $"{p.FirstName} {p.LastName}".Trim());
+        var patientDict = patients
+            .GroupBy(p => p.MobileNumber)
+            .ToDictionary(
+                g => g.Key,
+                g => $"{g.First().FirstName} {g.First().LastName}".Trim()
+            );
 
         var response = tickets.Select(t => new PatientQueueTicketResponse(
             t.Id,

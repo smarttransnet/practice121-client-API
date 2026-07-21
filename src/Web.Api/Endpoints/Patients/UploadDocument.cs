@@ -16,7 +16,7 @@ internal sealed class UploadDocument : IEndpoint
         app.MapPost("api/patients/{id:guid}/documents", async (
             Guid id,
             [FromForm] DocumentType type,
-            [FromForm] IFormFile file,
+            IFormFile file,
             ICommandHandler<UploadPatientDocumentCommand, Guid> handler,
             CancellationToken cancellationToken) =>
         {
