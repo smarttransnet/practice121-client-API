@@ -55,6 +55,9 @@ internal sealed class Qualifications : IEndpoint
 
             Guid accountId = userContext.UserId;
             var profile = await context.DoctorProfiles
+                .Include(p => p.Documents)
+                .Include(p => p.ESignature)
+                .Include(p => p.QualificationsList.Where(q => q.IsActive))
                 .SingleOrDefaultAsync(p => p.AccountId == accountId, cancellationToken);
 
             if (profile == null)
@@ -79,6 +82,29 @@ internal sealed class Qualifications : IEndpoint
             }
 
             context.Qualifications.Add(qualification);
+
+            // Recalculate Profile Completion Status
+            // hasQualifications is always true here since we are adding one right now
+            bool hasBasicInfo = !string.IsNullOrEmpty(profile.SlmcRegNumber) &&
+                                !string.IsNullOrEmpty(profile.NicNumber) &&
+                                !string.IsNullOrEmpty(profile.MobileNumber) &&
+                                !string.IsNullOrEmpty(profile.Specialty) &&
+                                profile.DateOfBirth.HasValue;
+
+            if (hasBasicInfo)
+            {
+                bool hasSlmcCert = profile.Documents.Any(d => d.Type == DocumentType.SLMC_CERT);
+                bool hasSignature = profile.ESignature != null;
+
+                profile.CompletionStatus = (hasSlmcCert && hasSignature)
+                    ? ProfileCompletionStatus.COMPLETE
+                    : ProfileCompletionStatus.PARTIAL;
+            }
+            else
+            {
+                profile.CompletionStatus = ProfileCompletionStatus.MINIMAL;
+            }
+
             await context.SaveChangesAsync(cancellationToken);
 
             var result = new 
@@ -104,6 +130,9 @@ internal sealed class Qualifications : IEndpoint
         {
             Guid accountId = userContext.UserId;
             var profile = await context.DoctorProfiles
+                .Include(p => p.Documents)
+                .Include(p => p.ESignature)
+                .Include(p => p.QualificationsList.Where(q => q.IsActive))
                 .SingleOrDefaultAsync(p => p.AccountId == accountId, cancellationToken);
 
             if (profile == null)
@@ -118,6 +147,33 @@ internal sealed class Qualifications : IEndpoint
             {
                 qualification.IsActive = false;
                 qualification.ArchivedAt = dateTimeProvider.UtcNow;
+
+                // Recalculate Profile Completion Status
+                // Remove the archived qualification from the in-memory collection
+                var activeQualifications = profile.QualificationsList.Where(q => q.Id != id).ToList();
+                bool hasQualifications = profile.Qualifications != null && profile.Qualifications.Length > 0
+                                         || activeQualifications.Count > 0;
+                bool hasBasicInfo = !string.IsNullOrEmpty(profile.SlmcRegNumber) &&
+                                    !string.IsNullOrEmpty(profile.NicNumber) &&
+                                    !string.IsNullOrEmpty(profile.MobileNumber) &&
+                                    !string.IsNullOrEmpty(profile.Specialty) &&
+                                    hasQualifications &&
+                                    profile.DateOfBirth.HasValue;
+
+                if (hasBasicInfo)
+                {
+                    bool hasSlmcCert = profile.Documents.Any(d => d.Type == DocumentType.SLMC_CERT);
+                    bool hasSignature = profile.ESignature != null;
+
+                    profile.CompletionStatus = (hasSlmcCert && hasSignature)
+                        ? ProfileCompletionStatus.COMPLETE
+                        : ProfileCompletionStatus.PARTIAL;
+                }
+                else
+                {
+                    profile.CompletionStatus = ProfileCompletionStatus.MINIMAL;
+                }
+
                 await context.SaveChangesAsync(cancellationToken);
             }
 
