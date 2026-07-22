@@ -26,6 +26,7 @@ internal sealed class GetMissingFieldsQueryHandler : IQueryHandler<GetMissingFie
         var profile = await _context.DoctorProfiles
             .Include(p => p.Documents)
             .Include(p => p.ESignature)
+            .Include(p => p.QualificationsList.Where(q => q.IsActive))
             .SingleOrDefaultAsync(p => p.AccountId == accountId, cancellationToken);
 
         if (profile == null)
@@ -61,10 +62,7 @@ internal sealed class GetMissingFieldsQueryHandler : IQueryHandler<GetMissingFie
             missingFields.Add("mobileNumber");
         }
 
-        if (profile.Qualifications == null || profile.Qualifications.Length == 0)
-        {
-            missingFields.Add("qualifications");
-        }
+
 
         if (string.IsNullOrWhiteSpace(profile.Specialty))
         {

@@ -31,6 +31,7 @@ internal sealed class CreateSignatureCommandHandler : ICommandHandler<CreateSign
         var profile = await _context.DoctorProfiles
             .Include(p => p.Documents)
             .Include(p => p.ESignature)
+            .Include(p => p.QualificationsList.Where(q => q.IsActive))
             .SingleOrDefaultAsync(p => p.AccountId == accountId, cancellationToken);
 
         if (profile == null)
@@ -60,11 +61,13 @@ internal sealed class CreateSignatureCommandHandler : ICommandHandler<CreateSign
         }
 
         // 3. Recalculate Profile Completion Status
+        bool hasQualifications = profile.Qualifications != null && profile.Qualifications.Length > 0
+                                 || profile.QualificationsList.Count > 0;
         bool hasBasicInfo = !string.IsNullOrEmpty(profile.SlmcRegNumber) &&
                             !string.IsNullOrEmpty(profile.NicNumber) &&
                             !string.IsNullOrEmpty(profile.MobileNumber) &&
                             !string.IsNullOrEmpty(profile.Specialty) &&
-                            profile.Qualifications != null && profile.Qualifications.Length > 0 &&
+                            hasQualifications &&
                             profile.DateOfBirth.HasValue;
 
         if (hasBasicInfo)
