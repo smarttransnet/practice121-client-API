@@ -25,7 +25,7 @@ internal sealed class UpdateProfileCommandValidator : AbstractValidator<UpdatePr
             .MaximumLength(50).WithMessage("SLMC Registration Number cannot exceed 50 characters");
 
         RuleFor(x => x.NicNumber)
-            .MaximumLength(50).WithMessage("NIC Number cannot exceed 50 characters");
+            .MustBeValidSriLankanNicWhenPresent();
 
         RuleFor(x => x.MobileNumber)
             .MustBeValidSriLankanMobileWhenPresent();

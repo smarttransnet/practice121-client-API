@@ -9,7 +9,7 @@ internal sealed class RegisterPatientCommandValidator : AbstractValidator<Regist
     {
         RuleFor(x => x.NicNumber)
             .NotEmpty().WithMessage("NIC is required")
-            .MaximumLength(20).WithMessage("NIC cannot exceed 20 characters");
+            .MustBeValidSriLankanNic();
 
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First Name is required")
