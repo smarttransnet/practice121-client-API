@@ -63,7 +63,9 @@ internal sealed class UpdateProfileCommandHandler : ICommandHandler<UpdateProfil
 
         if (command.MobileNumber != null)
         {
-            profile.MobileNumber = string.IsNullOrWhiteSpace(command.MobileNumber) ? null : command.MobileNumber.Trim();
+            profile.MobileNumber = string.IsNullOrWhiteSpace(command.MobileNumber)
+                ? null
+                : (SriLankanPhoneValidator.NormalizeToE164(command.MobileNumber) ?? command.MobileNumber.Trim());
         }
 
         if (command.Qualifications != null)

@@ -1,3 +1,4 @@
+using Application.Extensions;
 using FluentValidation;
 
 namespace Application.Patients.Register;
@@ -16,7 +17,7 @@ internal sealed class RegisterPatientCommandValidator : AbstractValidator<Regist
 
         RuleFor(x => x.MobileNumber)
             .NotEmpty().WithMessage("Mobile Number is required")
-            .MaximumLength(20).WithMessage("Mobile Number cannot exceed 20 characters");
+            .MustBeValidSriLankanMobile();
 
         // Conditional validation based on entry point (CreatedByDoctorId)
         When(x => !x.CreatedByDoctorId.HasValue, () =>

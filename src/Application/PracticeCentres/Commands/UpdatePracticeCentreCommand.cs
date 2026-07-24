@@ -113,7 +113,8 @@ internal sealed class UpdatePracticeCentreCommandHandler(IApplicationDbContext d
         
         foreach (var n in request.Nurses)
         {
-            var nurse = Nurse.Create(centre.Id, n.Name, n.PhoneNumber, n.IsActive);
+            var normalizedPhone = SriLankanPhoneValidator.NormalizeToE164(n.PhoneNumber) ?? n.PhoneNumber;
+            var nurse = Nurse.Create(centre.Id, n.Name, normalizedPhone, n.IsActive);
             centre.AddNurse(nurse);
             dbContext.Nurses.Add(nurse);
         }

@@ -25,7 +25,13 @@ internal sealed class UpdatePatientMobileCommandHandler(IApplicationDbContext db
             return Result.Failure(Error.NotFound("Patient.NotFound", "The patient record was not found."));
         }
 
-        patient.MobileNumber = request.MobileNumber.Trim();
+        string? normalized = SriLankanPhoneValidator.NormalizeToE164(request.MobileNumber);
+        if (normalized == null)
+        {
+            return Result.Failure(Error.Problem("Patient.InvalidMobile", "Please enter a valid Sri Lankan mobile number (e.g., 077 123 4567)."));
+        }
+
+        patient.MobileNumber = normalized;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
