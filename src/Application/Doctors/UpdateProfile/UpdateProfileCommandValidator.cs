@@ -1,3 +1,4 @@
+using Application.Extensions;
 using FluentValidation;
 
 namespace Application.Doctors.UpdateProfile;
@@ -27,9 +28,7 @@ internal sealed class UpdateProfileCommandValidator : AbstractValidator<UpdatePr
             .MaximumLength(50).WithMessage("NIC Number cannot exceed 50 characters");
 
         RuleFor(x => x.MobileNumber)
-            .MaximumLength(20).WithMessage("Mobile Number cannot exceed 20 characters")
-            .Matches(@"^\+?[0-9\s\-]+$").When(x => !string.IsNullOrEmpty(x.MobileNumber))
-            .WithMessage("A valid mobile number is required");
+            .MustBeValidSriLankanMobileWhenPresent();
 
         RuleFor(x => x.Specialty)
             .MaximumLength(100).WithMessage("Specialty cannot exceed 100 characters");

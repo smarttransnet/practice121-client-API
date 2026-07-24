@@ -35,7 +35,7 @@ internal sealed class RegisterPatientCommandHandler : ICommandHandler<RegisterPa
             LastName = request.LastName,
             DateOfBirth = request.DateOfBirth.HasValue ? DateTime.SpecifyKind(request.DateOfBirth.Value, DateTimeKind.Utc) : null,
             Gender = request.Gender,
-            MobileNumber = request.MobileNumber,
+            MobileNumber = SriLankanPhoneValidator.NormalizeToE164(request.MobileNumber) ?? request.MobileNumber,
             Verified = false,
             CompletionStatus = ProfileCompletionStatus.MINIMAL,
             CreatedByDoctorId = request.CreatedByDoctorId

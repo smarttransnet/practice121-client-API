@@ -94,7 +94,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
             Id = Guid.NewGuid(),
             QueueNumber = nextNumber,
             QueueOrder = nextOrder,
-            PatientMobile = request.PatientMobile,
+            PatientMobile = SriLankanPhoneValidator.NormalizeToE164(request.PatientMobile) ?? request.PatientMobile,
             DoctorId = request.DoctorAccountId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDateTime,

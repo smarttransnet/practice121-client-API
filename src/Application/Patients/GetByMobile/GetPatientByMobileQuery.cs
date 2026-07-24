@@ -24,9 +24,12 @@ internal sealed class GetPatientByMobileQueryHandler(IApplicationDbContext dbCon
 {
     public async Task<Result<PatientResponse?>> Handle(GetPatientByMobileQuery request, CancellationToken cancellationToken)
     {
+        string normalizedMobile = SriLankanPhoneValidator.NormalizeToE164(request.MobileNumber) ?? request.MobileNumber.Trim();
+        string rawMobile = request.MobileNumber.Trim();
+
         var patient = await dbContext.PatientAccounts
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.MobileNumber == request.MobileNumber, cancellationToken);
+            .FirstOrDefaultAsync(p => p.MobileNumber == normalizedMobile || p.MobileNumber == rawMobile, cancellationToken);
 
         if (patient == null)
         {

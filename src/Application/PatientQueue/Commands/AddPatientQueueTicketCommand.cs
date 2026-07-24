@@ -58,7 +58,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             Id = Guid.NewGuid(),
             QueueNumber = nextNumber,
             QueueOrder = nextOrder,
-            PatientMobile = request.PatientMobile,
+            PatientMobile = SriLankanPhoneValidator.NormalizeToE164(request.PatientMobile) ?? request.PatientMobile,
             DoctorId = request.DoctorId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDate,
