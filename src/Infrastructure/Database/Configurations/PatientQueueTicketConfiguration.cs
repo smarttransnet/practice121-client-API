@@ -20,6 +20,10 @@ public class PatientQueueTicketConfiguration : IEntityTypeConfiguration<PatientQ
         builder.Property(q => q.Status).IsRequired();
         builder.Property(q => q.Priority).IsRequired();
         builder.Property(q => q.CreatedAt).HasDefaultValueSql("now()");
+        builder.HasOne(q => q.Patient)
+            .WithMany()
+            .HasForeignKey(q => q.PatientId)
+            .OnDelete(DeleteBehavior.SetNull);
         builder.HasIndex(q => new { q.PracticeCentreId, q.DoctorId, q.VisitDate, q.Status });
     }
 }

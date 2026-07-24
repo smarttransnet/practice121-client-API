@@ -6,13 +6,18 @@ namespace Domain.Patients;
 public sealed class PatientAccount : Entity
 {
     public Guid Id { get; set; }
-    public string NicNumber { get; set; } = string.Empty;
+    public string? NicNumber { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string? LastName { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
     public string MobileNumber { get; set; } = string.Empty;
     
+    // Parent-Child linkage
+    public Guid? ParentId { get; set; }
+    public PatientAccount? Parent { get; set; }
+    public ICollection<PatientAccount> Children { get; set; } = [];
+
     public bool Verified { get; set; }
     public ProfileCompletionStatus CompletionStatus { get; set; }
     

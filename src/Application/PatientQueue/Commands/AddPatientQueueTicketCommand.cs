@@ -15,7 +15,8 @@ public record AddPatientQueueTicketCommand(
     Guid DoctorId,
     Guid PracticeCentreId,
     PatientQueuePriority Priority,
-    DateTime? VisitDate) : ICommand<Guid>;
+    DateTime? VisitDate,
+    Guid? PatientId = null) : ICommand<Guid>;
 
 internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext dbContext)
     : ICommandHandler<AddPatientQueueTicketCommand, Guid>
@@ -59,6 +60,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             QueueNumber = nextNumber,
             QueueOrder = nextOrder,
             PatientMobile = SriLankanPhoneValidator.NormalizeToE164(request.PatientMobile) ?? request.PatientMobile,
+            PatientId = request.PatientId,
             DoctorId = request.DoctorId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDate,
