@@ -58,7 +58,9 @@ internal sealed class UpdateProfileCommandHandler : ICommandHandler<UpdateProfil
 
         if (command.NicNumber != null)
         {
-            profile.NicNumber = string.IsNullOrWhiteSpace(command.NicNumber) ? null : command.NicNumber.Trim();
+            profile.NicNumber = string.IsNullOrWhiteSpace(command.NicNumber)
+                ? null
+                : (SriLankanNicDecoder.NormalizeNic(command.NicNumber) ?? command.NicNumber.Trim());
         }
 
         if (command.MobileNumber != null)
