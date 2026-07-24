@@ -15,11 +15,11 @@ internal sealed class GetPatientByMobile : IEndpoint
     {
         app.MapGet("api/patients/by-mobile", async (
             string mobileNumber,
-            IQueryHandler<GetPatientByMobileQuery, PatientResponse?> handler,
+            IQueryHandler<GetPatientByMobileQuery, PatientLookupResponse?> handler,
             CancellationToken cancellationToken) =>
         {
             var query = new GetPatientByMobileQuery(mobileNumber);
-            Result<PatientResponse?> result = await handler.Handle(query, cancellationToken);
+            Result<PatientLookupResponse?> result = await handler.Handle(query, cancellationToken);
 
             return result.Match(
                 response => response is null ? Results.NotFound() : Results.Ok(response),

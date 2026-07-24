@@ -39,7 +39,7 @@ internal sealed class SearchPatientsQueryHandler(IApplicationDbContext dbContext
         query = query.Where(p => 
             !string.IsNullOrEmpty(firstName) && p.FirstName.ToLower().Contains(firstName) ||
             !string.IsNullOrEmpty(lastName) && p.LastName != null && p.LastName.ToLower().Contains(lastName) ||
-            !string.IsNullOrEmpty(nicNumber) && p.NicNumber.ToLower().Contains(nicNumber)
+            !string.IsNullOrEmpty(nicNumber) && p.NicNumber != null && p.NicNumber.ToLower().Contains(nicNumber)
         );
 #pragma warning restore CA1862, CA1304, CA1311, CA1307
 

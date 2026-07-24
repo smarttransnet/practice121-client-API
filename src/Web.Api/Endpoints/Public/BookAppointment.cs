@@ -16,7 +16,8 @@ public class BookAppointment : IEndpoint
         string PatientMobile,
         Guid DoctorAccountId,
         Guid PracticeCentreId,
-        DateOnly VisitDate);
+        DateOnly VisitDate,
+        Guid? PatientId = null);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -31,7 +32,8 @@ public class BookAppointment : IEndpoint
                     request.PatientMobile,
                     request.DoctorAccountId,
                     request.PracticeCentreId,
-                    request.VisitDate);
+                    request.VisitDate,
+                    request.PatientId);
 
                 var result = await handler.Handle(command, cancellationToken);
                 return result.IsSuccess ? Results.Ok(result.Value) : CustomResults.Problem(result);

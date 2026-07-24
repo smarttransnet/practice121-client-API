@@ -14,7 +14,8 @@ public record BookAppointmentCommand(
     string PatientMobile,
     Guid DoctorAccountId,
     Guid PracticeCentreId,
-    DateOnly VisitDate) : ICommand<BookAppointmentResult>;
+    DateOnly VisitDate,
+    Guid? PatientId = null) : ICommand<BookAppointmentResult>;
 
 public record BookAppointmentResult(
     Guid TicketId,
@@ -95,6 +96,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
             QueueNumber = nextNumber,
             QueueOrder = nextOrder,
             PatientMobile = SriLankanPhoneValidator.NormalizeToE164(request.PatientMobile) ?? request.PatientMobile,
+            PatientId = request.PatientId,
             DoctorId = request.DoctorAccountId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDateTime,

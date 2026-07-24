@@ -50,34 +50,45 @@ internal sealed class GetPatientQueueListQueryHandler(IApplicationDbContext dbCo
             .OrderBy(q => q.QueueOrder)
             .ToListAsync(cancellationToken);
 
+        var patientIds = tickets.Where(t => t.PatientId.HasValue).Select(t => t.PatientId!.Value).Distinct().ToList();
         var patientMobiles = tickets.Select(t => t.PatientMobile).Distinct().ToList();
 
         var patients = await dbContext.PatientAccounts.AsNoTracking()
-            .Where(p => patientMobiles.Contains(p.MobileNumber))
+            .Where(p => patientIds.Contains(p.Id) || patientMobiles.Contains(p.MobileNumber))
             .ToListAsync(cancellationToken);
 
-        var patientDict = patients
+        var patientById = patients.ToDictionary(p => p.Id, p => $"{p.FirstName} {p.LastName}".Trim());
+        var patientByMobile = patients
             .GroupBy(p => p.MobileNumber)
-            .ToDictionary(
-                g => g.Key,
-                g => $"{g.First().FirstName} {g.First().LastName}".Trim()
-            );
+            .ToDictionary(g => g.Key, g => $"{g.First().FirstName} {g.First().LastName}".Trim());
 
-        var response = tickets.Select(t => new PatientQueueTicketResponse(
-            t.Id,
-            t.QueueNumber,
-            t.QueueOrder,
-            t.PatientMobile,
-            patientDict.TryGetValue(t.PatientMobile, out var name) ? name : "Unknown Patient",
-            t.DoctorId,
-            t.PracticeCentreId,
-            t.VisitDate,
-            t.Status,
-            t.Priority,
-            t.CreatedAt,
-            t.CalledAt,
-            t.CompletedAt
-        )).ToList();
+        var response = tickets.Select(t =>
+        {
+            string name = "Unknown Patient";
+            if (t.PatientId.HasValue && patientById.TryGetValue(t.PatientId.Value, out var nameById))
+            {
+                name = nameById;
+            }
+            else if (patientByMobile.TryGetValue(t.PatientMobile, out var nameByMobile))
+            {
+                name = nameByMobile;
+            }
+
+            return new PatientQueueTicketResponse(
+                t.Id,
+                t.QueueNumber,
+                t.QueueOrder,
+                t.PatientMobile,
+                name,
+                t.DoctorId,
+                t.PracticeCentreId,
+                t.VisitDate,
+                t.Status,
+                t.Priority,
+                t.CreatedAt,
+                t.CalledAt,
+                t.CompletedAt);
+        }).ToList();
 
         return response;
     }
