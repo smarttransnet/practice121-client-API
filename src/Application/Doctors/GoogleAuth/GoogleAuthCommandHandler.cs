@@ -43,23 +43,29 @@ internal sealed class GoogleAuthCommandHandler : ICommandHandler<GoogleAuthComma
 
         if (account == null)
         {
-            // If sub not found, check if email already registered (maybe via manual register)
-            if (await _context.DoctorAccounts.AnyAsync(a => a.Email == emailNormalized, cancellationToken))
-            {
-                return Result.Failure<GoogleAuthResult>(DoctorErrors.EmailNotUnique);
-            }
+            // If sub not found, check if email already registered (e.g. via manual registration)
+            account = await _context.DoctorAccounts
+                .SingleOrDefaultAsync(a => a.Email == emailNormalized, cancellationToken);
 
-            // Create new DoctorAccount
-            account = new DoctorAccount
+            if (account != null)
             {
-                Id = Guid.NewGuid(),
-                AuthProvider = AuthProvider.GOOGLE,
-                Email = emailNormalized,
-                PasswordHash = null,
-                GoogleSubId = googleUser.Sub,
-                Status = AccountStatus.PENDING,
-                CreatedAt = _dateTimeProvider.UtcNow
-            };
+                // Link GoogleSubId to existing account
+                account.GoogleSubId = googleUser.Sub;
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                // Create new DoctorAccount
+                account = new DoctorAccount
+                {
+                    Id = Guid.NewGuid(),
+                    AuthProvider = AuthProvider.GOOGLE,
+                    Email = emailNormalized,
+                    PasswordHash = null,
+                    GoogleSubId = googleUser.Sub,
+                    Status = AccountStatus.PENDING,
+                    CreatedAt = _dateTimeProvider.UtcNow
+                };
 
             // Create Blank DoctorProfile
             var nameParts = googleUser.Name.Trim().Split(' ', 2);
@@ -87,6 +93,7 @@ internal sealed class GoogleAuthCommandHandler : ICommandHandler<GoogleAuthComma
             _context.DoctorProfiles.Add(profile);
 
             await _context.SaveChangesAsync(cancellationToken);
+            }
         }
 
         // 3. Generate & Send OTP for MFA
