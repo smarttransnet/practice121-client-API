@@ -1,5 +1,6 @@
 using Application.Abstractions.Authentication;
 using Google.Apis.Auth;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Authentication;
@@ -7,10 +8,12 @@ namespace Infrastructure.Authentication;
 internal sealed class GoogleAuthService : IGoogleAuthService
 {
     private readonly ILogger<GoogleAuthService> _logger;
+    private readonly IConfiguration _configuration;
 
-    public GoogleAuthService(ILogger<GoogleAuthService> logger)
+    public GoogleAuthService(ILogger<GoogleAuthService> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task<GoogleUserResult?> VerifyTokenAsync(string idToken, CancellationToken cancellationToken = default)
@@ -30,9 +33,13 @@ internal sealed class GoogleAuthService : IGoogleAuthService
 
         try
         {
-            // Google Token validation setting.
-            // Note: In production you would configure the ClientIds from configuration.
+            var clientId = _configuration["Authentication:Google:ClientId"];
             var settings = new GoogleJsonWebSignature.ValidationSettings();
+            
+            if (!string.IsNullOrWhiteSpace(clientId) && clientId != "your-google-client-id-here.apps.googleusercontent.com")
+            {
+                settings.Audience = new[] { clientId };
+            }
             
             var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
             
