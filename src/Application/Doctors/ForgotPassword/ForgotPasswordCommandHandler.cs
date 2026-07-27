@@ -72,21 +72,29 @@ internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPassw
         string resetUrl = $"{_appSettings.BaseUrl}/#/reset-password?accountId={account.Id}&token={Uri.EscapeDataString(rawToken)}";
 
         string subject = "Doctor Portal — Password Reset Request";
-        string body = $"""
-            Hello,
-
-            We received a request to reset the password for your Doctor Portal account ({account.Email}).
-
-            Click the link below to set a new password. This link is valid for {expiryMinutes} minutes and can only be used once.
-
-            {resetUrl}
-
-            If you did not request a password reset, please ignore this email. Your password will not be changed.
-
-            — Practice121 Team
+        string htmlBody = $"""
+            <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #1976d2; margin: 0; font-size: 22px;">Doctor Portal</h2>
+                    <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Password Reset Request</p>
+                </div>
+                <p style="color: #334155; font-size: 15px; line-height: 1.5;">Hello,</p>
+                <p style="color: #334155; font-size: 15px; line-height: 1.5;">We received a request to reset the password for your account (<strong>{account.Email}</strong>).</p>
+                <p style="color: #334155; font-size: 15px; line-height: 1.5;">Click the button below to set a new password. This link is valid for <strong>{expiryMinutes} minutes</strong> and can only be used once:</p>
+                <div style="text-align: center; margin: 28px 0;">
+                    <a href="{resetUrl}" target="_blank" style="background-color: #1976d2; color: #ffffff; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 8px; font-size: 16px; display: inline-block; box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3);">
+                        Reset My Password
+                    </a>
+                </div>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.5;">If the button above doesn't work, copy and paste this URL into your browser:</p>
+                <p style="color: #1976d2; font-size: 12px; word-break: break-all;"><a href="{resetUrl}" style="color: #1976d2;">{resetUrl}</a></p>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin-top: 20px;">If you did not request a password reset, please ignore this email or contact support. Your password will remain unchanged.</p>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+                <p style="color: #94a3b8; font-size: 12px; text-align: center; margin: 0;">Practice121 Medical Professional Network</p>
+            </div>
             """;
 
-        await _emailService.SendEmailAsync(account.Email, subject, body, cancellationToken);
+        await _emailService.SendEmailAsync(account.Email, subject, htmlBody, cancellationToken);
 
         _logger.LogInformation("Password reset email dispatched for account {AccountId}.", account.Id);
 
