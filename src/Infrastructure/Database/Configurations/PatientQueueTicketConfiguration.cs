@@ -17,6 +17,7 @@ public class PatientQueueTicketConfiguration : IEntityTypeConfiguration<PatientQ
         builder.Property(q => q.DoctorId).IsRequired();
         builder.Property(q => q.PracticeCentreId).IsRequired();
         builder.Property(q => q.VisitDate).HasColumnType("date").IsRequired();
+        builder.Property(q => q.SessionId).IsRequired(false);
         builder.Property(q => q.Status).IsRequired();
         builder.Property(q => q.Priority).IsRequired();
         builder.Property(q => q.CreatedAt).HasDefaultValueSql("now()");
