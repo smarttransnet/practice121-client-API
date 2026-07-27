@@ -55,4 +55,9 @@ public static class DoctorErrors
     public static readonly Error BadgeNotAwarded = Error.Problem(
         "Doctors.BadgeNotAwarded",
         "The practice identity can only be generated after the doctor verification badge has been awarded");
+
+    public static readonly Error InvalidOrExpiredResetToken = Error.Problem(
+        "Doctors.InvalidOrExpiredResetToken",
+        "The password reset token is invalid or has expired.");
 }
+
