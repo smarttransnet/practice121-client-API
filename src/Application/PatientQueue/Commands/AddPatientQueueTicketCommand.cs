@@ -44,6 +44,46 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             return Result.Failure<Guid>(new Error("PatientQueueTicket.NoSessionOnSelectedDate", "No session group is scheduled for the selected date's day of week.", ErrorType.Validation));
         }
 
+        // Prevent duplicate patient record in the same session
+        if (request.PatientId.HasValue && request.PatientId.Value != Guid.Empty)
+        {
+            var isDuplicatePatient = await dbContext.PatientQueueTickets.AnyAsync(q =>
+                q.PracticeCentreId == request.PracticeCentreId
+                && q.DoctorId == request.DoctorId
+                && q.VisitDate == visitDate
+                && q.SessionId == request.SessionId
+                && q.PatientId == request.PatientId.Value
+                && q.Status != PatientQueueStatus.Cancelled
+                && q.Status != PatientQueueStatus.Completed
+                && q.Status != PatientQueueStatus.NoShow,
+                cancellationToken);
+
+            if (isDuplicatePatient)
+            {
+                return Result.Failure<Guid>(new Error("PatientQueueTicket.DuplicatePatientRecord", "This patient record is already in the queue for the selected session.", ErrorType.Validation));
+            }
+        }
+        else
+        {
+            var normalizedMobile = SriLankanPhoneValidator.NormalizeToE164(request.PatientMobile) ?? request.PatientMobile;
+            var isDuplicateMobile = await dbContext.PatientQueueTickets.AnyAsync(q =>
+                q.PracticeCentreId == request.PracticeCentreId
+                && q.DoctorId == request.DoctorId
+                && q.VisitDate == visitDate
+                && q.SessionId == request.SessionId
+                && q.PatientMobile == normalizedMobile
+                && q.PatientId == null
+                && q.Status != PatientQueueStatus.Cancelled
+                && q.Status != PatientQueueStatus.Completed
+                && q.Status != PatientQueueStatus.NoShow,
+                cancellationToken);
+
+            if (isDuplicateMobile)
+            {
+                return Result.Failure<Guid>(new Error("PatientQueueTicket.DuplicatePatientRecord", "A patient with this mobile number is already in the queue for the selected session.", ErrorType.Validation));
+            }
+        }
+
         // Get last ticket order globally for visitDate
         var lastOrderTicket = await dbContext.PatientQueueTickets
             .Where(q => q.PracticeCentreId == request.PracticeCentreId 

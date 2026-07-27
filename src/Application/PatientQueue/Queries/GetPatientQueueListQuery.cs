@@ -25,7 +25,8 @@ public record PatientQueueTicketResponse(
     DateTime CreatedAt,
     DateTime? CalledAt,
     DateTime? CompletedAt,
-    Guid? SessionId = null);
+    Guid? SessionId = null,
+    Guid? PatientId = null);
 
 public record GetPatientQueueListQuery(
     Guid PracticeCentreId,
@@ -89,7 +90,8 @@ internal sealed class GetPatientQueueListQueryHandler(IApplicationDbContext dbCo
                 t.CreatedAt,
                 t.CalledAt,
                 t.CompletedAt,
-                t.SessionId);
+                t.SessionId,
+                t.PatientId);
         }).ToList();
 
         return response;
