@@ -16,7 +16,9 @@ namespace Web.Api.Endpoints.Patients;
 internal sealed class AddChild : IEndpoint
 {
     public sealed record Request(
-        string FullName,
+        string? FullName,
+        string? FirstName,
+        string? LastName,
         DateTime DateOfBirth,
         string Gender);
 
@@ -31,6 +33,8 @@ internal sealed class AddChild : IEndpoint
             var command = new AddChildPatientCommand(
                 parentId,
                 request.FullName,
+                request.FirstName,
+                request.LastName,
                 request.DateOfBirth,
                 request.Gender);
 

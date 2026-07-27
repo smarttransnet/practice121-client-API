@@ -15,7 +15,8 @@ public record BookAppointmentCommand(
     Guid DoctorAccountId,
     Guid PracticeCentreId,
     DateOnly VisitDate,
-    Guid? PatientId = null) : ICommand<BookAppointmentResult>;
+    Guid? PatientId = null,
+    Guid? SessionId = null) : ICommand<BookAppointmentResult>;
 
 public record BookAppointmentResult(
     Guid TicketId,

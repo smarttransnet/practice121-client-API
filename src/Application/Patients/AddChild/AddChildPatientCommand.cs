@@ -14,7 +14,9 @@ namespace Application.Patients.AddChild;
 
 public sealed record AddChildPatientCommand(
     Guid ParentId,
-    string FullName,
+    string? FullName,
+    string? FirstName,
+    string? LastName,
     DateTime DateOfBirth,
     string Gender) : ICommand<PatientResponse>;
 
@@ -33,18 +35,23 @@ internal sealed class AddChildPatientCommandHandler(IApplicationDbContext dbCont
                 Error.NotFound("Patient.ParentNotFound", "The primary parent account was not found."));
         }
 
-        // 2. Validate Full Name
-        string fullName = request.FullName?.Trim() ?? string.Empty;
-        if (string.IsNullOrWhiteSpace(fullName))
+        // 2. Extract and Validate First Name and Last Name
+        string firstName = request.FirstName?.Trim() ?? string.Empty;
+        string? lastName = request.LastName?.Trim();
+
+        if (string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(request.FullName))
         {
-            return Result.Failure<PatientResponse>(
-                Error.Validation("Patient.ChildNameRequired", "Child full name is required."));
+            string fullName = request.FullName.Trim();
+            string[] nameParts = fullName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            firstName = nameParts.Length > 0 ? nameParts[0] : fullName;
+            lastName = nameParts.Length > 1 ? nameParts[1] : null;
         }
 
-        // Split Full Name into FirstName and LastName
-        string[] nameParts = fullName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-        string firstName = nameParts.Length > 0 ? nameParts[0] : fullName;
-        string? lastName = nameParts.Length > 1 ? nameParts[1] : null;
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            return Result.Failure<PatientResponse>(
+                Error.Validation("Patient.ChildNameRequired", "Child first name is required."));
+        }
 
         // 3. Validate Date of Birth (must be in past and age < 18 years)
         var utcDob = DateTime.SpecifyKind(request.DateOfBirth, DateTimeKind.Utc);
