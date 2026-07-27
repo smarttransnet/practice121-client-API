@@ -24,7 +24,8 @@ public record PatientQueueTicketResponse(
     PatientQueuePriority Priority,
     DateTime CreatedAt,
     DateTime? CalledAt,
-    DateTime? CompletedAt);
+    DateTime? CompletedAt,
+    Guid? SessionId = null);
 
 public record GetPatientQueueListQuery(
     Guid PracticeCentreId,
@@ -87,7 +88,8 @@ internal sealed class GetPatientQueueListQueryHandler(IApplicationDbContext dbCo
                 t.Priority,
                 t.CreatedAt,
                 t.CalledAt,
-                t.CompletedAt);
+                t.CompletedAt,
+                t.SessionId);
         }).ToList();
 
         return response;

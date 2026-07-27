@@ -16,7 +16,8 @@ public record AddPatientQueueTicketCommand(
     Guid PracticeCentreId,
     PatientQueuePriority Priority,
     DateTime? VisitDate,
-    Guid? PatientId = null) : ICommand<Guid>;
+    Guid? PatientId = null,
+    Guid? SessionId = null) : ICommand<Guid>;
 
 internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext dbContext)
     : ICommandHandler<AddPatientQueueTicketCommand, Guid>
@@ -43,16 +44,41 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             return Result.Failure<Guid>(new Error("PatientQueueTicket.NoSessionOnSelectedDate", "No session group is scheduled for the selected date's day of week.", ErrorType.Validation));
         }
 
-        // Get max queue number/order for visitDate, filtered by practice centre and doctor
-        var lastTicket = await dbContext.PatientQueueTickets
+        // Get last ticket order globally for visitDate
+        var lastOrderTicket = await dbContext.PatientQueueTickets
             .Where(q => q.PracticeCentreId == request.PracticeCentreId 
                         && q.DoctorId == request.DoctorId 
                         && q.VisitDate == visitDate)
             .OrderByDescending(q => q.QueueOrder)
             .FirstOrDefaultAsync(cancellationToken);
 
-        int nextOrder = (lastTicket?.QueueOrder ?? 0) + 1;
-        int nextNumber = (lastTicket?.QueueNumber ?? 0) + 1;
+        int nextOrder = (lastOrderTicket?.QueueOrder ?? 0) + 1;
+
+        // Queue number sequence is separate for each session on that visitDate
+        int nextNumber = 1;
+        if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+        {
+            var lastSessionTicket = await dbContext.PatientQueueTickets
+                .Where(q => q.PracticeCentreId == request.PracticeCentreId 
+                            && q.DoctorId == request.DoctorId 
+                            && q.VisitDate == visitDate
+                            && q.SessionId == request.SessionId.Value)
+                .OrderByDescending(q => q.QueueNumber)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            nextNumber = (lastSessionTicket?.QueueNumber ?? 0) + 1;
+        }
+        else
+        {
+            var lastTicket = await dbContext.PatientQueueTickets
+                .Where(q => q.PracticeCentreId == request.PracticeCentreId 
+                            && q.DoctorId == request.DoctorId 
+                            && q.VisitDate == visitDate)
+                .OrderByDescending(q => q.QueueNumber)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            nextNumber = (lastTicket?.QueueNumber ?? 0) + 1;
+        }
 
         var ticket = new PatientQueueTicket
         {
@@ -64,6 +90,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             DoctorId = request.DoctorId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDate,
+            SessionId = request.SessionId,
             Status = PatientQueueStatus.Waiting,
             Priority = request.Priority,
             CreatedAt = DateTime.UtcNow

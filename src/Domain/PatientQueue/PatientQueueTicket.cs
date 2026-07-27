@@ -13,6 +13,7 @@ public class PatientQueueTicket
     public Guid DoctorId { get; set; }
     public Guid PracticeCentreId { get; set; }
     public DateTime VisitDate { get; set; }
+    public Guid? SessionId { get; set; }
     public PatientQueueStatus Status { get; set; }
     public PatientQueuePriority Priority { get; set; }
     public DateTime CreatedAt { get; set; }
