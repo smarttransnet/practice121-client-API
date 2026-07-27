@@ -25,6 +25,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration) =>
         services
+            .AddAppSettings(configuration)
             .AddServices()
             .AddDatabase(configuration)
             .AddHealthChecks(configuration)
@@ -37,6 +38,14 @@ public static class DependencyInjection
 
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddAppSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var appSettings = new Application.Abstractions.AppSettings();
+        configuration.GetSection("App").Bind(appSettings);
+        services.AddSingleton(appSettings);
         return services;
     }
 

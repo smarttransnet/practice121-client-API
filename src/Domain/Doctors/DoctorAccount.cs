@@ -14,6 +14,10 @@ public sealed class DoctorAccount : Entity
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpiry { get; set; }
 
+    // Password reset
+    public string? PasswordResetTokenHash { get; set; }
+    public DateTime? PasswordResetTokenExpiry { get; set; }
+
     // Navigation properties
     public DoctorProfile? Profile { get; set; }
     public PracticeIdentity? PracticeIdentity { get; set; }
