@@ -19,6 +19,6 @@ internal sealed class GetDistricts : IEndpoint
             return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithTags(Tags.Locations)
-        .RequireAuthorization();
+        .AllowAnonymous();
     }
 }
