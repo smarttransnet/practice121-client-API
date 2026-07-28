@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="Database\Migrations\" />
+    <EmbeddedResource Include="Database\SeedData\locations.json" />
   </ItemGroup>
 
 </Project>

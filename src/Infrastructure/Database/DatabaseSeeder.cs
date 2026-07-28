@@ -35,20 +35,37 @@ public static class DatabaseSeeder
                     await context.SaveChangesAsync();
                 }
 
-                var basePath = AppContext.BaseDirectory;
-                // Walk up to find Infrastructure/Database/SeedData if running locally, or use a specific path
-                var seedDataPath = Path.Combine(basePath, "SeedData", "locations.json");
-                
-                // For development, it might be easier to just read from the source folder if BaseDirectory doesn't have it copied.
-                if (!File.Exists(seedDataPath))
+                string? json = null;
+                var assembly = typeof(DatabaseSeeder).Assembly;
+                var resourceName = assembly.GetManifestResourceNames()
+                    .FirstOrDefault(n => n.EndsWith("locations.json", StringComparison.OrdinalIgnoreCase));
+
+                if (!string.IsNullOrEmpty(resourceName))
                 {
-                    // Fallback to project path assuming we are running via dotnet run in Web.Api
-                    seedDataPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Infrastructure", "Database", "SeedData", "locations.json");
+                    using var stream = assembly.GetManifestResourceStream(resourceName);
+                    if (stream != null)
+                    {
+                        using var reader = new StreamReader(stream);
+                        json = await reader.ReadToEndAsync();
+                    }
                 }
 
-                if (File.Exists(seedDataPath))
+                if (string.IsNullOrEmpty(json))
                 {
-                    var json = await File.ReadAllTextAsync(seedDataPath);
+                    var basePath = AppContext.BaseDirectory;
+                    var seedDataPath = Path.Combine(basePath, "SeedData", "locations.json");
+                    if (!File.Exists(seedDataPath))
+                    {
+                        seedDataPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Infrastructure", "Database", "SeedData", "locations.json");
+                    }
+                    if (File.Exists(seedDataPath))
+                    {
+                        json = await File.ReadAllTextAsync(seedDataPath);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(json))
+                {
                     var districtsDto = JsonSerializer.Deserialize<List<DistrictDto>>(json, _jsonOptions);
                     
                     if (districtsDto != null)
@@ -89,7 +106,7 @@ public static class DatabaseSeeder
                 }
                 else
                 {
-                    logger.LogWarning("locations.json not found at {Path}", seedDataPath);
+                    logger.LogWarning("locations.json seed data could not be loaded.");
                 }
             }
         }
