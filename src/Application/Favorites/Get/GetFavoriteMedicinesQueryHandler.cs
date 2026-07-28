@@ -28,8 +28,13 @@ internal sealed class GetFavoriteMedicinesQueryHandler(
             .Select(f => new FavoriteResponse
             {
                 Id = f.Id,
-                VerifiedName = f.VerifiedName,
+                GenericName = f.GenericName,
+                BrandName = f.BrandName,
                 Category = f.Category,
+                Dose = f.Dose,
+                Frequency = f.Frequency,
+                Duration = f.Duration,
+                DoctorSpecialty = f.DoctorSpecialty,
                 CreatedAt = f.CreatedAt
             })
             .ToListAsync(cancellationToken);

@@ -2,9 +2,11 @@ using Application.Abstractions.Messaging;
 
 namespace Application.Favorites.Update;
 
-public sealed class UpdateFavoriteMedicineCommand : ICommand
-{
-    public Guid Id { get; set; }
-    public string VerifiedName { get; set; }
-    public string Category { get; set; }
-}
+public sealed record UpdateFavoriteMedicineCommand(
+    Guid Id,
+    string GenericName,
+    string? BrandName,
+    string Category,
+    string? Dose,
+    string? Frequency,
+    string? Duration) : ICommand;

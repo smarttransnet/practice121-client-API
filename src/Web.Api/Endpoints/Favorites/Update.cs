@@ -10,8 +10,12 @@ internal sealed class Update : IEndpoint
 {
     public sealed class Request
     {
-        public string VerifiedName { get; set; }
-        public string Category { get; set; }
+        public string GenericName { get; set; } = string.Empty;
+        public string? BrandName { get; set; }
+        public string Category { get; set; } = string.Empty;
+        public string? Dose { get; set; }
+        public string? Frequency { get; set; }
+        public string? Duration { get; set; }
     }
 
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -22,12 +26,15 @@ internal sealed class Update : IEndpoint
             ICommandHandler<UpdateFavoriteMedicineCommand> handler,
             CancellationToken cancellationToken) =>
         {
-            var command = new UpdateFavoriteMedicineCommand
-            {
-                Id = id,
-                VerifiedName = request.VerifiedName,
-                Category = request.Category
-            };
+            var command = new UpdateFavoriteMedicineCommand(
+                id,
+                request.GenericName,
+                request.BrandName,
+                request.Category,
+                request.Dose,
+                request.Frequency,
+                request.Duration
+            );
 
             Result result = await handler.Handle(command, cancellationToken);
             return result.Match(Results.NoContent, CustomResults.Problem);
