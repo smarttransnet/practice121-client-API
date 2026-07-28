@@ -18,6 +18,12 @@ internal sealed class PlaceConfiguration : IEntityTypeConfiguration<Place>
             .IsRequired()
             .HasDefaultValue(false);
             
+        builder.Property(p => p.Address)
+            .HasMaxLength(500);
+
+        builder.Property(p => p.RegistrationNumber)
+            .HasMaxLength(50);
+
         // Assuming Places must be unique within an MohArea to avoid duplicates
         builder.HasIndex(p => new { p.MohAreaId, p.Name }).IsUnique();
     }
