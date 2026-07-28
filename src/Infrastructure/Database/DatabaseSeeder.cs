@@ -63,12 +63,19 @@ public static class DatabaseSeeder
                                 var mohArea = MohArea.Create(Guid.NewGuid(), district.Id, mDto.Name);
                                 context.MohAreas.Add(mohArea);
 
+                                var seenPlaceNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                                 foreach (var pDto in mDto.Places)
                                 {
+                                    var cleanName = pDto.Name.Trim();
+                                    if (!seenPlaceNames.Add(cleanName))
+                                    {
+                                        continue;
+                                    }
+
                                     var place = Place.Create(
                                         Guid.NewGuid(), 
                                         mohArea.Id, 
-                                        pDto.Name, 
+                                        cleanName, 
                                         isVerified: true, 
                                         address: string.IsNullOrWhiteSpace(pDto.Address) ? null : pDto.Address, 
                                         registrationNumber: string.IsNullOrWhiteSpace(pDto.Registration_Number) ? null : pDto.Registration_Number);
