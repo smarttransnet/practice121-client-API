@@ -40,9 +40,17 @@ app.MapEndpoints();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerWithUi();
+}
 
+try
+{
     app.ApplyMigrations();
     await Infrastructure.Database.DatabaseSeeder.SeedAsync(app.Services);
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during database migration or seeding on startup.");
 }
 
 app.MapHealthChecks("health", new HealthCheckOptions
