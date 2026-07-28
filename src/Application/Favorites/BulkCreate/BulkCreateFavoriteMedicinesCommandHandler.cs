@@ -24,16 +24,26 @@ internal sealed class BulkCreateFavoriteMedicinesCommandHandler(
             return Result.Failure<int>(Error.NotFound("DoctorAccount.NotFound", "Doctor account not found"));
         }
 
-        if (request.Medicines == null || !request.Medicines.Any())
+        if (request.Medicines == null || request.Medicines.Count == 0)
         {
-            return 0; // nothing to add
+            return 0;
         }
+
+        DoctorProfile? profile = await context.DoctorProfiles.AsNoTracking()
+            .FirstOrDefaultAsync(p => p.AccountId == doctor.Id, cancellationToken);
+
+        string? doctorSpecialty = profile?.Specialty;
 
         var medicinesToAdd = request.Medicines.Select(m => new FavoriteMedicine
         {
             DoctorId = doctor.Id,
-            VerifiedName = m.VerifiedName,
-            Category = m.Category,
+            GenericName = m.GenericName.Trim(),
+            BrandName = string.IsNullOrWhiteSpace(m.BrandName) ? null : m.BrandName.Trim(),
+            Category = m.Category.Trim(),
+            Dose = string.IsNullOrWhiteSpace(m.Dose) ? null : m.Dose.Trim(),
+            Frequency = string.IsNullOrWhiteSpace(m.Frequency) ? null : m.Frequency.Trim(),
+            Duration = string.IsNullOrWhiteSpace(m.Duration) ? null : m.Duration.Trim(),
+            DoctorSpecialty = doctorSpecialty,
             CreatedAt = dateTimeProvider.UtcNow
         }).ToList();
 

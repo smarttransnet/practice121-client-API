@@ -24,10 +24,15 @@ internal sealed class CreateFavoriteMedicineCommandHandler(
             return Result.Failure<Guid>(Error.NotFound("DoctorAccount.NotFound", "Doctor account not found"));
         }
 
+        DoctorProfile? profile = await context.DoctorProfiles.AsNoTracking()
+            .FirstOrDefaultAsync(p => p.AccountId == doctor.Id, cancellationToken);
+
+        string? doctorSpecialty = profile?.Specialty;
+
 #pragma warning disable CA1862, CA1304, CA1311
         bool exists = await context.FavoriteMedicines.AsNoTracking()
             .AnyAsync(f => f.DoctorId == doctor.Id && 
-                           f.VerifiedName.ToLower() == request.VerifiedName.ToLower() &&
+                           f.GenericName.ToLower() == request.GenericName.ToLower() &&
                            f.Category.ToLower() == request.Category.ToLower(), 
                            cancellationToken);
 #pragma warning restore CA1862, CA1304, CA1311
@@ -40,8 +45,13 @@ internal sealed class CreateFavoriteMedicineCommandHandler(
         var medicine = new FavoriteMedicine
         {
             DoctorId = doctor.Id,
-            VerifiedName = request.VerifiedName,
-            Category = request.Category,
+            GenericName = request.GenericName.Trim(),
+            BrandName = string.IsNullOrWhiteSpace(request.BrandName) ? null : request.BrandName.Trim(),
+            Category = request.Category.Trim(),
+            Dose = string.IsNullOrWhiteSpace(request.Dose) ? null : request.Dose.Trim(),
+            Frequency = string.IsNullOrWhiteSpace(request.Frequency) ? null : request.Frequency.Trim(),
+            Duration = string.IsNullOrWhiteSpace(request.Duration) ? null : request.Duration.Trim(),
+            DoctorSpecialty = doctorSpecialty,
             CreatedAt = dateTimeProvider.UtcNow
         };
 

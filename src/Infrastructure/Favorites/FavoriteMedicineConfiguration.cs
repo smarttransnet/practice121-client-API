@@ -11,13 +11,30 @@ internal sealed class FavoriteMedicineConfiguration : IEntityTypeConfiguration<F
     {
         builder.HasKey(f => f.Id);
 
-        builder.Property(f => f.VerifiedName)
+        builder.Property(f => f.GenericName)
             .IsRequired()
+            .HasMaxLength(200);
+
+        builder.Property(f => f.BrandName)
             .HasMaxLength(200);
 
         builder.Property(f => f.Category)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(f => f.Dose)
+            .HasMaxLength(100);
+
+        builder.Property(f => f.Frequency)
+            .HasMaxLength(100);
+
+        builder.Property(f => f.Duration)
+            .HasMaxLength(100);
+
+        builder.Property(f => f.DoctorSpecialty)
+            .HasMaxLength(200);
+
+        builder.HasIndex(f => f.DoctorSpecialty);
 
         builder.HasOne<DoctorAccount>()
             .WithMany()

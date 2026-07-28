@@ -1,13 +1,6 @@
-using Application.Abstractions.Messaging;
+namespace Application.Favorites.Suggestions;
 
-namespace Application.Favorites.BulkCreate;
-
-public sealed class BulkCreateFavoriteMedicinesCommand : ICommand<int>
-{
-    public List<FavoriteMedicineDto> Medicines { get; set; } = [];
-}
-
-public sealed class FavoriteMedicineDto
+public sealed class FavoriteSuggestionResponse
 {
     public string GenericName { get; set; } = string.Empty;
     public string? BrandName { get; set; }
@@ -15,4 +8,6 @@ public sealed class FavoriteMedicineDto
     public string? Dose { get; set; }
     public string? Frequency { get; set; }
     public string? Duration { get; set; }
+    public string? DoctorSpecialty { get; set; }
+    public int UsageCount { get; set; }
 }
