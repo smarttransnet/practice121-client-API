@@ -20,6 +20,6 @@ internal sealed class GetMohAreas : IEndpoint
             return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithTags(Tags.Locations)
-        .RequireAuthorization();
+        .AllowAnonymous();
     }
 }
