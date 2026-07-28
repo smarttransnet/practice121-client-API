@@ -20,9 +20,21 @@ public static class DatabaseSeeder
         {
             await context.Database.MigrateAsync();
 
-            if (!await context.Districts.AnyAsync())
+            var needsReseed = !await context.Districts.AnyAsync() || !await context.Places.AnyAsync(p => p.Address != null);
+            if (needsReseed)
             {
-                logger.LogInformation("Seeding Locations...");
+                logger.LogInformation("Seeding / Re-seeding Locations...");
+
+                if (await context.Districts.AnyAsync())
+                {
+                    logger.LogInformation("Clearing legacy locations data...");
+                    context.PracticeCentres.RemoveRange(await context.PracticeCentres.ToListAsync());
+                    context.Places.RemoveRange(await context.Places.ToListAsync());
+                    context.MohAreas.RemoveRange(await context.MohAreas.ToListAsync());
+                    context.Districts.RemoveRange(await context.Districts.ToListAsync());
+                    await context.SaveChangesAsync();
+                }
+
                 var basePath = AppContext.BaseDirectory;
                 // Walk up to find Infrastructure/Database/SeedData if running locally, or use a specific path
                 var seedDataPath = Path.Combine(basePath, "SeedData", "locations.json");
@@ -51,9 +63,15 @@ public static class DatabaseSeeder
                                 var mohArea = MohArea.Create(Guid.NewGuid(), district.Id, mDto.Name);
                                 context.MohAreas.Add(mohArea);
 
-                                foreach (var pName in mDto.Places)
+                                foreach (var pDto in mDto.Places)
                                 {
-                                    var place = Place.Create(Guid.NewGuid(), mohArea.Id, pName, isVerified: true);
+                                    var place = Place.Create(
+                                        Guid.NewGuid(), 
+                                        mohArea.Id, 
+                                        pDto.Name, 
+                                        isVerified: true, 
+                                        address: string.IsNullOrWhiteSpace(pDto.Address) ? null : pDto.Address, 
+                                        registrationNumber: string.IsNullOrWhiteSpace(pDto.Registration_Number) ? null : pDto.Registration_Number);
                                     context.Places.Add(place);
                                 }
                             }
@@ -74,15 +92,24 @@ public static class DatabaseSeeder
         }
     }
 
+#pragma warning disable S3459, S1144
     private sealed class DistrictDto
     {
         public string Name { get; set; } = string.Empty;
-        public List<MohAreaDto> Moh_areas { get; set; } = new();
+        public List<MohAreaDto> Moh_areas { get; set; } = [];
     }
 
     private sealed class MohAreaDto
     {
         public string Name { get; set; } = string.Empty;
-        public List<string> Places { get; set; } = new();
+        public List<PlaceDto> Places { get; set; } = [];
     }
+
+    private sealed class PlaceDto
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Address { get; set; }
+        public string? Registration_Number { get; set; }
+    }
+#pragma warning restore S3459, S1144
 }

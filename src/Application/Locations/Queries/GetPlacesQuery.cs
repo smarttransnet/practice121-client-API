@@ -9,7 +9,7 @@ namespace Application.Locations.Queries;
 
 public record GetPlacesQuery(Guid MohAreaId) : IQuery<List<PlaceResponse>>;
 
-public record PlaceResponse(Guid Id, string Name, bool IsVerified);
+public record PlaceResponse(Guid Id, string Name, bool IsVerified, string? Address = null, string? RegistrationNumber = null);
 
 internal sealed class GetPlacesQueryHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetPlacesQuery, List<PlaceResponse>>
@@ -20,7 +20,7 @@ internal sealed class GetPlacesQueryHandler(IApplicationDbContext dbContext)
             .AsNoTracking()
             .Where(p => p.MohAreaId == request.MohAreaId && p.IsVerified)
             .OrderBy(p => p.Name)
-            .Select(p => new PlaceResponse(p.Id, p.Name, p.IsVerified))
+            .Select(p => new PlaceResponse(p.Id, p.Name, p.IsVerified, p.Address, p.RegistrationNumber))
             .ToListAsync(cancellationToken);
 
         return places;

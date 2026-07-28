@@ -7,7 +7,7 @@ using SharedKernel;
 
 namespace Application.Locations.Commands;
 
-public record CreatePlaceCommand(Guid MohAreaId, string Name) : ICommand<Guid>;
+public record CreatePlaceCommand(Guid MohAreaId, string Name, string? Address = null, string? RegistrationNumber = null) : ICommand<Guid>;
 
 internal sealed class CreatePlaceCommandHandler(IApplicationDbContext dbContext)
     : ICommandHandler<CreatePlaceCommand, Guid>
@@ -30,7 +30,7 @@ internal sealed class CreatePlaceCommandHandler(IApplicationDbContext dbContext)
             return Result.Failure<Guid>(new Error("Location.NotFound", "MOH Area not found.", ErrorType.NotFound));
         }
 
-        var place = Place.Create(Guid.NewGuid(), request.MohAreaId, request.Name, isVerified: true);
+        var place = Place.Create(Guid.NewGuid(), request.MohAreaId, request.Name, isVerified: true, address: request.Address, registrationNumber: request.RegistrationNumber);
 
         dbContext.Places.Add(place);
         await dbContext.SaveChangesAsync(cancellationToken);

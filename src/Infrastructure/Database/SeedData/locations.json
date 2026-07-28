@@ -5,157 +5,157 @@
       {
         "name": "Colombo MC (01–15)",
         "places": [
-          "Nawaloka Hospitals PLC.",
-          "Kings Hospital Colombo (Pvt) Ltd",
-          "Asiri Hospital Holdings PLC",
-          "Asiri Surgical Hospital PLC",
-          "The Lanka Hospitals Corporation PLC (PQ 180) 578, Elvitigala Mawatha, Narehenpita, Colombo 05",
-          "Durdans Hospital, Ceylon Hospitals PLC",
-          "Western Infirmary (Pvt) Limited.",
-          "Joseph Fraser Memorial Hospital 23, Joseph Fraser Road, Colombo 05",
-          "The Ratnam Private Hospital (PVT) Ltd 227 Union Place, Colombo 2",
-          "Dr. Hudson Silva Eye Hospital",
-          "Royal Hospital (Pvt) Ltd",
-          "Aysha Hospital (Private) Ltd 258, Galle Road, Colombo 06",
-          "Healthcare Services Limited",
-          "Hospital Limited 114, Norris Canal Road, Colombo 10",
-          "Healthcare Lanka (Private) Limited",
-          "For Diabetes Endocrinology and Cardio Metabolism",
-          "International Fertility & Research Centre",
-          "Prashanth Fertility Centre (Pvt) Ltd",
-          "Medical & Surgical Hospital (Pvt) Ltd",
-          "FERTILITY PVT LTD",
-          "Confidence Medical Centre (Pvt) Ltd",
-          "Medi Home 16, Sir Henry De Mel Mawatha, Colombo 02",
-          "MEDICHEKS COLOMBO (PVT) LTD",
-          "Clinic & Laboratories (Pvt) Ltd 132, Dr. N. M. Perera Mawatha, Colombo - 8",
-          "Medicenter (PVT) LTD 5, Arunachalam Avenue, Horton place, Colombo 7",
-          "Suwahala87, High level Road, Kirulapone, Colombo 06",
-          "Clinic 64, A.G.Hinniappuhami Mw, Colombo 13",
-          "Medical Centre 193, 1st",
-          "Medicare (Pvt) Ltd",
-          "(Pvt) Ltd329, Jayantha Weerasekera Mawatha, Colombo 10",
-          "Lengths (Pvt ) Ltd 40, Amarasekera Mw, Colombo 05",
-          "SKIN CLINIC (PVT) LTD",
-          "MEDICAL CENTRE",
-          "Skin Clinique - Look Amazing Pvt Ltd 27, Vijaya Kumaratunga Mawatha, Polhengoda, Colombo 5",
-          "MEDI TRUST [PVT] LTD",
-          ". A.H.A. Hazari",
-          ". W. MEDICARE SERVICES (PVT) LTD 366, GALLE ROAD, COLOMBO 3",
-          ". R. Mathan",
-          ". P. SugandanNo:",
-          ". (Mrs.) P. W. N. Wickramaratne",
-          ". W.M.H. Wimaladharma",
-          ". FARHIM JAMEEL",
-          ". S. Nanthagobalan",
-          ". P. D. A. Sriyani Basnayaka"
+          { "name": "Nawaloka Hospitals PLC.", "registration_number": "PHSRC/PH/01", "address": "No: 23, Deshamanya H.K.Dharmadasa Mawatha, Colombo 02" },
+          { "name": "Kings Hospital Colombo (Pvt) Ltd", "registration_number": "PHSRC/PH/03", "address": "18/A, Evergreen Park Road, Narahenpita, Colombo 05" },
+          { "name": "Asiri Hospital Holdings PLC", "registration_number": "PHSRC/PH/05", "address": "No.181, Kirula Road, Colombo 05" },
+          { "name": "Asiri Surgical Hospital PLC", "registration_number": "PHSRC/PH/06", "address": "No.21, Kirimandala Mawatha, Narahenpita, Colombo 05" },
+          { "name": "The Lanka Hospitals Corporation PLC (PQ 180)", "registration_number": "PHSRC/PH/07", "address": "578, Elvitigala Mawatha, Narehenpita, Colombo 05" },
+          { "name": "Durdans Hospital, Ceylon Hospitals PLC", "registration_number": "PHSRC/PH/08", "address": "No: 03, Alfred Place, Colombo - 03." },
+          { "name": "Western Infirmary (Pvt) Limited.", "registration_number": "PHSRC/PH/10", "address": "No: 218, Cotta Road, Colombo 08" },
+          { "name": "Joseph Fraser Memorial Hospital", "registration_number": "PHSRC/PH/12", "address": "23, Joseph Fraser Road, Colombo 05" },
+          { "name": "The Ratnam Private Hospital (PVT) Ltd", "registration_number": "PHSRC/PH/29", "address": "227 Union Place, Colombo 2" },
+          { "name": "Dr. Hudson Silva Eye Hospital", "registration_number": "PHSRC/PH/39", "address": "No.120/12, Vidya Mawatha, Colombo 07" },
+          { "name": "Royal Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/84", "address": "No.62, W.A Silva Mawatha, Wellawatta, Colombo 06" },
+          { "name": "Aysha Hospital (Private) Ltd", "registration_number": "PHSRC/PH/85", "address": "258, Galle Road, Colombo 06" },
+          { "name": "Ceylinco Healthcare Services Limited", "registration_number": "PHSRC/PH/123", "address": "No. 60, Park Street, Colombo 02" },
+          { "name": "Central Hospital Limited", "registration_number": "PHSRC/PH/167", "address": "114, Norris Canal Road, Colombo 10" },
+          { "name": "Vasan Healthcare Lanka (Private) Limited", "registration_number": "PHSRC/PH/191", "address": "No.423, Galle Road, Colombo 03" },
+          { "name": "Center For Diabetes Endocrinology and Cardio Metabolism", "registration_number": "PHSRC/PH/237", "address": "No.21, Norris Canal Road, Colombo-10" },
+          { "name": "ARC International Fertility & Research Centre", "registration_number": "PHSRC/PH/241", "address": "No.16/1, Joseph Lane, Bambalapitiya, Colombo-04" },
+          { "name": "Royal Prashanth Fertility Centre (Pvt) Ltd", "registration_number": "PHSRC/PH/303", "address": "No. 109/4A, Manning Place, Wellawaththa, Colombo 06" },
+          { "name": "Durdans Medical & Surgical Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/308", "address": "No: 03, Alfred Place, Colombo 03" },
+          { "name": "JIL FERTILITY PVT LTD", "registration_number": "PHSRC/PH/326", "address": "No: 12, Bagathale Road, Kollupitiya" },
+          { "name": "Confidence Medical Centre (Pvt) Ltd", "registration_number": "PHSRC/MC/01", "address": "No 29, 1st Maligakande Lane, Maradana, Colombo 10" },
+          { "name": "Medi Home", "registration_number": "PHSRC/MC/46", "address": "16, Sir Henry De Mel Mawatha, Colombo 02" },
+          { "name": "MEDICHEKS COLOMBO (PVT) LTD", "registration_number": "PHSRC/MC/91", "address": "NO.104 HAVELOCK ROAD, COLOMBO 00500" },
+          { "name": "Ohlums Clinic & Laboratories (Pvt) Ltd", "registration_number": "PHSRC/MC/171", "address": "132, Dr. N. M. Perera Mawatha, Colombo - 8" },
+          { "name": "Amaran Medicenter (PVT) LTD", "registration_number": "PHSRC/MC/259", "address": "5, Arunachalam Avenue, Horton place, Colombo 7" },
+          { "name": "Amavie Suwahala", "registration_number": "PHSRC/MC/269", "address": "87, High level Road, Kirulapone, Colombo 06" },
+          { "name": "Central Clinic", "registration_number": "PHSRC/MC/280", "address": "64, A.G.Hinniappuhami Mw, Colombo 13" },
+          { "name": "Premier Medical Centre", "registration_number": "PHSRC/MC/284", "address": "193, 1st Division, Maradana, Colombo 10" },
+          { "name": "Neosys Medicare (Pvt) Ltd", "registration_number": "PHSRC/MC/290", "address": "554/1, Maradana Road, Colombo 10" },
+          { "name": "Medispot (Pvt) Ltd", "registration_number": "PHSRC/MC/368", "address": "329, Jayantha Weerasekera Mawatha, Colombo 10" },
+          { "name": "Great Lengths (Pvt ) Ltd", "registration_number": "PHSRC/MC/392", "address": "40, Amarasekera Mw, Colombo 05" },
+          { "name": "CHRISTELL SKIN CLINIC (PVT) LTD", "registration_number": "PHSRC/MC/404", "address": "47/1 GALLE ROAD, BAMBALAPITIYA, COLOMBO - 4" },
+          { "name": "APS MEDICAL CENTRE", "registration_number": "PHSRC/MC/430", "address": "No. 68, Brassfounder street, Colombo 13" },
+          { "name": "Lush Skin Clinique - Look Amazing Pvt Ltd", "registration_number": "PHSRC/MC/445", "address": "27, Vijaya Kumaratunga Mawatha, Polhengoda, Colombo 5" },
+          { "name": "INTERNATIONAL MEDI TRUST [PVT] LTD", "registration_number": "PHSRC/MC/455", "address": "NO 213, K.B. CHRISTY PERERA MAWATHA, COLOMBO 13" },
+          { "name": "Dr. A.H.A. Hazari", "registration_number": "PHSRC/PGP/88", "address": "No. 10, Asoka Gardens, Colombo 4" },
+          { "name": "L. W. MEDICARE SERVICES (PVT) LTD", "registration_number": "PHSRC/FGP/01", "address": "366, GALLE ROAD, COLOMBO 3" },
+          { "name": "Dr. R. Mathan", "registration_number": "PHSRC/FGP/80", "address": "No. 40/1/8, Metro Homes, Malay Street, Colombo 02" },
+          { "name": "Dr. P. Sugandan", "registration_number": "PHSRC/FMS/22", "address": "No: 29/2 B, Vishaka Road, R.A. de Mel Mawatha, Colombo 04" },
+          { "name": "Dr. (Mrs.) P. W. N. Wickramaratne", "registration_number": "PHSRC/FMS/29", "address": "No. 93/2, Horton Place, Colombo 07" },
+          { "name": "Dr. W.M.H. Wimaladharma", "registration_number": "PHSRC/FDS/12", "address": "28/1, Col. T.G. Jayawardena Mawatha, Colombo 03" },
+          { "name": "DR. FARHIM JAMEEL", "registration_number": "PHSRC/FDS/59", "address": "18/186, A DABARE MAWATHA, COLOMBO 05" },
+          { "name": "Dr. S. Nanthagobalan", "registration_number": "PHSRC/PDS/17", "address": "No. 15A, Sangamiththa Mawatha, Colombo - 13" },
+          { "name": "Dr. P. D. A. Sriyani Basnayaka", "registration_number": "PHSRC/PDS/90", "address": "No: 03, Lakshmi Garden, Colombo 08" }
         ]
       },
       {
         "name": "Dehiwala / Mount Lavinia",
         "places": [
-          "Hospital Private Limited",
-          "Lotus Eye & ENT Hospital",
-          "Hospital",
-          "Medical Centre - Mount Lavinia",
-          "HealthCare Centre",
-          ". Bodara Gamage Duncan Bujawansa",
-          ". (Mrs) Wimala Indrani Wijesinghe Amarakone"
+          { "name": "Vasana Hospital Private Limited", "registration_number": "PHSRC/PH/235", "address": "No.240, 244/1, Hill Street, Dehiwala" },
+          { "name": "Mount Lotus Eye & ENT Hospital", "registration_number": "PHSRC/PH/294", "address": "No.102, Galle Road, Mount Lavinia" },
+          { "name": "Medihelp Hospital", "registration_number": "PHSRC/PH/318", "address": "No.54, Galle Road, Mount Lavinia" },
+          { "name": "Nawaloka Medical Centre - Mount Lavinia", "registration_number": "PHSRC/MC/138", "address": "No: 73/1, Galle Road, Mt. Lavinia" },
+          { "name": "Navajeevana HealthCare Centre", "registration_number": "PHSRC/MC/244", "address": "No. 1/1, P.T. De Silva Mawatha, Station Road, Dehiwela" },
+          { "name": "Dr. Bodara Gamage Duncan Bujawansa", "registration_number": "PHSRC/FGP/84", "address": "No. 148, Galle Road, Dehiwala South" },
+          { "name": "Dr. (Mrs) Wimala Indrani Wijesinghe Amarakone", "registration_number": "PHSRC/FDS/35", "address": "No: 04, Templers Road, Mt. Lavinia" }
         ]
       },
       {
         "name": "Sri Jayawardenepura Kotte",
         "places": [
-          "Key Hospitals Limited",
-          "Hospital (Pvt) Ltd",
-          "Cross Hospital – Blue Cross Medical Centre 682, Kotte Road, Rajagiriya 10107",
-          "Blue Cross Medical Centre (Pvt) Ltd 682, Kotte Road, Rajagiriya",
-          "Medical Center Suseka",
-          "Eye (Pvt) Ltd 198, Sri Jayawardenapura Mawatha, Welikada, Rajagiriya",
-          ". S. L. J. De Silva",
-          ". S. M. F. Sikkander",
-          ". Weliwitage Nalinda Rodrigo",
-          ". A.A.A.D.P. Goonewardane"
+          { "name": "Golden Key Hospitals Limited", "registration_number": "PHSRC/PH/102", "address": "No. 1175 Cotta Rd, Rajagiriya" },
+          { "name": "Vindana Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/261", "address": "No. 155/3, Castle Street, Colombo 08" },
+          { "name": "Blue Cross Hospital – Blue Cross Medical Centre", "registration_number": "PHSRC/PH/276", "address": "682, Kotte Road, Rajagiriya 10107" },
+          { "name": "Blue Cross Medical Centre (Pvt) Ltd", "registration_number": "PHSRC/MC/68", "address": "682, Kotte Road, Rajagiriya" },
+          { "name": "Suseka Medical Center", "registration_number": "PHSRC/MC/307", "address": "Suseka No. 1163, Kotte Road, Rajagiriya" },
+          { "name": "Child Eye (Pvt) Ltd", "registration_number": "PHSRC/MC/337", "address": "198, Sri Jayawardenapura Mawatha, Welikada, Rajagiriya" },
+          { "name": "Dr. S. L. J. De Silva", "registration_number": "PHSRC/PGP/281", "address": "No. 385/6, Rajagiriya Road, Rajagiriya" },
+          { "name": "Dr. S. M. F. Sikkander", "registration_number": "PHSRC/FGP/06", "address": "No. 714, Kotte Road, Rajagiriya" },
+          { "name": "Dr. Weliwitage Nalinda Rodrigo", "registration_number": "PHSRC/FMS/19", "address": "No.132, Old Road, Nawala, Rajagiriya" },
+          { "name": "Dr. A.A.A.D.P. Goonewardane", "registration_number": "PHSRC/FDS/09", "address": "No: 6A, Temple Road, Nawala" }
         ]
       },
       {
         "name": "Nugegoda / Kohuwala",
         "places": [
-          "Winlanka Hospital (Pvt) Ltd",
-          "Healthcare Services (Pvt) Ltd",
-          "Dental Hospital",
-          "MEDICAL DIAGNOSTICS PVT LTD",
-          ". Ravindra Lakshman Gurusinghe"
+          { "name": "Winlanka Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/70", "address": "No. 129, S.De.S. Jayasinghe Mawatha, Kohuwala, Nugegoda" },
+          { "name": "Ceymed Healthcare Services (Pvt) Ltd", "registration_number": "PHSRC/PH/321", "address": "No.140, S.De.S.Jayasinghe Mawatha, Nugegoda" },
+          { "name": "CDCI Dental Hospital", "registration_number": "PHSRC/PH/328", "address": "No: 08, St. Joseph Road, Nugegoda" },
+          { "name": "HEALTHLINE MEDICAL DIAGNOSTICS PVT LTD", "registration_number": "PHSRC/MC/334", "address": "NO 12, 2/1 – 2/2 SUNETHRADEVI ROAD, KOHUWALA" },
+          { "name": "Dr. Ravindra Lakshman Gurusinghe", "registration_number": "PHSRC/FDS/11", "address": "132/2A, S.De S. Jayasinghe Mawatha, Nugegoda" }
         ]
       },
       {
         "name": "Maharagama",
         "places": [
-          "Medicare Hospitals (Pvt) Ltd",
-          "Hospital HL (Pvt) Ltd",
-          "Fertility Hospital (Pvt) Ltd",
-          "City Medical Service",
-          "Research Medical Centre 92, Wattegedera road, Maharagama",
-          ".S.A. Udathenna"
+          { "name": "Nawinna Medicare Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/140", "address": "No. 416, High Level Road, Nawinna, Maharagama" },
+          { "name": "Asia Hospital HL (Pvt) Ltd", "registration_number": "PHSRC/PH/153", "address": "No.110, High Level Road, Maharagama" },
+          { "name": "Wish Fertility Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/266", "address": "No.30, Elhena Road, Maharagama" },
+          { "name": "City Medical Service", "registration_number": "PHSRC/MC/36", "address": "10/20, Post Office Lane, Dehiwala Rd, Maharagama" },
+          { "name": "Dermae Research Medical Centre", "registration_number": "PHSRC/MC/433", "address": "92, Wattegedera road, Maharagama" },
+          { "name": "Dr.S.A. Udathenna", "registration_number": "PHSRC/PDS/114", "address": "No 118, High Level Road, Maharagama" }
         ]
       },
       {
         "name": "Piliyandala / Rukmale",
         "places": [
-          "Lanka Medical Centre 43, Wata Mawatha, Piliyandala",
-          "Centre & Dispensary",
-          ". M. A. W. M. Nasar"
+          { "name": "Aichi Lanka Medical Centre", "registration_number": "PHSRC/MC/151", "address": "43, Wata Mawatha, Piliyandala" },
+          { "name": "Medical Centre & Dispensary", "registration_number": "PHSRC/PGP/48", "address": "1/226, Smart Building, Temple Road, Rukmale, Pannipitiya" },
+          { "name": "Dr. M. A. W. M. Nasar", "registration_number": "PHSRC/FDS/15", "address": "No.50, Colombo - Horana Road, Piliyandala" }
         ]
       },
       {
         "name": "Hanwella",
         "places": [
-          "Medicare145, high Level Rd, Pahathgama, Hanwella"
+          { "name": "Wealth Medicare", "registration_number": "PHSRC/MC/296", "address": "145, high Level Rd, Pahathgama, Hanwella" }
         ]
       },
       {
         "name": "Homagama / Pannipitiya",
         "places": [
-          "PANNIPITIYA MEDICAL SERVICES ( PVT ) LTD",
-          "SEVANA MEDICAL CENTER",
-          "Centre",
-          ". R. L. Weerakoon"
+          { "name": "PANNIPITIYA MEDICAL SERVICES ( PVT ) LTD", "registration_number": "PHSRC/PH/09", "address": "NO.334/4, HOKANDARA RD, MORAKETIYA, PANNIPITIYA" },
+          { "name": "SUWA SEVANA MEDICAL CENTER", "registration_number": "PHSRC/MC/297", "address": "NO.1491/1D, VIDYALA JUNCTION, HOKANDARA RD, PANNIPITIYA" },
+          { "name": "Medical Centre", "registration_number": "PHSRC/MC/329", "address": "329/1, High level road, makumbura, Pannipitiya" },
+          { "name": "Dr. R. L. Weerakoon", "registration_number": "PHSRC/FGP/91", "address": "No.30, C. W. E. Road, Homagama" }
         ]
       },
       {
         "name": "Kaduwela / Battaramulla",
         "places": [
-          "Capital Hospital (Pvt) Ltd",
-          "Dora Hospital 173, Pannipitiya Road, Battaramulla",
-          "Eye Care Hospital",
-          "Nawaloka Medical Centre Pvt Ltd",
-          "Skin Clinique - Look Amazing Pvt Ltd",
-          ". Konara Mudiyanselage P. S. D."
+          { "name": "Hemas Capital Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/202", "address": "No: 647, Pannipitiya Road, Thalawathugoda" },
+          { "name": "Santa Dora Hospital", "registration_number": "PHSRC/PH/207", "address": "173, Pannipitiya Road, Battaramulla" },
+          { "name": "Lensetech Eye Care Hospital", "registration_number": "PHSRC/PH/324", "address": "No: 74/1, Robert Gunawardhana Mawatha, Koswatta, Battaramulla" },
+          { "name": "Nawaloka Medical Centre Pvt Ltd", "registration_number": "PHSRC/MC/76", "address": "No. 770, Pannipitiya Road, Battaramulla" },
+          { "name": "LUSH Skin Clinique - Look Amazing Pvt Ltd", "registration_number": "PHSRC/MC/397", "address": "1100/4, Pannipitiya Road, Battaramulla" },
+          { "name": "Dr. Konara Mudiyanselage P. S. D.", "registration_number": "PHSRC/PGP/132", "address": "No.342, Korathota, Kaduwela" }
         ]
       },
       {
         "name": "Moratuwa / Ratmalana",
         "places": [
-          "Moratuwa Medical Centre (Pvt) Ltd",
-          "Pharmacy & Clinic (Pvt) Ltd",
-          "Calls (Pvt) Ltd",
-          "Ratmalana medical centre 6A Old Airport Road, Ratmalana",
-          "Center",
-          ". (Mrs.) D. Niranjala Jayasuriya"
+          { "name": "Moratuwa Medical Centre (Pvt) Ltd", "registration_number": "PHSRC/MC/30", "address": "No: 435, Galle Road, Rawatawatta, Moratuwa" },
+          { "name": "Sukitha Pharmacy & Clinic (Pvt) Ltd", "registration_number": "PHSRC/MC/410", "address": "No 331, Galle Road, Ratmalana" },
+          { "name": "Emergency Calls (Pvt) Ltd", "registration_number": "PHSRC/MC/428", "address": "166/3, Galle Road, Soysapura, Moratuwa" },
+          { "name": "New Ratmalana medical centre", "registration_number": "PHSRC/PGP/22", "address": "6A Old Airport Road, Ratmalana" },
+          { "name": "Medical Center", "registration_number": "PHSRC/PGP/226", "address": "No:46/3, 6th lane, Rawattawatha, Moratuwa" },
+          { "name": "Dr. (Mrs.) D. Niranjala Jayasuriya", "registration_number": "PHSRC/FGP/231", "address": "No 9, De Soysa Road, Rawathawaththa, Moratuwa" }
         ]
       },
       {
         "name": "Kolonnawa",
         "places": [
-          "Eye Hospital",
-          "Siri Suwasetha (Pvt) Ltd",
-          ". M. I. QurshiethNo.18, Gajabapura Housing Scheme, Kolonnawa"
+          { "name": "Suwanetha Eye Hospital", "registration_number": "PHSRC/PH/186", "address": "No. 208/1, Kolonnawa Road, Gothatuwa New Town" },
+          { "name": "Siri Suwasetha (Pvt) Ltd", "registration_number": "PHSRC/MC/54", "address": "No: 234 (470), Kolonnawa Road, Kolonnawa" },
+          { "name": "Dr. M. I. Qurshieth", "registration_number": "PHSRC/PGP/202", "address": "No.18, Gajabapura Housing Scheme, Kolonnawa" }
         ]
       },
       {
         "name": "Padukka",
         "places": [
-          "JEEWAKA PRIVATE HOSPITAL PADUKKA"
+          { "name": "JEEWAKA PRIVATE HOSPITAL PADUKKA", "registration_number": "PHSRC/PH/36", "address": "NO. 37, HORANA ROAD, PADUKKA" }
         ]
       }
     ]
@@ -166,98 +166,98 @@
       {
         "name": "Gampaha",
         "places": [
-          "Co-operative Hospital Society Ltd",
-          "Sethma Hospitals Pvt Ltd.",
-          "AROGYA HOSPITALS (PVT) LTD.",
-          "Eye Hospital",
-          "link Dharani Health & Medical Care Centre",
-          ".R.Medi Tech Lab (Pvt) Ltd 43, Bauddhaloka Mw, Gampaha",
-          ". K. G. D. Jayantha"
+          { "name": "Co-operative Hospital Society Ltd", "registration_number": "PHSRC/PH/43", "address": "No.43, Queen Marys Road, Gampaha" },
+          { "name": "Sethma Hospitals Pvt Ltd.", "registration_number": "PHSRC/PH/82", "address": "No.36 Queen Marys road, Gampaha" },
+          { "name": "AROGYA HOSPITALS (PVT) LTD.", "registration_number": "PHSRC/PH/87", "address": "NO 250, COLOMBO ROAD, GAMPAHA" },
+          { "name": "Panora Eye Hospital", "registration_number": "PHSRC/PH/278", "address": "No.152, \"Nethra Building\", Colombo Road, Gampaha" },
+          { "name": "Dharani Health & Medical Care Centre", "registration_number": "PHSRC/MC/41 link", "address": "4/2, Queen Marys Road, Gampaha" },
+          { "name": "C.R.Medi Tech Lab (Pvt) Ltd", "registration_number": "PHSRC/MC/414", "address": "43, Bauddhaloka Mw, Gampaha" },
+          { "name": "Dr. K. G. D. Jayantha", "registration_number": "PHSRC/PGP/61", "address": "No. 231/1, Gampaha Road, Yakkala" }
         ]
       },
       {
         "name": "Ragama",
         "places": [
-          "Leesons Hospital (Pvt) Ltd.",
-          "Hospitals Ragama (Pvt) Ltd"
+          { "name": "Leesons Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/16", "address": "No:33, Tewatta Road, Ragama" },
+          { "name": "Melsta Hospitals Ragama (Pvt) Ltd", "registration_number": "PHSRC/PH/195", "address": "No. 43, Mahabage Road, Ragama" }
         ]
       },
       {
         "name": "Wattala",
         "places": [
-          "Sight First Hospital",
-          "Hospitals (Pvt) Ltd.",
-          "Hospitals (Private) Limited",
-          ". T. M. Bahardeen Girsy"
+          { "name": "Lions Sight First Hospital", "registration_number": "PHSRC/PH/134", "address": "No: 38/B, Old Negombo Road, Wattala" },
+          { "name": "Hemas Hospitals (Pvt) Ltd.", "registration_number": "PHSRC/PH/138", "address": "No.389, Negombo Road, Hendala, Wattala" },
+          { "name": "Nightingale Hospitals (Private) Limited", "registration_number": "PHSRC/PH/279", "address": "No.129, Thelagapatha Road, Wattala" },
+          { "name": "Dr. T. M. Bahardeen Girsy", "registration_number": "PHSRC/FDS/28", "address": "No. 1166A, Dalupitiya Road, Hunupitiya, Wattala" }
         ]
       },
       {
         "name": "Negombo",
         "places": [
-          "Ave Maria Hospital (Pvt) Ltd.",
-          "St. Joseph Children & Adult Hospital",
-          "The Dissanayake Private Hospital",
-          "Nursing Home",
-          "Medicare (Pvt) Ltd",
-          "X-Lab Medical and Channel Service",
-          ".Annes Medical Centre"
+          { "name": "Ave Maria Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/23", "address": "No. 1-Ave Maria Road, Negombo" },
+          { "name": "St. Joseph Children & Adult Hospital", "registration_number": "PHSRC/PH/56", "address": "No. 229/10, St.Joseph Street, Negombo" },
+          { "name": "The Dissanayake Private Hospital", "registration_number": "PHSRC/PH/98", "address": "No: 401/1, Colombo Road, Negombo" },
+          { "name": "Central Nursing Home", "registration_number": "PHSRC/PH/100", "address": "No.125, Sea Street, Negombo" },
+          { "name": "Nawaloka Medicare (Pvt) Ltd", "registration_number": "PHSRC/PH/211", "address": "No 169, Colombo Road, Negombo" },
+          { "name": "X-Lab Medical and Channel Service", "registration_number": "PHSRC/MC/73", "address": "No:142, Colombo Road, Negombo" },
+          { "name": "St.Annes Medical Centre", "registration_number": "PHSRC/MC/425", "address": "No:19/267, Ramya Place, Kibulapitiya Road, Negombo" }
         ]
       },
       {
         "name": "Kelaniya",
         "places": [
-          "Care Medical Service",
-          "Nawaloka Medical Centre Pvt. Ltd",
-          ". S. A. K. D. Vasantha Tissakumara Walikanda Junction, Dalupitiya Road, Hunupitiya"
+          { "name": "Family Care Medical Service", "registration_number": "PHSRC/PH/226", "address": "No.657, Kandy Road, Kelaniya" },
+          { "name": "Nawaloka Medical Centre Pvt. Ltd", "registration_number": "PHSRC/MC/77", "address": "No: 88, Kandy Road, Dalugama, Kelaniya" },
+          { "name": "Dr. S. A. K. D. Vasantha Tissakumara", "registration_number": "PHSRC/PGP/98", "address": "Walikanda Junction, Dalupitiya Road, Hunupitiya" }
         ]
       },
       {
         "name": "Minuwangoda",
         "places": [
-          "Clinipath Medical Services"
+          { "name": "Clinipath Medical Services", "registration_number": "PHSRC/MC/34", "address": "No: 133/7, Hospital Place, Veyangoda Road, Minuwangoda" }
         ]
       },
       {
         "name": "Divulapitiya",
         "places": [
-          "Hospitals (Pvt) Ltd",
-          "Clinipath Medical Services New Hospital, Horagasmulla, Divulapitiya"
+          { "name": "Suwasaviya Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/282", "address": "No. 85, Colombo Road, Divulapitiya" },
+          { "name": "Clinipath Medical Services", "registration_number": "PHSRC/MC/37", "address": "New Hospital, Horagasmulla, Divulapitiya" }
         ]
       },
       {
         "name": "Mirigama",
         "places": [
-          "Private Hospital No4, 2nd Osmiyar lane, Pasyala Road, Mirigama"
+          { "name": "Sahanya Private Hospital", "registration_number": "PHSRC/PH/227", "address": "No4, 2nd Osmiyar lane, Pasyala Road, Mirigama" }
         ]
       },
       {
         "name": "Ja-Ela / Seeduwa",
         "places": [
-          "-Ela Ragama Hospitals (Pvt) Ltd",
-          "Eye (Pvt) Ltd",
-          "Hospitals (Pvt) Ltd",
-          "Medical Centre Pvt. Ltd",
-          ". (Mrs) Mohottige Don A. K. Nonis 416, Negombo Road, Kapuwatte, Ja-ela"
+          { "name": "Ja-Ela Ragama Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/160", "address": "No: 259, Negombo Road, Ja - Ela" },
+          { "name": "Radiant Eye (Pvt) Ltd", "registration_number": "PHSRC/PH/212", "address": "No.500 E, Negombo Road, Dandugama, Ja Ela" },
+          { "name": "Seeduwa Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/295", "address": "No.532, Mukalangamuwa, Seeduwa" },
+          { "name": "Nawaloka Medical Centre Pvt. Ltd", "registration_number": "PHSRC/MC/301", "address": "No.42, Garden city, Minuwangoda Road, Ja - Ela" },
+          { "name": "Dr. (Mrs) Mohottige Don A. K. Nonis", "registration_number": "PHSRC/PGP/45", "address": "416, Negombo Road, Kapuwatte, Ja-ela" }
         ]
       },
       {
         "name": "Attanagalla",
         "places": [
-          "Sirisanda Samupa Suwa Sewana Hospital Negombo Road, Nittambuwa",
-          "Bandaranayake Hospitals (Pvt) Ltd",
-          "Hospital pvt ltd",
-          "Lanka Diabetic Hospital (Pvt) Ltd",
-          ". (Mrs.) A. A. L. K. Adikari"
+          { "name": "Sirisanda Samupa Suwa Sewana Hospital", "registration_number": "PHSRC/PH/46", "address": "Negombo Road, Nittambuwa" },
+          { "name": "Bandaranayake Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/64", "address": "No. 128/A, Maimbula Road, Wathupitiwala" },
+          { "name": "Viweka Hospital pvt ltd", "registration_number": "PHSRC/PH/126", "address": "10/A, Kalagedihena Road, Veyangoda" },
+          { "name": "Alpha Lanka Diabetic Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/204", "address": "No.54E, Kandy Road, Kalagedihena" },
+          { "name": "Dr. (Mrs.) A. A. L. K. Adikari", "registration_number": "PHSRC/PGP/68", "address": "No. 290 C, Hospital Junction, Radawana" }
         ]
       },
       {
         "name": "Dompe / Biyagama",
         "places": [
-          "Healthcare Hospital (Pvt) Ltd",
-          "Medicoz (Pvt) Ltd",
-          "Oral Care Center (Pvt) Ltd",
-          ". Annes Medical Centre (Pvt) Ltd",
-          "Private Channeling Center"
+          { "name": "Zone Healthcare Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/157", "address": "No: 729/4, Zone Road, Waduwegama, Malwana" },
+          { "name": "Kingsway Medicoz (Pvt) Ltd", "registration_number": "PHSRC/PH/228", "address": "No.28/3/7, Walgammulla Road, Kirindiwela" },
+          { "name": "Rosewood Oral Care Center (Pvt) Ltd", "registration_number": "PHSRC/PH/293", "address": "No.119/3, Ragama Road, Kadawatha" },
+          { "name": "St. Annes Medical Centre (Pvt) Ltd", "registration_number": "PHSRC/MC/209", "address": "No: 370, kadawatha Road, Ganemulla" },
+          { "name": "Kaduwela Private Channeling Center", "registration_number": "PHSRC/MC/466", "address": "160/10C, Bandarawatta, Biyagama" }
         ]
       }
     ]
@@ -268,127 +268,132 @@
       {
         "name": "Kalutara / Nagoda",
         "places": [
-          "New Philip Hospitals (Pvt) Ltd",
-          "Care Hospital (Pvt) Ltd Nagoda, Kalutara",
-          "Healthcare Solutions (Pvt) Ltd"
+          { "name": "New Philip Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/11", "address": "No.225, Galle Road, Kalutara South" },
+          { "name": "Family Care Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/110", "address": "Nagoda, Kalutara" },
+          { "name": "Philip Healthcare Solutions (Pvt) Ltd", "registration_number": "PHSRC/MC/396", "address": "No.257, Mathugama Road, Nagoda, Kalutara" }
         ]
       },
       {
         "name": "Panadura",
         "places": [
-          "Gift Of Sight Hospital Sri Maha Viharaya Road, Galgoda, Panadura",
-          "Hospitals (Pvt) Ltd",
-          "Solutions Eye Care Hospital Pvt Ltd 403A, Galle road, Nalluruwa, Panadura",
-          "Hospital"
+          { "name": "Lions Gift Of Sight Hospital", "registration_number": "PHSRC/PH/151", "address": "Sri Maha Viharaya Road, Galgoda, Panadura" },
+          { "name": "Sachitra Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/158", "address": "No: 76, Horana Road, Panadura" },
+          { "name": "Vision Solutions Eye Care Hospital Pvt Ltd", "registration_number": "PHSRC/PH/231", "address": "403A, Galle road, Nalluruwa, Panadura" },
+          { "name": "Swastha Hospital", "registration_number": "PHSRC/PH/325", "address": "No: 36, Susantha Mawatha, Panadura" }
         ]
       },
       {
         "name": "Horana",
         "places": [
-          "Hospital (Pvt )Ltd",
-          "HEALTHCARE CENTER & HOSPITAL"
+          { "name": "Medihelp Hospital (Pvt )Ltd", "registration_number": "PHSRC/PH/184", "address": "No.172/3, Panadura Road, Horana" },
+          { "name": "MDK HEALTHCARE CENTER & HOSPITAL", "registration_number": "PHSRC/PH/187", "address": "NO.149, ANGURUWATHOTA, HORANA" }
         ]
       },
       {
         "name": "Ingiriya",
         "places": [
-          ". L.T. Dayakeerthie Ingiriya Medical Centre, Panadura Road, Ingiriya"
+          { "name": "Dr. L.T. Dayakeerthie", "registration_number": "PHSRC/PDS/39", "address": "Ingiriya Medical Centre, Panadura Road, Ingiriya" }
         ]
       },
       {
         "name": "Beruwala",
         "places": [
-          "Healthcare Solutions (Pvt) Ltd",
-          "& SURGERY"
+          { "name": "Philip Healthcare Solutions (Pvt) Ltd", "registration_number": "PHSRC/MC/449", "address": "No.205, Galle Road, Beruwala" },
+          { "name": "DISPENSARY & SURGERY", "registration_number": "PHSRC/FGP/20", "address": "NO. 11A, MANGALA ROAD, BERUWALA" }
         ]
       },
       {
         "name": "Mathugama",
         "places": [
-          ". Amitha Namalie Wikramarachchi Lewwanduwa, Welipanna"
+          { "name": "Dr. Amitha Namalie Wikramarachchi", "registration_number": "PHSRC/PGP/178", "address": "Lewwanduwa, Welipanna" }
         ]
       },
       {
         "name": "Agalawatte",
         "places": [
-          "Suwahala (Pvt) Ltd"
+          { "name": "Amavie Suwahala (Pvt) Ltd", "registration_number": "PHSRC/MC/478", "address": "No, 96, Main Street, Agalawatte" }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "name": "Kandy",
+    "moh_areas": [
       {
-        "name": "Kandy Kandy Municipal Area",
+        "name": "Kandy Municipal Area",
         "places": [
-          "The Kandy Private Hospitals Ltd",
-          "Lakeside Adventist Hospital (Pvt) Ltd",
-          "suwasevana Hospitals (pvt)Ltd 532, Peradeniya Road, Kandy",
-          "HOSPITAL HOLDINGS PLC",
-          "Plus Hospital Pvt Ltd",
-          "Pvt Hospital",
-          "consaltation centre (pvt)ltd 59, peradeniya road, kandy",
-          "City Medical Centre & Dental Laboratory",
-          "Medical Centre",
-          "Medical Consultations (Pvt) Ltd",
-          ". J.M. Shahabdeen",
-          "SPECIALIST DENTAL SURGERY",
-          ". (Mrs) S.S.P. Rajapakse"
+          { "name": "The Kandy Private Hospitals Ltd", "registration_number": "PHSRC/PH/14", "address": "No. 35, Katugastota Road, Kandy" },
+          { "name": "Lakeside Adventist Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/38", "address": "No.40, Sangaraja Mawatha, Kandy" },
+          { "name": "suwasevana Hospitals (pvt)Ltd", "registration_number": "PHSRC/PH/83", "address": "532, Peradeniya Road, Kandy" },
+          { "name": "ASIRI HOSPITAL HOLDINGS PLC", "registration_number": "PHSRC/PH/244", "address": "No. 907, Peradeniya Road, Kandy" },
+          { "name": "Ferti Plus Hospital Pvt Ltd", "registration_number": "PHSRC/PH/268", "address": "No 875/1 Willium Gopallawa Mavatha, Kandy" },
+          { "name": "Sethsiri Pvt Hospital", "registration_number": "PHSRC/PH/322", "address": "No: 113, William Gopallawa Mawatha, Kandy" },
+          { "name": "channelled consaltation centre (pvt)ltd", "registration_number": "PHSRC/MC/156", "address": "59, peradeniya road, kandy" },
+          { "name": "The City Medical Centre & Dental Laboratory", "registration_number": "PHSRC/MC/188", "address": "No. 88, Yatinuwara Street, Kandy" },
+          { "name": "Suputhra Medical Centre", "registration_number": "PHSRC/MC/273", "address": "No.85, Peradeniya Road, Kandy" },
+          { "name": "Amaya Medical Consultations (Pvt) Ltd", "registration_number": "PHSRC/MC/371", "address": "No. 671, William Gopallawa Mw, Kandy" },
+          { "name": "Dr. J.M. Shahabdeen", "registration_number": "PHSRC/FMS/23", "address": "No: 89, Peradeniya road, Kandy" },
+          { "name": "KANDY SPECIALIST DENTAL SURGERY", "registration_number": "PHSRC/PDS/115", "address": "135/1/3, NABEESHA COMPLEX, KOTUGODELLA STREET, KANDY" },
+          { "name": "Dr. (Mrs) S.S.P. Rajapakse", "registration_number": "PHSRC/FDS/18", "address": "No: 263, Peradeniya Road, Kandy" }
         ]
       },
       {
         "name": "Gangawata Korale",
         "places": [
-          "centre"
+          { "name": "Medical centre", "registration_number": "PHSRC/PGP/291", "address": "54/6, Gannoruwa, Peradeniya" }
         ]
       },
       {
         "name": "Gampola / Udapalatha",
         "places": [
-          "M.K.HOSPITAL(PVT)LTD",
-          "Hospital",
-          "Medical Centre 149, Ambagamuwa Road, Gampola",
-          "Clinic88, Nuwara Eliya Road, Gampola"
+          { "name": "M.K.HOSPITAL(PVT)LTD", "registration_number": "PHSRC/PH/90", "address": "147/1, KANDY ROAD, GAMPOLA" },
+          { "name": "Suwabawana Hospital", "registration_number": "PHSRC/PH/127", "address": "12/1 illawatura Gampola" },
+          { "name": "Lahiru Medical Centre", "registration_number": "PHSRC/MC/161", "address": "149, Ambagamuwa Road, Gampola" },
+          { "name": "Riverside Clinic", "registration_number": "PHSRC/FGP/156", "address": "88, Nuwara Eliya Road, Gampola" }
         ]
       },
       {
         "name": "Yatinuwara",
         "places": [
-          "Investments (Pvt) Ltd",
-          ". K. P. P. Weerasinghe",
-          "Medical Centre"
+          { "name": "Seetha Investments (Pvt) Ltd", "registration_number": "PHSRC/MC/106", "address": "No: 246/2, Colombo Road, Pilimathalawa" },
+          { "name": "Dr. K. P. P. Weerasinghe", "registration_number": "PHSRC/PGP/166", "address": "No. 314, Potthepitiya, Manikdiwela" },
+          { "name": "Sathira Medical Centre", "registration_number": "PHSRC/PGP/245", "address": "No 576, Sathira Medical Centre, Danthure" }
         ]
       },
       {
         "name": "Kundasale / Harispattuwa",
         "places": [
-          "Care Hospital",
-          "Medical Centre",
-          "Total Medical Services (Pvt) Ltd New",
-          "Centre",
-          "Clinic",
-          ". A.K.B. Bokalamulla",
-          "CENTER POLWATHTHAHENA, MEDAMAHANUWARA",
-          "Clinic & Dispensary 2A Hospital Road, Medamahanuwara"
+          { "name": "Royal Care Hospital", "registration_number": "PHSRC/PH/183", "address": "322/1 Mahakumburawela Road, Akurana 07" },
+          { "name": "Binara Medical Centre", "registration_number": "PHSRC/MC/250", "address": "No 82, New Town, Kundasale" },
+          { "name": "Emerald Total Medical Services (Pvt) Ltd", "registration_number": "PHSRC/MC/418", "address": "New 82/2, Balagolla, Kengalla" },
+          { "name": "Medical Centre", "registration_number": "PHSRC/PGP/69", "address": "No 2. Nugapitiya Building, New Town Teldeniya" },
+          { "name": "Medical Clinic", "registration_number": "PHSRC/PGP/73", "address": "No 55, Meegammana North, Wattegama" },
+          { "name": "Dr. A.K.B. Bokalamulla", "registration_number": "PHSRC/PGP/78", "address": "No.1/1, New Town, Rajawella" },
+          { "name": "MEDICAL CENTER", "registration_number": "PHSRC/PGP/237", "address": "POLWATHTHAHENA, MEDAMAHANUWARA" },
+          { "name": "Medical Clinic & Dispensary", "registration_number": "PHSRC/PGP/89", "address": "2A Hospital Road, Medamahanuwara" }
         ]
       },
       {
         "name": "Katugastota",
         "places": [
-          ". Sithivinayagamoorthy Krishnamoorthy 236A, Madawala Road, Katugastota",
-          ". (Mrs) H.M.L. Padmini"
+          { "name": "Dr. Sithivinayagamoorthy Krishnamoorthy", "registration_number": "PHSRC/PGP/109", "address": "236A, Madawala Road, Katugastota" },
+          { "name": "Dr. (Mrs) H.M.L. Padmini", "registration_number": "PHSRC/PGP/220", "address": "No.3/385, MediCare, Gohagoda, Katugastota" }
         ]
       },
       {
         "name": "Nawalapitiya / Pasbage Korale",
         "places": [
-          "Nursing Home",
-          "Channelling Center, Nawalapitiya"
+          { "name": "Nawalapitiya Nursing Home", "registration_number": "PHSRC/PH/137", "address": "No.8B, Theater Road, Nawalapitiya" },
+          { "name": "Sentara Channelling Center, Nawalapitiya", "registration_number": "PHSRC/MC/479", "address": "No.1A, Theater Road, Nawalapitiya" }
         ]
       },
       {
         "name": "Udunuwara / Pujapitiya",
         "places": [
-          ". Ariyasundara Wattegedara",
-          ". H. H. M. S Kudamenike",
-          ". R. M. P. B. Ratnayake",
-          ". C. J. B. Bowala Lankathilaka Junction, Hiyarapitiya, Handessa"
+          { "name": "Dr. Ariyasundara Wattegedara", "registration_number": "PHSRC/PGP/150", "address": "No: 195, Hedeniya, Werallagama" },
+          { "name": "Dr. H. H. M. S Kudamenike", "registration_number": "PHSRC/PGP/190", "address": "No. 205/B, Polgahanga, Waligalla" },
+          { "name": "Dr. R. M. P. B. Ratnayake", "registration_number": "PHSRC/PGP/253", "address": "No. 9, Pujapitiya Road, Medawala (H/P)" },
+          { "name": "Dr. C. J. B. Bowala", "registration_number": "PHSRC/PGP/274", "address": "Lankathilaka Junction, Hiyarapitiya, Handessa" }
         ]
       }
     ]
@@ -399,8 +404,8 @@
       {
         "name": "Matale",
         "places": [
-          "Kumudu Hospital (pvt) ltd",
-          ". N. K. A. Pathmasiri Madawala-Ulpatha, Matale"
+          { "name": "Kumudu Hospital (pvt) ltd", "registration_number": "PHSRC/PH/73", "address": "No, 48, Kandy Road, Matale" },
+          { "name": "Dr. N. K. A. Pathmasiri", "registration_number": "PHSRC/PGP/194", "address": "Madawala-Ulpatha, Matale" }
         ]
       }
     ]
@@ -411,26 +416,26 @@
       {
         "name": "Nuwara Eliya",
         "places": [
-          "Pharmacy & Dispensary (Pvt) Ltd",
-          "DISPENSARY"
+          { "name": "Medisi Pharmacy & Dispensary (Pvt) Ltd", "registration_number": "PHSRC/MC/225", "address": "No.05, Srimath jayathilaka Mawatha, Nuwara Eliya" },
+          { "name": "SUWASEVANA DISPENSARY", "registration_number": "PHSRC/FGP/09", "address": "No: 18, KANDY ROAD, NUWARA ELIYA" }
         ]
       },
       {
         "name": "Hatton / Ambagamuwa",
         "places": [
-          "MOUNT HOSPITAL (pvt) Ltd",
-          "Hatton Consultation Centre 271, Colombo Road, Fruit Hill, Hatton",
-          "Valley Foundation Samanala Valley Estate, Norton Bridge",
-          ". Navaratnam Jeyananthan",
-          "duplicate Navaratnam Medical Centre",
-          "CARE CLINIC",
-          "SURGERY 187"
+          { "name": "NEW MOUNT HOSPITAL (pvt) Ltd", "registration_number": "PHSRC/PH/280", "address": "NO 275, DIBULLA ROAD, HATTON" },
+          { "name": "Hatton Consultation Centre", "registration_number": "PHSRC/MC/61", "address": "271, Colombo Road, Fruit Hill, Hatton" },
+          { "name": "Samanala Valley Foundation", "registration_number": "PHSRC/MC/179", "address": "Samanala Valley Estate, Norton Bridge" },
+          { "name": "Dr. Navaratnam Jeyananthan", "registration_number": "PHSRC/FGP/25", "address": "No. 19/156A, Ariyagama, Hatton" },
+          { "name": "Navaratnam Medical Centre", "registration_number": "PHSRC/FGP/25 duplicate", "address": "19/156 A, Ariyagama, Hatton" },
+          { "name": "HEALTH CARE CLINIC", "registration_number": "PHSRC/FGP/83", "address": "NO 32 MAIN STREET, HATTON" },
+          { "name": "DENTAL SURGERY", "registration_number": "PHSRC/FDS/110", "address": "187 1/E DIMBULA ROAD, HATTON" }
         ]
       },
       {
         "name": "Kothmale",
         "places": [
-          "Beheth Shalawa. New Town, Kothmale"
+          { "name": "Ingreesi Beheth Shalawa.", "registration_number": "PHSRC/PGP/157", "address": "New Town, Kothmale" }
         ]
       }
     ]
@@ -441,16 +446,16 @@
       {
         "name": "Galle MC",
         "places": [
-          "Asiri Hospital Galle (Private) Limited",
-          "Galle Co-operative Hospital Ltd.",
-          "Hospitals (pvt) ltd"
+          { "name": "Asiri Hospital Galle (Private) Limited", "registration_number": "PHSRC/PH/69", "address": "No. 10, Wackwella Road, Galle" },
+          { "name": "Galle Co-operative Hospital Ltd.", "registration_number": "PHSRC/PH/88", "address": "No: 65, H.W. Amarasuriya Mawatha, Galle" },
+          { "name": "Queensbury Hospitals (pvt) ltd", "registration_number": "PHSRC/PH/255", "address": "No.91, Hirimbura cross road, karapitiya, galle" }
         ]
       },
       {
         "name": "Ambalangoda / Hikkaduwa",
         "places": [
-          "Roseth Hospital (Pvt) Ltd",
-          "Med Hospital Narigama Junction, Galle Road, Hikkaduwa"
+          { "name": "Roseth Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/63", "address": "No.7, Kularatne Road, Ambalangoda" },
+          { "name": "IMC Med Hospital", "registration_number": "PHSRC/PH/300", "address": "Narigama Junction, Galle Road, Hikkaduwa" }
         ]
       }
     ]
@@ -461,35 +466,36 @@
       {
         "name": "Matara",
         "places": [
-          "Asiri Hospital Matara ( Pvt) Ltd",
-          "Mohotti Hospital (Pvt) Ltd",
-          "District Co-Operative Hospital Society",
-          ". I. M. Wagachchi 15B/1, Sumanasara Mawatha, Welegoda, Matara"
+          { "name": "Asiri Hospital Matara ( Pvt) Ltd", "registration_number": "PHSRC/PH/18", "address": "No 26, Esplanade road, Uyanwatte, Matara" },
+          { "name": "Mohotti Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/47", "address": "No 10 Sri Karathota Nahimi Mawatha, Matara" },
+          { "name": "Asiri Hospital Matara ( Pvt) Ltd", "registration_number": "PHSRC/PH/78", "address": "No 191, Anagarika Dharmapala Mawatha, Matara" },
+          { "name": "Matara District Co-Operative Hospital Society", "registration_number": "PHSRC/PH/122", "address": "No 223, Kumarathunga Mawatha, Matara" },
+          { "name": "Dr. I. M. Wagachchi", "registration_number": "PHSRC/PGP/217", "address": "15B/1, Sumanasara Mawatha, Welegoda, Matara" }
         ]
       },
       {
         "name": "Weligama / Welipitiya",
         "places": [
-          "Med Hospital Galle Road, Mirissa Junction, Mirissa",
-          "Medi Health Services (Pvt) Ltd"
+          { "name": "IMC Med Hospital", "registration_number": "PHSRC/PH/297", "address": "Galle Road, Mirissa Junction, Mirissa" },
+          { "name": "Asia Medi Health Services (Pvt) Ltd", "registration_number": "PHSRC/PH/299", "address": "No: 468, Matara Road, Weligama" }
         ]
       },
       {
         "name": "Akuressa",
         "places": [
-          "Private Hospital."
+          { "name": "Heladiwa Private Hospital.", "registration_number": "PHSRC/PH/249", "address": "No.44, Matara Road, Akuressa" }
         ]
       },
       {
         "name": "Kamburugamuwa",
         "places": [
-          ". P. P. Wagachchi Tal-aramba, Kamburugamuwa"
+          { "name": "Dr. P. P. Wagachchi", "registration_number": "PHSRC/PGP/216", "address": "Tal-aramba, Kamburugamuwa" }
         ]
       },
       {
         "name": "Deniyaya",
         "places": [
-          "Medicity Pallegama Road, Deniyaya"
+          { "name": "Medicity", "registration_number": "PHSRC/MC/320", "address": "Medicity Pallegama Road, Deniyaya" }
         ]
       }
     ]
@@ -500,23 +506,23 @@
       {
         "name": "Tangalle",
         "places": [
-          "HEALTHCARE SERVICES (PVT) LTD",
-          "Lanka Hospitals",
-          "CHANNELLING CENTER",
-          "Channel Centre."
+          { "name": "AROGYA HEALTHCARE SERVICES (PVT) LTD", "registration_number": "PHSRC/PH/199", "address": "NO: 92, MAIN STREET, TANGALLE" },
+          { "name": "Southern Lanka Hospitals", "registration_number": "PHSRC/PH/245", "address": "No.144, Beliatta rd, Tangalle" },
+          { "name": "AROGYA CHANNELLING CENTER", "registration_number": "PHSRC/MC/136", "address": "NO: 22, TEKKAWATTHA UPPER ROAD, TANGALLE" },
+          { "name": "Wijaya Channel Centre.", "registration_number": "PHSRC/MC/442", "address": "No.98, Main Street, Tangalle" }
         ]
       },
       {
         "name": "Beliatta / Walasmulla",
         "places": [
-          "HEALTHCARE HOSPITAL(PVT)LTD",
-          "MedicareNo. 29, Gatamanna Road, Beliatta"
+          { "name": "DAKSHINA HEALTHCARE HOSPITAL(PVT)LTD", "registration_number": "PHSRC/PH/315", "address": "NO.102, BELIATTA ROAD, MUDUNA, WALASMULLA" },
+          { "name": "Neptune Medicare", "registration_number": "PHSRC/PH/330", "address": "No. 29, Gatamanna Road, Beliatta" }
         ]
       },
       {
         "name": "Tissamaharama",
         "places": [
-          "Hospital (Pvt) Ltd"
+          { "name": "Amaz Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/306", "address": "No. 985/8, Debarawewa, Tissamaharama" }
         ]
       }
     ]
@@ -527,36 +533,36 @@
       {
         "name": "Jaffna MC / Nallur",
         "places": [
-          "Holy Cross Health Centre.",
-          "Yarl Hospital. 315, Palaly Road, Parameswara Junction, Thirunelvely, Jaffna",
-          "Speciality Hospital (Pvt) Ltd.",
-          "West Clinic & Nursing Home.",
-          "Central Hospital (Pvt) Ltd - Jaffna",
-          "HOSPITAL (PVT) Ltd 130, 1ST CROSS STREET, JAFFNA",
-          "Medical Center",
-          "MOTHER CARE PVT LTD"
+          { "name": "Holy Cross Health Centre.", "registration_number": "PHSRC/PH/95", "address": "No.769, Beach Road, Jaffna" },
+          { "name": "New Yarl Hospital.", "registration_number": "PHSRC/PH/144", "address": "315, Palaly Road, Parameswara Junction, Thirunelvely, Jaffna" },
+          { "name": "Venus Speciality Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/156", "address": "No. 136, Palaly Road, Kandarmadam, Jaffna" },
+          { "name": "Van West Clinic & Nursing Home.", "registration_number": "PHSRC/PH/181", "address": "No. 60 (18), Iyanar Kovil Road, Vannarponnai, Jaffna" },
+          { "name": "Northern Central Hospital (Pvt) Ltd - Jaffna", "registration_number": "PHSRC/PH/193", "address": "No.342, Palaly Road, Jaffna" },
+          { "name": "STS HOSPITAL (PVT) Ltd", "registration_number": "PHSRC/PH/246", "address": "130, 1ST CROSS STREET, JAFFNA" },
+          { "name": "Suharni Medical Center", "registration_number": "PHSRC/MC/287", "address": "122/1, Palaly Road, Kantharmadam, Jaffna" },
+          { "name": "YARL MOTHER CARE PVT LTD", "registration_number": "PHSRC/MC/373", "address": "514/18, HOSPITAL ROAD, JAFFNA" }
         ]
       },
       {
         "name": "Chavakachcheri / Thenmaradchy",
         "places": [
-          "Health Clinic and Nursing Home Vinasithambi Lane, A9 Road, Chavakachcheri, Jaffna",
-          "Medicare Hospital (Pvt) Ltd."
+          { "name": "Evergreen Health Clinic and Nursing Home", "registration_number": "PHSRC/PH/213", "address": "Vinasithambi Lane, A9 Road, Chavakachcheri, Jaffna" },
+          { "name": "Modern Medicare Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/219", "address": "No.63, Kandy Road, Nunavil Centre, Chavakachcheri, Jaffna" }
         ]
       },
       {
         "name": "Valikamam",
         "places": [
-          "Memorial Hospital. Jaffna Road, Manipay",
-          "Leod Hospital. K.K.S.Road, Inuvil, Jaffna",
-          "-operative Hospital Society Ltd Moolai, Chulipuram"
+          { "name": "Green Memorial Hospital.", "registration_number": "PHSRC/PH/118", "address": "Jaffna Road, Manipay" },
+          { "name": "Mc Leod Hospital.", "registration_number": "PHSRC/PH/243", "address": "K.K.S.Road, Inuvil, Jaffna" },
+          { "name": "Co-operative Hospital Society Ltd", "registration_number": "PHSRC/MC/169", "address": "Moolai, Chulipuram" }
         ]
       },
       {
         "name": "Karaveddy",
         "places": [
-          "Hospital (Pvt) Ltd",
-          "Channeling Centre Main Street, Nelliady, Karaveddy"
+          { "name": "Ruhbins Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/218", "address": "No, 160 Point Pedro Road, Nelliady, Karaveddy, Jaffna" },
+          { "name": "Aarogya Channeling Centre", "registration_number": "PHSRC/MC/349", "address": "Main Street, Nelliady, Karaveddy" }
         ]
       }
     ]
@@ -567,7 +573,7 @@
       {
         "name": "Kilinochchi",
         "places": [
-          "Medical Hospital Ponnambalam road, Paravippanchchan, Kilinochchi"
+          { "name": "Meena Medical Hospital", "registration_number": "PHSRC/PH/285", "address": "Ponnambalam road, Paravippanchchan, Kilinochchi" }
         ]
       }
     ]
@@ -578,7 +584,7 @@
       {
         "name": "Mannar",
         "places": [
-          ". Murugesu Kathirgamanathan Grand Bazaar, Mannar"
+          { "name": "Dr. Murugesu Kathirgamanathan", "registration_number": "PHSRC/FGP/21", "address": "Grand Bazaar, Mannar" }
         ]
       }
     ]
@@ -589,8 +595,8 @@
       {
         "name": "Vavuniya",
         "places": [
-          "Hospital (Pvt) Ltd.",
-          "Health Care (Pvt)Ltd 253, Station Road, Kurumankadu, Vavuniya"
+          { "name": "Abishaa Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/116", "address": "No: 24A, Katkuli, Vavuniya" },
+          { "name": "Vavuniya Health Care (Pvt)Ltd", "registration_number": "PHSRC/PH/281", "address": "253, Station Road, Kurumankadu, Vavuniya" }
         ]
       }
     ]
@@ -601,23 +607,28 @@
       {
         "name": "Trincomalee",
         "places": [
-          "Central Hospital and Maternity Home Pvt Ltd",
-          "Dhanvantharii Hospital Pvt Limited.",
-          "Hospital 254, Kandy Road, Trincomalee"
+          { "name": "Central Hospital and Maternity Home Pvt Ltd", "registration_number": "PHSRC/PH/51", "address": "No. 12, Vidyalayam road, Trincomalee" },
+          { "name": "Dhanvantharii Hospital Pvt Limited.", "registration_number": "PHSRC/PH/60", "address": "No.03, Kandy Road, Trincomalee" },
+          { "name": "Hymavathie Hospital", "registration_number": "PHSRC/PH/272", "address": "254, Kandy Road, Trincomalee" }
         ]
       },
       {
-        "name": "/ Bordering Serunuwara",
+        "name": "Serunuwara",
         "places": [
-          ". D. L. N. KalwinSerunuwara"
+          { "name": "Dr. D. L. N. Kalwin", "registration_number": "PHSRC/PGP/268", "address": "Serunuwara" }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "name": "Seethawaka (Colombo Border)",
+    "moh_areas": [
       {
-        "name": "Seethawaka (Colombo Border) Avissawella",
+        "name": "Avissawella",
         "places": [
-          "KELANI VALLEY HOSPITAL (PVT) LTD.",
-          "Gomez Hospital (Pvt) Ltd.",
-          "Hospital (Pvt) Ltd."
+          { "name": "KELANI VALLEY HOSPITAL (PVT) LTD.", "registration_number": "PHSRC/PH/34", "address": "NO. 2/78, COLOMBO ROAD, AVISSAWELLA" },
+          { "name": "Gomez Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/93", "address": "No.63, Colombo Road, Avissawella" },
+          { "name": "Venus Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/201", "address": "No.55/A, Colombo Road, Avissawella" }
         ]
       }
     ]
@@ -628,22 +639,22 @@
       {
         "name": "Batticaloa",
         "places": [
-          "GV Hospital.",
-          "Siloam Vincent Health Services Centre.",
-          "Pioneer Hospital.",
-          "Hospital 121, New Kalmunai Road, Batticaloa"
+          { "name": "GV Hospital.", "registration_number": "PHSRC/PH/30", "address": "No. 35, 35/2, New Road, Batticaloa" },
+          { "name": "Siloam Vincent Health Services Centre.", "registration_number": "PHSRC/PH/97", "address": "No: 63, Station Road, Batticaloa" },
+          { "name": "New Pioneer Hospital.", "registration_number": "PHSRC/PH/159", "address": "No.91, Pioneer Road, Batticaloa" },
+          { "name": "EMS Hospital", "registration_number": "PHSRC/PH/275", "address": "121, New Kalmunai Road, Batticaloa" }
         ]
       },
       {
         "name": "Eravur",
         "places": [
-          "-OP HOSPITAL MAIN ROAD, ERAVUR"
+          { "name": "CO-OP HOSPITAL", "registration_number": "PHSRC/MC/170", "address": "MAIN ROAD, ERAVUR" }
         ]
       },
       {
         "name": "Kirankulam",
         "places": [
-          "Sathya Sai Sanjeevani Super Specialty Hospital"
+          { "name": "Sri Sathya Sai Sanjeevani Super Specialty Hospital", "registration_number": "PHSRC/PH/290", "address": "Division 9, New Kalmunai Road, Kirankulam - South, Batticaloa" }
         ]
       }
     ]
@@ -654,16 +665,16 @@
       {
         "name": "Kalmunai",
         "places": [
-          "Dr. Jameel Memorial Hospital 37, Cassim Road, Kalmunai",
-          "Land Hospital.",
-          "Ali Hospital (Pvt) Limited."
+          { "name": "Dr. Jameel Memorial Hospital", "registration_number": "PHSRC/PH/62", "address": "37, Cassim Road, Kalmunai" },
+          { "name": "Medi Land Hospital.", "registration_number": "PHSRC/PH/113", "address": "No.619, Main Street, Kalmunai" },
+          { "name": "Ahmad Ali Hospital (Pvt) Limited.", "registration_number": "PHSRC/PH/238", "address": "No.142F, Main Street, Kalmunai" }
         ]
       },
       {
         "name": "Akkaraipattu",
         "places": [
-          "Hospital (Pvt) Ltd.",
-          "Hospitals (Pvt) Ltd."
+          { "name": "Genius Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/139", "address": "No. 53, A.V.V. Road, Akkaraipattu - 02" },
+          { "name": "Olivia Hospitals (Pvt) Ltd.", "registration_number": "PHSRC/PH/258", "address": "No.109, Town Mosque Road, Akkaraipattu -02" }
         ]
       }
     ]
@@ -674,67 +685,67 @@
       {
         "name": "Kurunegala MC",
         "places": [
-          "SETH SEVANA HOSPITALS (PVT) LTD",
-          "Nawinne Hospital (Pvt) Ltd 28, South Circular Road, Kurunegala",
-          "Co-operative Hospital Society",
-          "Health Hospitals (Pvt) Ltd 223 Dambulla Road, Kurunegala",
-          "DENTAL HOSPITAL (PVT)LTD",
-          "EYE HOSPITAL & OPTICALS",
-          "Eye Care Center (Pvt) Ltd.",
-          "Kurunegala Medical Centre 128, Colombo Road, Kurunegala",
-          "LABORATORY - KURUNEGALA MEDICAL CENTER",
-          "Channeling Centre (Pvt) Ltd 220, Dambulla Road, Kurunegala",
-          "HOUSE (PVT) LTD",
-          "Suwasiri Piyasa Nursing Home"
+          { "name": "SETH SEVANA HOSPITALS (PVT) LTD", "registration_number": "PHSRC/PH/24", "address": "NO 226, COLOMBO ROAD, KURUNEGALA" },
+          { "name": "Nawinne Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/45", "address": "28, South Circular Road, Kurunegala" },
+          { "name": "Kurunegala Co-operative Hospital Society", "registration_number": "PHSRC/PH/115", "address": "No: 303, Colombo Road, Kurunegala" },
+          { "name": "Miracle Health Hospitals (Pvt) Ltd", "registration_number": "PHSRC/PH/163", "address": "223 Dambulla Road, Kurunegala" },
+          { "name": "SAKUKI DENTAL HOSPITAL (PVT)LTD", "registration_number": "PHSRC/PH/224", "address": "NO 65 SOUTH CIRCULAR ROAD, KURUNEGALA" },
+          { "name": "SAMARASINGHE EYE HOSPITAL & OPTICALS", "registration_number": "PHSRC/PH/239", "address": "NO:214, COLOMBO ROAD, KURUNEGALA" },
+          { "name": "Denetha Eye Care Center (Pvt) Ltd.", "registration_number": "PHSRC/PH/240", "address": "No.7, 01st Lane, Bauddhaloka Road, Kurunegala" },
+          { "name": "Kurunegala Medical Centre", "registration_number": "PHSRC/MC/82", "address": "128, Colombo Road, Kurunegala" },
+          { "name": "DURDANS LABORATORY - KURUNEGALA MEDICAL CENTER", "registration_number": "PHSRC/MC/268", "address": "142/A, Colombo Road, Kurunegala" },
+          { "name": "Miracle Channeling Centre (Pvt) Ltd", "registration_number": "PHSRC/MC/327", "address": "220, Dambulla Road, Kurunegala" },
+          { "name": "MEDI HOUSE (PVT) LTD", "registration_number": "PHSRC/MC/400", "address": "NO. 16,17,18 1ST FLOOR, MC PLAZA, KURUNEGALA" },
+          { "name": "Suwasiri Piyasa Nursing Home", "registration_number": "PHSRC/SUWASIRI", "address": "No.06, Sawmya Mawatha, Negombo Road, Kurunegala" }
         ]
       },
       {
         "name": "Kuliyapitiya",
         "places": [
-          "Hospital (Pvt) Ltd.",
-          "Medical Services (Pvt) Ltd.",
-          "Medical Centre.",
-          ". Nawullage Don Chandralal Padmasiri",
-          "MEDICAL CENTRE 63, HETTIPOLA ROAD, KULIYAPITIYA"
+          { "name": "Siyasi Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/105", "address": "No.132/3, Hettipola Road, Kuliyapitiya" },
+          { "name": "Deeghayu Medical Services (Pvt) Ltd.", "registration_number": "PHSRC/MC/135", "address": "No: 46, Tissa Mawatha, Kuliyapitiya" },
+          { "name": "Oseth Medical Centre.", "registration_number": "PHSRC/MC/260", "address": "318/3, Madampe Road, Kuliyapitiya" },
+          { "name": "Dr. Nawullage Don Chandralal Padmasiri", "registration_number": "PHSRC/PGP/18", "address": "No.1/1, Pahala Piduma, Kuliyapitiya" },
+          { "name": "UWASETHA MEDICAL CENTRE", "registration_number": "PHSRC/PDS/50", "address": "63, HETTIPOLA ROAD, KULIYAPITIYA" }
         ]
       },
       {
         "name": "Mawathagama / Alawwa",
         "places": [
-          "Western Medical Service",
-          "CENTRE"
+          { "name": "SUWASISILA Western Medical Service", "registration_number": "PHSRC/FGP/67", "address": "No 12, Rambukkana Road, Mawathagama" },
+          { "name": "MEDICAL CENTRE", "registration_number": "PHSRC/PGP/33", "address": "135/03 WARIYAGODA, ALAWWA" }
         ]
       },
       {
         "name": "Bingiriya",
         "places": [
-          "Center Vilaththawa Bingiriya"
+          { "name": "Medical Center", "registration_number": "PHSRC/PGP/27", "address": "Vilaththawa Bingiriya" }
         ]
       },
       {
         "name": "Pannala",
         "places": [
-          "Medical Centre"
+          { "name": "Suwasri Medical Centre", "registration_number": "PHSRC/MC/121", "address": "50/10, Polwaththa Road, Pannala" }
         ]
       },
       {
         "name": "Maho / Galgamuwa",
         "places": [
-          "Well Medical Centre Ehatuwawa Road, Galgamuwa",
-          "Medical Center"
+          { "name": "Care Well Medical Centre", "registration_number": "PHSRC/MC/415", "address": "Ehatuwawa Road, Galgamuwa" },
+          { "name": "Bandara Medical Center", "registration_number": "PHSRC/MC/476", "address": "No: 245, Main Street, Maho" }
         ]
       },
       {
         "name": "Katupotha",
         "places": [
-          "Care Channel Center"
+          { "name": "Life Care Channel Center", "registration_number": "PHSRC/MC/420", "address": "No;75, wariyapola road, Katupotha" }
         ]
       },
       {
         "name": "Dambadeniya / Polgahawela",
         "places": [
-          "Medical Centre Pansiyagama, Polgahangoda, Kurunegala",
-          "MEDICAL CENTER"
+          { "name": "Medicare Medical Centre", "registration_number": "PHSRC/PGP/234", "address": "Pansiyagama, Polgahangoda, Kurunegala" },
+          { "name": "BALASURIYA MEDICAL CENTER", "registration_number": "PHSRC/PGP/238", "address": "NO 32, KURUNEGALA ROAD, DAMBADENIYA" }
         ]
       }
     ]
@@ -745,29 +756,29 @@
       {
         "name": "Puttalam",
         "places": [
-          "Kuwait Hospital138, Nedumkulam Vaun, Puttalam",
-          "Hospital (Pvt)Ltd",
-          "PUTTALAM DIGASIRI HOSPITAL (PVT)LTD NO116/1, KURUNEGALA ROAD, PUTTALAM"
+          { "name": "Kuwait Hospital", "registration_number": "PHSRC/PH/44", "address": "138, Nedumkulam Vaun, Puttalam" },
+          { "name": "Balasooriya Hospital (Pvt)Ltd", "registration_number": "PHSRC/PH/177", "address": "118/A, Kurunegala Road, Puttalam" },
+          { "name": "NEW PUTTALAM DIGASIRI HOSPITAL (PVT)LTD", "registration_number": "PHSRC/PH/253", "address": "NO116/1, KURUNEGALA ROAD, PUTTALAM" }
         ]
       },
       {
         "name": "Chilaw / Wennappuwa",
         "places": [
-          "Life Care Hospital (Pvt) Ltd.",
-          "Hospitals (Private) Limited.",
-          "Hospital (Pvt ) Ltd Chilaw",
-          "Suwana Hospital",
-          "Premaratne Channel Centre",
-          "Dental Clinic"
+          { "name": "Life Care Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/19", "address": "No.199, Colombo Road, Wennappuwa" },
+          { "name": "Suwaya Hospitals (Private) Limited.", "registration_number": "PHSRC/PH/112", "address": "No: 384, Colombo Road, Chilaw" },
+          { "name": "Balasooriya Hospital (Pvt ) Ltd Chilaw", "registration_number": "PHSRC/PH/291", "address": "No 43 Fort Road, Chilaw" },
+          { "name": "Seth Suwana Hospital", "registration_number": "PHSRC/PH/304", "address": "No. 16, Kurunegala Road, Chilaw" },
+          { "name": "Premaratne Channel Centre", "registration_number": "PHSRC/MC/49", "address": "No: 42, Colombo Road, Chilaw" },
+          { "name": "Abeysekara Dental Clinic", "registration_number": "PHSRC/FDS/121", "address": "No.20, Bazaar street, Chilaw" }
         ]
       },
       {
         "name": "Marawila / Nattandiya / Madampe",
         "places": [
-          ". Annes Nursing Home Church Road, Marawila",
-          "Senanayake Medicals Chilaw Road, New Town, Madampe",
-          "Channel Centre Negombo Road, Nattandiya",
-          "Channel Center"
+          { "name": "St. Annes Nursing Home", "registration_number": "PHSRC/PH/104", "address": "Church Road, Marawila" },
+          { "name": "Senanayake Medicals", "registration_number": "PHSRC/MC/59", "address": "Chilaw Road, New Town, Madampe" },
+          { "name": "Sihasetha Channel Centre", "registration_number": "PHSRC/MC/114", "address": "Negombo Road, Nattandiya" },
+          { "name": "Suwasewana Channel Center", "registration_number": "PHSRC/MC/117", "address": "No.208, Angampitiya East, Waikkala" }
         ]
       }
     ]
@@ -778,34 +789,34 @@
       {
         "name": "Anuradhapura MC",
         "places": [
-          "SUWA SHANTHI HOSPITAL PRIVATE LIMITED",
-          "Suwasewana (Pvt) Hospital.",
-          "Eye Hospital (Pvt) Ltd.",
-          "-Operative Hospital.",
-          "Hospital (Pvt) Ltd",
-          "Health Care Services (Pvt) Ltd",
-          ". E. M. U. Ekanayake Kud Nelabewa, Hindogama, Anuradhapura"
+          { "name": "SUWA SHANTHI HOSPITAL PRIVATE LIMITED", "registration_number": "PHSRC/PH/31", "address": "NO. 11, MAIN STREET, ANURADHAPURA" },
+          { "name": "New Suwasewana (Pvt) Hospital.", "registration_number": "PHSRC/PH/223", "address": "No.396/03, Court Site, Anuradhapura" },
+          { "name": "Nethra Eye Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/259", "address": "No.522/A, Maithreepala Senanayaka Street, Anuradhapura" },
+          { "name": "Co-Operative Hospital.", "registration_number": "PHSRC/PH/260", "address": "No.07, Maithreepala Senanayake Mawatha, Anuradhapura" },
+          { "name": "Kanola Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/267", "address": "36/03, Townhall place, New town, Anuradhapura" },
+          { "name": "Royal Health Care Services (Pvt) Ltd", "registration_number": "PHSRC/MC/181", "address": "No. 396/8, Court Site, Anuradhapura" },
+          { "name": "Dr. E. M. U. Ekanayake", "registration_number": "PHSRC/PGP/211", "address": "Kuda Nelabewa, Hindogama, Anuradhapura" }
         ]
       },
       {
         "name": "Thambuttegama",
         "places": [
-          "Vision Eye Hospital (Pvt) Ltd",
-          "CHANNEL CENTER",
-          "Medicare Center"
+          { "name": "My Vision Eye Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/296", "address": "No 586, Rejina Junction, Thambuttegama" },
+          { "name": "SUWASAHANA CHANNEL CENTER", "registration_number": "PHSRC/MC/302", "address": "NO.204, 205, COURT PLACE, TAMBUTTEGAMA" },
+          { "name": "Themara Medicare Center", "registration_number": "PHSRC/MC/477", "address": "No:207, Court Place, Thambuttegama" }
         ]
       },
       {
         "name": "Nochchiyagama / Galenbindunuwewa",
         "places": [
-          "Private Hospital.",
-          ". W. M. Senevirathna School Junction, Anuradhapura Road, Minuwangate"
+          { "name": "Samanala Private Hospital.", "registration_number": "PHSRC/PH/233", "address": "No.420, Kusumpura Road, Nochchiyagama" },
+          { "name": "Dr. W. M. Senevirathna", "registration_number": "PHSRC/PGP/110", "address": "School Junction, Anuradhapura Road, Minuwangate" }
         ]
       },
       {
         "name": "Mahawilachchiya / Pemaduwa",
         "places": [
-          ". W. M. W. Bandara Wanasinghe Mahawilachchiya Road, Pemaduwa"
+          { "name": "Dr. W. M. W. Bandara Wanasinghe", "registration_number": "PHSRC/PGP/111", "address": "Mahawilachchiya Road, Pemaduwa" }
         ]
       }
     ]
@@ -816,7 +827,7 @@
       {
         "name": "Polonnaruwa / Kaduruwela",
         "places": [
-          "Lanka Hospital (Pvt) Ltd 28th Mile Post, Kaduruwela, Polonnaruwa"
+          { "name": "Venus Lanka Hospital (Pvt) Ltd", "registration_number": "PHSRC/PH/179", "address": "28th Mile Post, Kaduruwela, Polonnaruwa" }
         ]
       }
     ]
@@ -827,20 +838,20 @@
       {
         "name": "Badulla",
         "places": [
-          "PERLYN CHANNELLED CONSULTATION PVT LTD"
+          { "name": "PERLYN CHANNELLED CONSULTATION PVT LTD", "registration_number": "PHSRC/MC/50", "address": "NO 35, BANDARAWELA ROAD, BADULLA" }
         ]
       },
       {
         "name": "Diyatalawa",
         "places": [
-          "Medical Centre Fair Road, Diyathalawa"
+          { "name": "Suwasewana Medical Centre", "registration_number": "PHSRC/MC/107", "address": "Fair Road, Diyathalawa" }
         ]
       },
       {
         "name": "Welimada",
         "places": [
-          "CHANNEL SERVICE",
-          "Channel Centre"
+          { "name": "LAL CHANNEL SERVICE", "registration_number": "PHSRC/MC/198", "address": "NO 08, HEMAPALA MUNIDASA MAWATHA, WELIMADA" },
+          { "name": "Godakubura Channel Centre", "registration_number": "PHSRC/MC/436", "address": "No 146, Nuwara Eliya Road, Welimada" }
         ]
       }
     ]
@@ -851,25 +862,25 @@
       {
         "name": "Monaragala",
         "places": [
-          "Nursing Home (Pvt) Ltd."
+          { "name": "Monaragala Nursing Home (Pvt) Ltd.", "registration_number": "PHSRC/PH/117", "address": "No: 124, Potuvil Road, Monaragala" }
         ]
       },
       {
         "name": "Wellawaya",
         "places": [
-          "Medical Care (Pvt) Ltd 117, Ella road, Wellawaya"
+          { "name": "Sethsiri Medical Care (Pvt) Ltd", "registration_number": "PHSRC/MC/347", "address": "117, Ella road, Wellawaya" }
         ]
       },
       {
         "name": "Bibile",
         "places": [
-          "Medical Centre"
+          { "name": "Priya Medical Centre", "registration_number": "PHSRC/MC/184", "address": "No.(100/1)68, Batticaloa Road, Bibile" }
         ]
       },
       {
         "name": "Dambagalla",
         "places": [
-          "centernear the hospital, makulla town, dambagalla"
+          { "name": "medicare center", "registration_number": "PHSRC/PGP/154", "address": "near the hospital, makulla town, dambagalla" }
         ]
       }
     ]
@@ -880,55 +891,55 @@
       {
         "name": "Ratnapura",
         "places": [
-          "Aloka Private Hospital",
-          "Hospitals PLC",
-          "Setha Lions Vision For Sight Hospital",
-          "HOSPITALS AND LABORATORIES 189, Hospital Junction, Colombo Road, Ratnapura",
-          "Suwa Sewana Medical Centre"
+          { "name": "Aloka Private Hospital", "registration_number": "PHSRC/PH/49", "address": "No:64, Goodshed Road, Rathnapura" },
+          { "name": "Singhe Hospitals PLC", "registration_number": "PHSRC/PH/162", "address": "No 362, Colombo Rd, Rathnapura" },
+          { "name": "Neth Setha Lions Vision For Sight Hospital", "registration_number": "PHSRC/PH/182", "address": "No. 105, New Town, Ratnapura" },
+          { "name": "RATNAPURA HOSPITALS AND LABORATORIES", "registration_number": "PHSRC/PH/225", "address": "189, Hospital Junction, Colombo Road, Ratnapura" },
+          { "name": "Samu Suwa Sewana Medical Centre", "registration_number": "PHSRC/MC/130", "address": "No: 37, Inner Circular Road, Ratnapura" }
         ]
       },
       {
         "name": "Pelmadulla",
         "places": [
-          ". S. Sagara Godakumbura Main Street, Pelmadulla",
-          ". M. M. A. R. Abayaratna Main Street, Pelmadulla"
+          { "name": "Dr. S. Sagara Godakumbura", "registration_number": "PHSRC/PGP/79", "address": "Main Street, Pelmadulla" },
+          { "name": "Dr. M. M. A. R. Abayaratna", "registration_number": "PHSRC/PGP/85", "address": "Main Street, Pelmadulla" }
         ]
       },
       {
         "name": "Balangoda",
         "places": [
-          "Care Hospital",
-          "Hospital KMC Hospital, Kalthota Road, Balangoda",
-          ". K. I. SanjeewaDamahana, Balangoda"
+          { "name": "Life Care Hospital", "registration_number": "PHSRC/PH/247", "address": "438/3D, Oluganthota, Balangoda" },
+          { "name": "KMC Hospital", "registration_number": "PHSRC/PH/320", "address": "KMC Hospital, Kalthota Road, Balangoda" },
+          { "name": "Dr. K. I. Sanjeewa", "registration_number": "PHSRC/PGP/198", "address": "Damahana, Balangoda" }
         ]
       },
       {
         "name": "Eheliyagoda",
         "places": [
-          "EHELIYAGODA CHANNELING CENTER",
-          ". U. P. Premarathna Viyalagoda Road, Mahingoda, Eheliyagoda"
+          { "name": "EHELIYAGODA CHANNELING CENTER", "registration_number": "PHSRC/MC/47", "address": "NO.02, MAIN STREET, EHELIYAGODA" },
+          { "name": "Dr. U. P. Premarathna", "registration_number": "PHSRC/PGP/201", "address": "Viyalagoda Road, Mahingoda, Eheliyagoda" }
         ]
       },
       {
         "name": "Embilipitiya",
         "places": [
-          "PRIVATE HOSPITAL NEW TOWN RD, EMBILIPITIYA",
-          "Hospital(Pvt)Ltd Embilipitiya town, Embilipitiya"
+          { "name": "POLYCLINIC PRIVATE HOSPITAL", "registration_number": "PHSRC/PH/190", "address": "NEW TOWN RD, EMBILIPITIYA" },
+          { "name": "Navodaya Hospital(Pvt)Ltd", "registration_number": "PHSRC/PH/263", "address": "Embilipitiya town, Embilipitiya" }
         ]
       },
       {
         "name": "Kuruwita / Kiriella",
         "places": [
-          ". P. N. W. Wijayawardana Paragasorvita, Devipahala, Kuruwita",
-          "Center 32 Idangoda, Kiriella",
-          "Centre & Dispensary Main Street, Kuruwita"
+          { "name": "Dr. P. N. W. Wijayawardana", "registration_number": "PHSRC/PGP/140", "address": "Paragasorvita, Devipahala, Kuruwita" },
+          { "name": "Medical Center", "registration_number": "PHSRC/PGP/182", "address": "32 Idangoda, Kiriella" },
+          { "name": "Medical Centre & Dispensary", "registration_number": "PHSRC/PGP/207", "address": "Main Street, Kuruwita" }
         ]
       },
       {
         "name": "Nivithigala / Opanayake",
         "places": [
-          "Medical Center Hunuwala south, Opanayake",
-          "Centre"
+          { "name": "Moravitiwala Medical Center", "registration_number": "PHSRC/PGP/265", "address": "Hunuwala south, Opanayake" },
+          { "name": "Medical Centre", "registration_number": "PHSRC/PGP/292", "address": "No.16, Kalawana Road, Nivithigala" }
         ]
       }
     ]
@@ -939,52 +950,52 @@
       {
         "name": "Kegalle",
         "places": [
-          "HOSPITALS (PVT) LTD",
-          "Hospital (Pvt) Ltd.",
-          "Medical Centre 187, Main Street, Kegalle",
-          ". I. M. L. Ilanganthilake Kumbaldivela, Molagoda, Kegalle"
+          { "name": "OSRO HOSPITALS (PVT) LTD", "registration_number": "PHSRC/PH/200", "address": "NO 269, BANDARANAYAKA MAWATHA, PITIHUMA, KEGALLE" },
+          { "name": "Candela Hospital (Pvt) Ltd.", "registration_number": "PHSRC/PH/257", "address": "No: 297/1, Colombo Road, Kegalle" },
+          { "name": "Private Medical Centre", "registration_number": "PHSRC/MC/241", "address": "187, Main Street, Kegalle" },
+          { "name": "Dr. I. M. L. Ilanganthilake", "registration_number": "PHSRC/PGP/164", "address": "Kumbaldivela, Molagoda, Kegalle" }
         ]
       },
       {
         "name": "Mawanella",
         "places": [
-          "Gamage Hospital",
-          "OSRO HOSPITALS (PVT) LTD",
-          "Hospitals (Pvt) Ltd",
-          "Surgery Maltek shopping complex, Main Street, Mawanella"
+          { "name": "Gamage Hospital", "registration_number": "PHSRC/PH/32", "address": "No. D-121, Palegoda Road, Beligammana, Mawanella" },
+          { "name": "OSRO HOSPITALS (PVT) LTD", "registration_number": "PHSRC/PH/59", "address": "NO 264, KANDY ROAD, MAWANELLA" },
+          { "name": "Medisevana Hospitals (Pvt) Ltd", "registration_number": "PHSRC/MC/221", "address": "No 160, New Kandy Road, Mawanella" },
+          { "name": "Dental Surgery", "registration_number": "PHSRC/PDS/98", "address": "Maltek shopping complex, Main Street, Mawanella" }
         ]
       },
       {
         "name": "Warakapola",
         "places": [
-          "House Channel Centre",
-          "Medical And Channeling Servises Udawatta Tower,",
-          "Clinic Warakapola 51 Anguruwella Road, Warakapola"
+          { "name": "Globe House Channel Centre", "registration_number": "PHSRC/MC/105", "address": "No. 234, Main Street, Warakapola" },
+          { "name": "Udawatta Medical And Channeling Servises", "registration_number": "PHSRC/MC/249", "address": "Udawatta Tower, No:9, Main Street, Warakapola" },
+          { "name": "Central Clinic Warakapola", "registration_number": "PHSRC/FGP/02", "address": "51 Anguruwella Road, Warakapola" }
         ]
       },
       {
         "name": "Karawanella",
         "places": [
-          "Sevana Channel Centre"
+          { "name": "Suwa Sevana Channel Centre", "registration_number": "PHSRC/MC/152", "address": "No: 678/1, Colombo Road, Karawanella" }
         ]
       },
       {
         "name": "Galigamuwa",
         "places": [
-          "Medical Centre Kandy Road, Galigamuwa Town"
+          { "name": "Galigamuwa Medical Centre", "registration_number": "PHSRC/PGP/260", "address": "Kandy Road, Galigamuwa Town" }
         ]
       },
       {
         "name": "Rambukkana",
         "places": [
-          "Weligalle Medical centre",
-          "CENTER POLATHTHAPITIYA UDAGALADENIYA, RAMBUKKANA"
+          { "name": "New Weligalle Medical centre", "registration_number": "PHSRC/MC/276", "address": "No.50, Hospital Road, Rambukkana" },
+          { "name": "MEDICAL CENTER", "registration_number": "PHSRC/PGP/267", "address": "POLATHTHAPITIYA UDAGALADENIYA, RAMBUKKANA" }
         ]
       },
       {
         "name": "Aranayaka / Mawanella border",
         "places": [
-          ". D. K. J. R. Perera Kanathiriyanwala, Pinnawala"
+          { "name": "Dr. D. K. J. R. Perera", "registration_number": "PHSRC/PGP/101", "address": "Kanathiriyanwala, Pinnawala" }
         ]
       }
     ]
