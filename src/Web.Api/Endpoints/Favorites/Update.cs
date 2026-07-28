@@ -10,9 +10,9 @@ internal sealed class Update : IEndpoint
 {
     public sealed class Request
     {
-        public string GenericName { get; set; } = string.Empty;
+        public string? GenericName { get; set; }
         public string? BrandName { get; set; }
-        public string Category { get; set; } = string.Empty;
+        public string? Category { get; set; }
         public string? Dose { get; set; }
         public string? Frequency { get; set; }
         public string? Duration { get; set; }
