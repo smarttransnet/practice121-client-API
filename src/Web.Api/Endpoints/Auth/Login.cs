@@ -1,5 +1,6 @@
 using Application.Abstractions.Messaging;
 using Application.Doctors.Login;
+using Application.Doctors.VerifyOtp;
 using SharedKernel;
 using Web.Api.Infrastructure;
 
@@ -13,15 +14,16 @@ internal sealed class Login : IEndpoint
     {
         app.MapPost("api/auth/login", async (
             Request request,
-            ICommandHandler<LoginDoctorCommand, LoginDoctorResult> handler,
+            ICommandHandler<LoginDoctorCommand, TokenResponse> handler,
             CancellationToken cancellationToken) =>
         {
             var command = new LoginDoctorCommand(request.Email, request.Password);
 
-            Result<LoginDoctorResult> result = await handler.Handle(command, cancellationToken);
+            Result<TokenResponse> result = await handler.Handle(command, cancellationToken);
 
             return result.ToApiResponse();
         })
         .WithTags(Tags.Auth);
     }
 }
+

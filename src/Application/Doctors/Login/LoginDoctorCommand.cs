@@ -1,8 +1,8 @@
 using Application.Abstractions.Messaging;
+using Application.Doctors.VerifyOtp;
 
 namespace Application.Doctors.Login;
 
-public sealed record LoginDoctorResult(Guid AccountId, Guid OtpSessionId);
-
 public sealed record LoginDoctorCommand(string Email, string Password)
-    : ICommand<LoginDoctorResult>;
+    : ICommand<TokenResponse>;
+
