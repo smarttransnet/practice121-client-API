@@ -16,7 +16,6 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Google.Apis.Auth" />
     <PackageReference Include="BCrypt.Net-Next" />
-    <PackageReference Include="SendGrid" />
   </ItemGroup>
 
   <ItemGroup>

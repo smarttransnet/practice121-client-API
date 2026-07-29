@@ -94,12 +94,30 @@ internal sealed class OtpService : IOtpService
         var session = await _context.OtpSessions
             .SingleOrDefaultAsync(s => s.Id == sessionId, cancellationToken);
 
-        if (session == null)
+        if (session == null || session.Verified)
         {
             return Result.Failure(DoctorErrors.OtpSessionNotFound);
         }
 
-        // BYPASSED FOR TESTING: Any code entered will succeed
+        if (_dateTimeProvider.UtcNow > session.ExpiresAt)
+        {
+            return Result.Failure(DoctorErrors.OtpExpired);
+        }
+
+        if (session.Attempts >= 5)
+        {
+            return Result.Failure(DoctorErrors.OtpMaxAttemptsExceeded);
+        }
+
+        bool isValid = BCrypt.Net.BCrypt.Verify(otpCode.Trim(), session.OtpHash);
+
+        if (!isValid)
+        {
+            session.Attempts++;
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Failure(DoctorErrors.OtpInvalid);
+        }
+
         session.Verified = true;
         await _context.SaveChangesAsync(cancellationToken);
         return Result.Success();
