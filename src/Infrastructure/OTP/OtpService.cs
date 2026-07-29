@@ -2,6 +2,7 @@ using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Domain.Doctors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SharedKernel;
 
 namespace Infrastructure.OTP;
@@ -12,17 +13,20 @@ internal sealed class OtpService : IOtpService
     private readonly IEmailService _emailService;
     private readonly ISmsService _smsService;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly ILogger<OtpService> _logger;
 
     public OtpService(
         IApplicationDbContext context,
         IEmailService emailService,
         ISmsService smsService,
-        IDateTimeProvider dateTimeProvider)
+        IDateTimeProvider dateTimeProvider,
+        ILogger<OtpService> logger)
     {
         _context = context;
         _emailService = emailService;
         _smsService = smsService;
         _dateTimeProvider = dateTimeProvider;
+        _logger = logger;
     }
 
     public async Task<Guid> GenerateAndSendOtpAsync(
@@ -53,11 +57,21 @@ internal sealed class OtpService : IOtpService
         _context.OtpSessions.Add(session);
         await _context.SaveChangesAsync(cancellationToken);
 
-        // 4. Send verification message based on selected channel
+        // 4. Send verification message in background task for instant API response
         if (channel == OtpChannel.MOBILE)
         {
             string smsText = $"Practice121: Your verification code is : {otpCode}. It expires in 10 minutes. If you didn't request this code, please ignore this message.";
-            await _smsService.SendSmsAsync(destination, smsText, cancellationToken);
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _smsService.SendSmsAsync(destination, smsText, CancellationToken.None);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send background SMS OTP to {Destination}", destination);
+                }
+            }, CancellationToken.None);
         }
         else
         {
@@ -80,7 +94,17 @@ internal sealed class OtpService : IOtpService
                     <p style="color: #94a3b8; font-size: 12px; text-align: center; margin: 0;">Practice121 Medical Professional Network</p>
                 </div>
                 """;
-            await _emailService.SendEmailAsync(destination, subject, htmlBody, cancellationToken);
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _emailService.SendEmailAsync(destination, subject, htmlBody, CancellationToken.None);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send background Email OTP to {Destination}", destination);
+                }
+            }, CancellationToken.None);
         }
 
         return session.Id;
