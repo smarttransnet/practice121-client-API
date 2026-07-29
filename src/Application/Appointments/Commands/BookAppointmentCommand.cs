@@ -60,21 +60,28 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
 
         var visitDateTime = request.VisitDate.ToDateTime(TimeOnly.MinValue);
 
-        // Capacity check (only if MaxPatients is set)
+        // Capacity check per session (only if MaxPatients is set)
         if (practiceCentre.MaxPatients.HasValue)
         {
-            var currentCount = await dbContext.PatientQueueTickets
-                .CountAsync(t =>
+            var countQuery = dbContext.PatientQueueTickets
+                .Where(t =>
                     t.PracticeCentreId == request.PracticeCentreId &&
                     t.DoctorId == request.DoctorAccountId &&
-                    t.VisitDate == visitDateTime,
-                    cancellationToken);
+                    t.VisitDate == visitDateTime &&
+                    t.Status != PatientQueueStatus.Cancelled);
+
+            if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+            {
+                countQuery = countQuery.Where(t => t.SessionId == request.SessionId.Value);
+            }
+
+            var currentCount = await countQuery.CountAsync(cancellationToken);
 
             if (currentCount >= practiceCentre.MaxPatients.Value)
             {
                 return Result.Failure<BookAppointmentResult>(
                     new Error("Appointment.NoAvailability",
-                        "No appointment slots are available for the selected date.",
+                        "No appointment slots are available for the selected session.",
                         ErrorType.Validation));
             }
         }
