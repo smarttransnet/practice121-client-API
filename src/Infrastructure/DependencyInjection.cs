@@ -97,6 +97,7 @@ public static class DependencyInjection
         services.AddSingleton<ITokenProvider, TokenProvider>();
 
         // Doctor Portal services
+        services.AddHttpClient();
         services.AddScoped<IGoogleAuthService, GoogleAuthService>();
         services.AddScoped<IOtpService, OtpService>();
         services.AddScoped<IEmailService, EmailService>();
