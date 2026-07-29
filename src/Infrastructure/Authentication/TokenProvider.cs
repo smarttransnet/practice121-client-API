@@ -49,7 +49,9 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
         {
             Subject = new ClaimsIdentity(
             [
+                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+                new Claim(ClaimTypes.Email, account.Email),
                 new Claim(JwtRegisteredClaimNames.Email, account.Email),
                 new Claim("auth_provider", account.AuthProvider.ToString()),
                 new Claim("status", account.Status.ToString())
