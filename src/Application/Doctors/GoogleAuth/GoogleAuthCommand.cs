@@ -1,8 +1,8 @@
+using Application.Abstractions.Authentication;
 using Application.Abstractions.Messaging;
+using Application.Doctors.VerifyOtp;
 
 namespace Application.Doctors.GoogleAuth;
 
-public sealed record GoogleAuthResult(Guid AccountId, Guid OtpSessionId);
-
 public sealed record GoogleAuthCommand(string IdToken)
-    : ICommand<GoogleAuthResult>;
+    : ICommand<TokenResponse>;

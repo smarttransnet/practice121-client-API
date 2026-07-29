@@ -1,3 +1,5 @@
+using Application.Abstractions.Authentication;
+using Application.Doctors.VerifyOtp;
 using Application.Abstractions.Messaging;
 using Application.Doctors.GoogleAuth;
 using SharedKernel;
@@ -13,12 +15,12 @@ internal sealed class Google : IEndpoint
     {
         app.MapPost("api/auth/google", async (
             Request request,
-            ICommandHandler<GoogleAuthCommand, GoogleAuthResult> handler,
+            ICommandHandler<GoogleAuthCommand, TokenResponse> handler,
             CancellationToken cancellationToken) =>
         {
             var command = new GoogleAuthCommand(request.IdToken);
 
-            Result<GoogleAuthResult> result = await handler.Handle(command, cancellationToken);
+            Result<TokenResponse> result = await handler.Handle(command, cancellationToken);
 
             return result.ToApiResponse();
         })

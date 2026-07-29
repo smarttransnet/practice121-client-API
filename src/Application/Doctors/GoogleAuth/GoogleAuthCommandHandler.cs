@@ -1,5 +1,6 @@
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
+using Application.Doctors.VerifyOtp;
 using Application.Abstractions.Messaging;
 using Domain.Doctors;
 using Microsoft.EntityFrameworkCore;
@@ -7,44 +8,46 @@ using SharedKernel;
 
 namespace Application.Doctors.GoogleAuth;
 
-internal sealed class GoogleAuthCommandHandler : ICommandHandler<GoogleAuthCommand, GoogleAuthResult>
+internal sealed class GoogleAuthCommandHandler : ICommandHandler<GoogleAuthCommand, TokenResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IGoogleAuthService _googleAuthService;
-    private readonly IOtpService _otpService;
+    private readonly ITokenProvider _tokenProvider;
     private readonly IDateTimeProvider _dateTimeProvider;
 
     public GoogleAuthCommandHandler(
         IApplicationDbContext context,
         IGoogleAuthService googleAuthService,
-        IOtpService otpService,
+        ITokenProvider tokenProvider,
         IDateTimeProvider dateTimeProvider)
     {
         _context = context;
         _googleAuthService = googleAuthService;
-        _otpService = otpService;
+        _tokenProvider = tokenProvider;
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<Result<GoogleAuthResult>> Handle(GoogleAuthCommand command, CancellationToken cancellationToken)
+    public async Task<Result<TokenResponse>> Handle(GoogleAuthCommand command, CancellationToken cancellationToken)
     {
         // 1. Verify token with Google
         GoogleUserResult? googleUser = await _googleAuthService.VerifyTokenAsync(command.IdToken, cancellationToken);
         if (googleUser == null)
         {
-            return Result.Failure<GoogleAuthResult>(DoctorErrors.InvalidGoogleToken);
+            return Result.Failure<TokenResponse>(DoctorErrors.InvalidGoogleToken);
         }
 
         string emailNormalized = googleUser.Email.ToLowerInvariant().Trim();
 
         // 2. Query DoctorAccounts by GoogleSubId
         DoctorAccount? account = await _context.DoctorAccounts
+            .Include(a => a.Profile)
             .SingleOrDefaultAsync(a => a.GoogleSubId == googleUser.Sub, cancellationToken);
 
         if (account == null)
         {
             // If sub not found, check if email already registered (e.g. via manual registration)
             account = await _context.DoctorAccounts
+                .Include(a => a.Profile)
                 .SingleOrDefaultAsync(a => a.Email == emailNormalized, cancellationToken);
 
             if (account != null)
@@ -96,13 +99,33 @@ internal sealed class GoogleAuthCommandHandler : ICommandHandler<GoogleAuthComma
             }
         }
 
-        // 3. Generate & Send OTP for MFA
-        Guid otpSessionId = await _otpService.GenerateAndSendOtpAsync(
-            account.Id, 
-            account.Email, 
-            OtpChannel.EMAIL, 
-            cancellationToken);
+        // 3. Set Account status to ACTIVE if PENDING
+        if (account.Status == AccountStatus.PENDING)
+        {
+            account.Status = AccountStatus.ACTIVE;
+        }
 
-        return new GoogleAuthResult(account.Id, otpSessionId);
+        // 4. Generate JWT tokens
+        string accessToken = _tokenProvider.Create(account);
+        string refreshToken = _tokenProvider.CreateRefreshToken();
+
+        // 5. Store Refresh Token
+        account.RefreshToken = refreshToken;
+        account.RefreshTokenExpiry = _dateTimeProvider.UtcNow.AddDays(7);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        // 6. Return response
+        string completionStatus = account.Profile?.CompletionStatus.ToString() ?? nameof(ProfileCompletionStatus.MINIMAL);
+        string fullName = account.Profile?.FullName ?? string.Empty;
+
+        return new TokenResponse(
+            accessToken,
+            refreshToken,
+            completionStatus,
+            account.Id,
+            account.Email,
+            fullName
+        );
     }
 }
