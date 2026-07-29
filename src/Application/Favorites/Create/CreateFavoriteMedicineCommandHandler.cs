@@ -30,10 +30,12 @@ internal sealed class CreateFavoriteMedicineCommandHandler(
         string? doctorSpecialty = profile?.Specialty;
 
 #pragma warning disable CA1862, CA1304, CA1311
-        bool exists = await context.FavoriteMedicines.AsNoTracking()
+        bool exists = !string.IsNullOrWhiteSpace(request.GenericName) && !string.IsNullOrWhiteSpace(request.Category) &&
+            await context.FavoriteMedicines.AsNoTracking()
             .AnyAsync(f => f.DoctorId == doctor.Id && 
-                           f.GenericName.ToLower() == request.GenericName.ToLower() &&
-                           f.Category.ToLower() == request.Category.ToLower(), 
+                           f.GenericName != null && f.Category != null &&
+                           f.GenericName.ToLower() == request.GenericName!.ToLower() &&
+                           f.Category.ToLower() == request.Category!.ToLower(), 
                            cancellationToken);
 #pragma warning restore CA1862, CA1304, CA1311
                            
@@ -45,9 +47,9 @@ internal sealed class CreateFavoriteMedicineCommandHandler(
         var medicine = new FavoriteMedicine
         {
             DoctorId = doctor.Id,
-            GenericName = request.GenericName.Trim(),
+            GenericName = string.IsNullOrWhiteSpace(request.GenericName) ? null : request.GenericName.Trim(),
             BrandName = string.IsNullOrWhiteSpace(request.BrandName) ? null : request.BrandName.Trim(),
-            Category = request.Category.Trim(),
+            Category = string.IsNullOrWhiteSpace(request.Category) ? null : request.Category.Trim(),
             Dose = string.IsNullOrWhiteSpace(request.Dose) ? null : request.Dose.Trim(),
             Frequency = string.IsNullOrWhiteSpace(request.Frequency) ? null : request.Frequency.Trim(),
             Duration = string.IsNullOrWhiteSpace(request.Duration) ? null : request.Duration.Trim(),

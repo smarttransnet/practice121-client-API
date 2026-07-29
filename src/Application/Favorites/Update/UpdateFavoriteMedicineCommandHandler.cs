@@ -24,11 +24,13 @@ internal sealed class UpdateFavoriteMedicineCommandHandler(
         }
 
 #pragma warning disable CA1862, CA1304, CA1311
-        bool duplicateExists = await context.FavoriteMedicines.AsNoTracking()
+        bool duplicateExists = !string.IsNullOrWhiteSpace(request.GenericName) && !string.IsNullOrWhiteSpace(request.Category) &&
+            await context.FavoriteMedicines.AsNoTracking()
             .AnyAsync(f => f.DoctorId == userContext.UserId &&
                            f.Id != request.Id &&
-                           f.GenericName.ToLower() == request.GenericName.ToLower() &&
-                           f.Category.ToLower() == request.Category.ToLower(),
+                           f.GenericName != null && f.Category != null &&
+                           f.GenericName.ToLower() == request.GenericName!.ToLower() &&
+                           f.Category.ToLower() == request.Category!.ToLower(),
                            cancellationToken);
 #pragma warning restore CA1862, CA1304, CA1311
 
@@ -37,9 +39,9 @@ internal sealed class UpdateFavoriteMedicineCommandHandler(
             return Result.Failure(Error.Conflict("FavoriteMedicine.Duplicate", "Another medicine with this name and category already exists in your favorites."));
         }
 
-        medicine.GenericName = request.GenericName.Trim();
+        medicine.GenericName = string.IsNullOrWhiteSpace(request.GenericName) ? null : request.GenericName.Trim();
         medicine.BrandName = string.IsNullOrWhiteSpace(request.BrandName) ? null : request.BrandName.Trim();
-        medicine.Category = request.Category.Trim();
+        medicine.Category = string.IsNullOrWhiteSpace(request.Category) ? null : request.Category.Trim();
         medicine.Dose = string.IsNullOrWhiteSpace(request.Dose) ? null : request.Dose.Trim();
         medicine.Frequency = string.IsNullOrWhiteSpace(request.Frequency) ? null : request.Frequency.Trim();
         medicine.Duration = string.IsNullOrWhiteSpace(request.Duration) ? null : request.Duration.Trim();

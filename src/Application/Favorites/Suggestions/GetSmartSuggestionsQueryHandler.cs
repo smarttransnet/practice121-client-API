@@ -39,16 +39,16 @@ internal sealed class GetSmartSuggestionsQueryHandler(
         {
             string q = request.Query.Trim().ToLower(CultureInfo.InvariantCulture);
 #pragma warning disable CA1862, CA1304, CA1311, IDE0047
-            queryable = queryable.Where(f => f.GenericName.ToLower().Contains(q) || (f.BrandName != null && f.BrandName.ToLower().Contains(q)));
+            queryable = queryable.Where(f => (f.GenericName != null && f.GenericName.ToLower().Contains(q)) || (f.BrandName != null && f.BrandName.ToLower().Contains(q)));
 #pragma warning restore CA1862, CA1304, CA1311, IDE0047
         }
 
         var suggestions = await queryable
             .GroupBy(f => new
             {
-                GenericName = f.GenericName.Trim(),
+                GenericName = f.GenericName == null ? "" : f.GenericName.Trim(),
                 BrandName = f.BrandName == null ? "" : f.BrandName.Trim(),
-                Category = f.Category.Trim(),
+                Category = f.Category == null ? "" : f.Category.Trim(),
                 Dose = f.Dose == null ? "" : f.Dose.Trim(),
                 Frequency = f.Frequency == null ? "" : f.Frequency.Trim(),
                 Duration = f.Duration == null ? "" : f.Duration.Trim()

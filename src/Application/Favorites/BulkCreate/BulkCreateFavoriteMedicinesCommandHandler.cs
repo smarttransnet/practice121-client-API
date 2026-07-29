@@ -37,9 +37,9 @@ internal sealed class BulkCreateFavoriteMedicinesCommandHandler(
         var medicinesToAdd = request.Medicines.Select(m => new FavoriteMedicine
         {
             DoctorId = doctor.Id,
-            GenericName = m.GenericName.Trim(),
+            GenericName = string.IsNullOrWhiteSpace(m.GenericName) ? null : m.GenericName.Trim(),
             BrandName = string.IsNullOrWhiteSpace(m.BrandName) ? null : m.BrandName.Trim(),
-            Category = m.Category.Trim(),
+            Category = string.IsNullOrWhiteSpace(m.Category) ? null : m.Category.Trim(),
             Dose = string.IsNullOrWhiteSpace(m.Dose) ? null : m.Dose.Trim(),
             Frequency = string.IsNullOrWhiteSpace(m.Frequency) ? null : m.Frequency.Trim(),
             Duration = string.IsNullOrWhiteSpace(m.Duration) ? null : m.Duration.Trim(),
