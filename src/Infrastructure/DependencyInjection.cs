@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SharedKernel;
 using HealthChecks.NpgSql;
+using Npgsql;
 
 namespace Infrastructure;
 
@@ -49,9 +50,34 @@ public static class DependencyInjection
         return services;
     }
 
+    private static string ResolveConnectionString(string? originalConnectionString)
+    {
+        if (string.IsNullOrWhiteSpace(originalConnectionString))
+        {
+            return string.Empty;
+        }
+
+        if (!OperatingSystem.IsWindows() && Directory.Exists("/cloudsql"))
+        {
+            var sockets = Directory.GetDirectories("/cloudsql");
+            if (sockets.Length > 0)
+            {
+                string socketPath = sockets[0];
+                var builder = new NpgsqlConnectionStringBuilder(originalConnectionString)
+                {
+                    Host = socketPath,
+                    Port = 0
+                };
+                return builder.ConnectionString;
+            }
+        }
+
+        return originalConnectionString;
+    }
+
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        string? connectionString = configuration.GetConnectionString("Database");
+        string connectionString = ResolveConnectionString(configuration.GetConnectionString("Database"));
 
         services.AddDbContext<ApplicationDbContext>(
             options => options
@@ -67,9 +93,11 @@ public static class DependencyInjection
 
     private static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
+        string connectionString = ResolveConnectionString(configuration.GetConnectionString("Database"));
+
         services
             .AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("Database")!);
+            .AddNpgSql(connectionString);
 
         return services;
     }
