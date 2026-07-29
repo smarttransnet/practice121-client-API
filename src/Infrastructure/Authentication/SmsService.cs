@@ -1,7 +1,8 @@
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Application.Abstractions.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
 
 namespace Infrastructure.Authentication;
 
@@ -24,7 +25,7 @@ internal sealed class SmsService : ISmsService
     public async Task SendSmsAsync(string mobileNumber, string message, CancellationToken cancellationToken = default)
     {
         string? smsApiKey = _configuration["Sms:ApiKey"];
-        string senderId = _configuration["Sms:SenderId"] ?? "Practice121";
+        string senderId = _configuration["Sms:SenderId"] ?? "TextLKDemo";
 
         if (string.IsNullOrWhiteSpace(smsApiKey) || smsApiKey.Equals("YOUR_SMS_API_KEY", StringComparison.OrdinalIgnoreCase))
         {
@@ -40,17 +41,7 @@ internal sealed class SmsService : ISmsService
 
         try
         {
-            // Parse Notify.lk API Key format: {user_id}|{api_key}
-            string userId = "";
-            string apiKey = smsApiKey;
-            if (smsApiKey.Contains('|'))
-            {
-                var parts = smsApiKey.Split('|', 2);
-                userId = parts[0].Trim();
-                apiKey = parts[1].Trim();
-            }
-
-            // Format phone number to standard Sri Lanka format (e.g. 0771234567 -> 94771234567)
+            // Format phone number to standard Sri Lanka format (e.g. 0710000000 -> 94710000000)
             string formattedPhone = mobileNumber.Trim().Replace(" ", "").Replace("-", "").Replace("+", "");
             if (formattedPhone.StartsWith('0'))
             {
@@ -59,19 +50,30 @@ internal sealed class SmsService : ISmsService
 
             using var client = _httpClientFactory.CreateClient();
 
-            // Build request URL for Notify.lk API v1
-            var requestUrl = $"https://app.notify.lk/api/v1/send?user_id={Uri.EscapeDataString(userId)}&api_key={Uri.EscapeDataString(apiKey)}&sender_id={Uri.EscapeDataString(senderId)}&to={Uri.EscapeDataString(formattedPhone)}&message={Uri.EscapeDataString(message)}";
+            // Set Bearer authentication header and JSON accept header
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", smsApiKey.Trim());
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = await client.GetAsync(requestUrl, cancellationToken);
+            var payload = new
+            {
+                recipient = formattedPhone,
+                sender_id = senderId,
+                type = "plain",
+                message
+            };
+
+            string requestUrl = _configuration["Sms:ApiUrl"] ?? throw new InvalidOperationException("Sms:ApiUrl configuration is missing.");
+
+            var response = await client.PostAsJsonAsync(requestUrl, payload, cancellationToken);
             string responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
-                _logger.LogInformation("SMS successfully dispatched via Notify.lk to {MobileNumber}. Response: {Response}", mobileNumber, responseBody);
+                _logger.LogInformation("SMS successfully dispatched via Text.lk v3 to {MobileNumber}. Response: {Response}", mobileNumber, responseBody);
             }
             else
             {
-                _logger.LogError("Failed to send SMS via Notify.lk to {MobileNumber}. Status: {Status}, Response: {ResponseBody}", mobileNumber, response.StatusCode, responseBody);
+                _logger.LogError("Failed to send SMS via Text.lk v3 to {MobileNumber}. Status: {Status}, Response: {ResponseBody}", mobileNumber, response.StatusCode, responseBody);
             }
         }
         catch (Exception ex)
