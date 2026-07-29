@@ -59,17 +59,14 @@ public static class DependencyInjection
 
         if (!OperatingSystem.IsWindows() && Directory.Exists("/cloudsql"))
         {
-            var sockets = Directory.GetDirectories("/cloudsql");
-            if (sockets.Length > 0)
+            string[] entries = Directory.GetFileSystemEntries("/cloudsql");
+            string socketPath = entries.FirstOrDefault() ?? "/cloudsql/note365:asia-southeast1:practice121fe";
+            var builder = new NpgsqlConnectionStringBuilder(originalConnectionString)
             {
-                string socketPath = sockets[0];
-                var builder = new NpgsqlConnectionStringBuilder(originalConnectionString)
-                {
-                    Host = socketPath,
-                    Port = 0
-                };
-                return builder.ConnectionString;
-            }
+                Host = socketPath,
+                Port = 0
+            };
+            return builder.ConnectionString;
         }
 
         return originalConnectionString;
