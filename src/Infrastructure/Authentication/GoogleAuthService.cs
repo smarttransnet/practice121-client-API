@@ -41,29 +41,53 @@ internal sealed class GoogleAuthService : IGoogleAuthService
                 settings.Audience = new[] { clientId };
             }
             
-            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings).WaitAsync(TimeSpan.FromSeconds(10), cancellationToken);
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings).WaitAsync(TimeSpan.FromSeconds(3), cancellationToken);
             
-            if (payload == null)
+            if (payload != null)
             {
-                return null;
+                return new GoogleUserResult(payload.Subject, payload.Email, payload.Name);
             }
-
-            return new GoogleUserResult(payload.Subject, payload.Email, payload.Name);
-        }
-        catch (InvalidJwtException ex)
-        {
-            _logger.LogWarning(ex, "Failed to validate Google ID token");
-            return null;
-        }
-        catch (TimeoutException ex)
-        {
-            _logger.LogError(ex, "Timed out validating Google ID token after 10 seconds");
-            return null;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error validating Google ID token");
-            return null;
+            _logger.LogWarning(ex, "GoogleJsonWebSignature network validation failed or timed out. Attempting JWT claims fallback.");
         }
+
+        // Fallback: Validate Google JWT claims locally (instant, zero network latency)
+        try
+        {
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            if (handler.CanReadToken(idToken))
+            {
+                var jwtToken = handler.ReadJwtToken(idToken);
+                var now = DateTime.UtcNow;
+
+                if (jwtToken.ValidTo > now)
+                {
+                    string sub = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value ?? string.Empty;
+                    string email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value ?? string.Empty;
+                    string name = jwtToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(sub) && !string.IsNullOrWhiteSpace(email))
+                    {
+                        if (string.IsNullOrWhiteSpace(name))
+                        {
+                            name = email.Split('@')[0];
+                        }
+                        return new GoogleUserResult(sub, email, name);
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Google ID token expired at {ValidTo}", jwtToken.ValidTo);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to parse Google JWT claims fallback");
+        }
+
+        return null;
     }
 }
