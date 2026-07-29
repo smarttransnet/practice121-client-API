@@ -79,8 +79,8 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
             }
         }
 
-        // Get next queue number / order
-        var lastTicket = await dbContext.PatientQueueTickets
+        // Get next queue order globally for visitDate
+        var lastOrderTicket = await dbContext.PatientQueueTickets
             .Where(q =>
                 q.PracticeCentreId == request.PracticeCentreId &&
                 q.DoctorId == request.DoctorAccountId &&
@@ -88,8 +88,33 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
             .OrderByDescending(q => q.QueueOrder)
             .FirstOrDefaultAsync(cancellationToken);
 
-        int nextOrder = (lastTicket?.QueueOrder ?? 0) + 1;
-        int nextNumber = (lastTicket?.QueueNumber ?? 0) + 1;
+        int nextOrder = (lastOrderTicket?.QueueOrder ?? 0) + 1;
+
+        // Queue number sequence per session
+        int nextNumber = 1;
+        if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+        {
+            var lastSessionTicket = await dbContext.PatientQueueTickets
+                .Where(q => q.PracticeCentreId == request.PracticeCentreId
+                            && q.DoctorId == request.DoctorAccountId
+                            && q.VisitDate == visitDateTime
+                            && q.SessionId == request.SessionId.Value)
+                .OrderByDescending(q => q.QueueNumber)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            nextNumber = (lastSessionTicket?.QueueNumber ?? 0) + 1;
+        }
+        else
+        {
+            var lastTicket = await dbContext.PatientQueueTickets
+                .Where(q => q.PracticeCentreId == request.PracticeCentreId
+                            && q.DoctorId == request.DoctorAccountId
+                            && q.VisitDate == visitDateTime)
+                .OrderByDescending(q => q.QueueNumber)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            nextNumber = (lastTicket?.QueueNumber ?? 0) + 1;
+        }
 
         var ticket = new PatientQueueTicket
         {
@@ -101,6 +126,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
             DoctorId = request.DoctorAccountId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDateTime,
+            SessionId = request.SessionId,
             Status = PatientQueueStatus.Waiting,
             Priority = PatientQueuePriority.Normal,
             CreatedAt = DateTime.UtcNow
