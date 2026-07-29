@@ -67,30 +67,50 @@ internal sealed class GetCentreAvailabilityQueryHandler(IApplicationDbContext db
             return new List<DayAvailabilityResponse>();
         }
 
-        // Count existing tickets per date in one query
+        // Count existing tickets per date and session in one query
         var fromDateTime = request.From.ToDateTime(TimeOnly.MinValue);
         var toDateTime = request.To.ToDateTime(TimeOnly.MaxValue);
 
-        var ticketCounts = await dbContext.PatientQueueTickets
+        var tickets = await dbContext.PatientQueueTickets
             .AsNoTracking()
             .Where(t =>
                 t.PracticeCentreId == request.PracticeCentreId &&
                 t.DoctorId == request.DoctorAccountId &&
                 t.VisitDate >= fromDateTime &&
-                t.VisitDate <= toDateTime)
-            .GroupBy(t => t.VisitDate.Date)
-            .Select(g => new { Date = g.Key, Count = g.Count() })
+                t.VisitDate <= toDateTime &&
+                t.Status != Domain.PatientQueue.PatientQueueStatus.Cancelled)
+            .Select(t => new { VisitDate = t.VisitDate.Date, t.SessionId })
             .ToListAsync(cancellationToken);
 
-        var countMap = ticketCounts.ToDictionary(
-            x => DateOnly.FromDateTime(x.Date),
-            x => x.Count);
+        var ticketsByDate = tickets
+            .GroupBy(t => DateOnly.FromDateTime(t.VisitDate))
+            .ToDictionary(g => g.Key, g => g.ToList());
 
         var result = availableDates.Select(date =>
         {
-            var booked = countMap.TryGetValue(date, out var c) ? c : 0;
+            var dayTickets = ticketsByDate.TryGetValue(date, out var list) ? list : [];
+            var booked = dayTickets.Count;
             var maxPatients = practiceCentre.MaxPatients;
-            var isFull = maxPatients.HasValue && booked >= maxPatients.Value;
+            bool isFull = false;
+
+            if (maxPatients.HasValue)
+            {
+                var dayAbbr = date.DayOfWeek.ToString()[..3].ToUpperInvariant();
+                var activeSessionsCount = practiceCentre.SessionGroups
+                    .Where(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)))
+                    .SelectMany(sg => sg.TimeBlocks)
+                    .Count();
+
+                if (activeSessionsCount == 0)
+                {
+                    activeSessionsCount = practiceCentre.SessionGroups
+                        .Count(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
+                }
+
+                int totalCapacity = (activeSessionsCount > 0 ? activeSessionsCount : 1) * maxPatients.Value;
+                isFull = booked >= totalCapacity;
+            }
+
             return new DayAvailabilityResponse(date, maxPatients, booked, isFull);
         }).ToList();
 
