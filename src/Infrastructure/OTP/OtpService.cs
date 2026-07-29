@@ -98,7 +98,16 @@ internal sealed class OtpService : IOtpService
             {
                 try
                 {
-                    await _emailService.SendEmailAsync(destination, subject, htmlBody, CancellationToken.None);
+                    // EMAIL SENDING DISABLED: Re-evaluate email call site here if needed.
+                    bool enableEmailSending = false;
+                    if (enableEmailSending)
+                    {
+                        await _emailService.SendEmailAsync(destination, subject, htmlBody, CancellationToken.None);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("[DISABLED] Skipped sending background Email OTP to {Destination}. Subject: '{Subject}'", destination, subject);
+                    }
                 }
                 catch (Exception ex)
                 {

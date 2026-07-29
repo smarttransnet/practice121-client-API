@@ -94,9 +94,16 @@ internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPassw
             </div>
             """;
 
-        await _emailService.SendEmailAsync(account.Email, subject, htmlBody, cancellationToken);
-
-        _logger.LogInformation("Password reset email dispatched for account {AccountId}.", account.Id);
+        // EMAIL SENDING DISABLED: Re-evaluate email call site here if needed.
+        bool enableEmailSending = false;
+        if (enableEmailSending)
+        {
+            await _emailService.SendEmailAsync(account.Email, subject, htmlBody, cancellationToken);
+        }
+        else
+        {
+            _logger.LogInformation("[DISABLED] Password reset email dispatch skipped for account {AccountId}. Subject: '{Subject}'", account.Id, subject);
+        }
 
         return genericMessage;
     }
