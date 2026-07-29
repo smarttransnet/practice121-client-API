@@ -41,7 +41,7 @@ internal sealed class GoogleAuthService : IGoogleAuthService
                 settings.Audience = new[] { clientId };
             }
             
-            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings).WaitAsync(TimeSpan.FromSeconds(10), cancellationToken);
             
             if (payload == null)
             {
@@ -53,6 +53,11 @@ internal sealed class GoogleAuthService : IGoogleAuthService
         catch (InvalidJwtException ex)
         {
             _logger.LogWarning(ex, "Failed to validate Google ID token");
+            return null;
+        }
+        catch (TimeoutException ex)
+        {
+            _logger.LogError(ex, "Timed out validating Google ID token after 10 seconds");
             return null;
         }
         catch (Exception ex)
