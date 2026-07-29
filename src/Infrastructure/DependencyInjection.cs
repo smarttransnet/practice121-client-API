@@ -63,8 +63,7 @@ public static class DependencyInjection
             string socketPath = entries.FirstOrDefault() ?? "/cloudsql/note365:asia-southeast1:practice121fe";
             var builder = new NpgsqlConnectionStringBuilder(originalConnectionString)
             {
-                Host = socketPath,
-                Port = 0
+                Host = socketPath
             };
             return builder.ConnectionString;
         }
