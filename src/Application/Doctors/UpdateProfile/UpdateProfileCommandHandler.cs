@@ -53,14 +53,34 @@ internal sealed class UpdateProfileCommandHandler : ICommandHandler<UpdateProfil
 
         if (command.SlmcRegNumber != null)
         {
-            profile.SlmcRegNumber = string.IsNullOrWhiteSpace(command.SlmcRegNumber) ? null : command.SlmcRegNumber.Trim();
+            string? normalizedSlmc = string.IsNullOrWhiteSpace(command.SlmcRegNumber) ? null : command.SlmcRegNumber.Trim();
+            if (normalizedSlmc != null && normalizedSlmc != profile.SlmcRegNumber)
+            {
+                bool slmcExists = await _context.DoctorProfiles.AsNoTracking()
+                    .AnyAsync(p => p.Id != profile.Id && p.SlmcRegNumber == normalizedSlmc, cancellationToken);
+                if (slmcExists)
+                {
+                    return Result.Failure(Error.Conflict("DoctorProfile.DuplicateSlmc", "A doctor profile with this SLMC Registration Number already exists."));
+                }
+            }
+            profile.SlmcRegNumber = normalizedSlmc;
         }
 
         if (command.NicNumber != null)
         {
-            profile.NicNumber = string.IsNullOrWhiteSpace(command.NicNumber)
+            string? normalizedNic = string.IsNullOrWhiteSpace(command.NicNumber)
                 ? null
                 : (SriLankanNicDecoder.NormalizeNic(command.NicNumber) ?? command.NicNumber.Trim());
+            if (normalizedNic != null && normalizedNic != profile.NicNumber)
+            {
+                bool nicExists = await _context.DoctorProfiles.AsNoTracking()
+                    .AnyAsync(p => p.Id != profile.Id && p.NicNumber == normalizedNic, cancellationToken);
+                if (nicExists)
+                {
+                    return Result.Failure(Error.Conflict("DoctorProfile.DuplicateNic", "A doctor profile with this NIC number already exists."));
+                }
+            }
+            profile.NicNumber = normalizedNic;
         }
 
         if (command.MobileNumber != null)
@@ -148,7 +168,27 @@ internal sealed class UpdateProfileCommandHandler : ICommandHandler<UpdateProfil
         }
 
         // 4. Save changes
-        await _context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex)
+        {
+            string message = ex.InnerException?.Message ?? ex.Message;
+            if (message.Contains("23505", StringComparison.OrdinalIgnoreCase) || message.Contains("duplicate key", StringComparison.OrdinalIgnoreCase))
+            {
+                if (message.Contains("nic", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Result.Failure(Error.Conflict("DoctorProfile.DuplicateNic", "A doctor profile with this NIC number already exists."));
+                }
+                if (message.Contains("slmc", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Result.Failure(Error.Conflict("DoctorProfile.DuplicateSlmc", "A doctor profile with this SLMC Registration Number already exists."));
+                }
+                return Result.Failure(Error.Conflict("DoctorProfile.DuplicateValue", "A unique profile field value already exists in another doctor account."));
+            }
+            throw;
+        }
 
         return Result.Success();
     }
