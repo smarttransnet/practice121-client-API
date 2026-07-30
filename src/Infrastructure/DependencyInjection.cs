@@ -57,14 +57,25 @@ public static class DependencyInjection
             return string.Empty;
         }
 
-        if (!OperatingSystem.IsWindows() && Directory.Exists("/cloudsql"))
+        if (!OperatingSystem.IsWindows())
         {
-            string[] entries = Directory.GetFileSystemEntries("/cloudsql");
-            string socketPath = entries.FirstOrDefault() ?? "/cloudsql/note365:asia-southeast1:practice121fe";
-            var builder = new NpgsqlConnectionStringBuilder(originalConnectionString)
+            var builder = new NpgsqlConnectionStringBuilder(originalConnectionString);
+
+            if (Directory.Exists("/cloudsql"))
             {
-                Host = socketPath
-            };
+                string[] entries = Directory.GetFileSystemEntries("/cloudsql");
+                string? socketDir = entries.FirstOrDefault(e => !e.EndsWith("README", StringComparison.OrdinalIgnoreCase) && Directory.Exists(e))
+                    ?? entries.FirstOrDefault(e => !e.EndsWith("README", StringComparison.OrdinalIgnoreCase));
+
+                if (!string.IsNullOrEmpty(socketDir))
+                {
+                    builder.Host = socketDir;
+                    return builder.ConnectionString;
+                }
+            }
+
+            // Fallback for Cloud Run gen2 execution environment
+            builder.Host = "/cloudsql/note365:asia-southeast1:practice121fe";
             return builder.ConnectionString;
         }
 
@@ -78,7 +89,13 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(
             options => options
                 .UseNpgsql(connectionString, npgsqlOptions =>
-                    npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
+                {
+                    npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default);
+                    npgsqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorCodesToAdd: null);
+                })
                 .UseSnakeCaseNamingConvention()
                 .ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning)));
 
