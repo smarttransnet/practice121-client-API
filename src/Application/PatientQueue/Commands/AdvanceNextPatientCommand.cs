@@ -10,6 +10,8 @@ using Domain.PatientQueue;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
+using Application.Abstractions.Realtime;
+
 namespace Application.PatientQueue.Commands;
 
 public record NextPatientResponse(
@@ -23,7 +25,9 @@ public record AdvanceNextPatientCommand(
     Guid? PracticeCentreId = null,
     DateTime? VisitDate = null) : ICommand<NextPatientResponse>;
 
-internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbContext)
+internal sealed class AdvanceNextPatientCommandHandler(
+    IApplicationDbContext dbContext,
+    IPatientQueueNotifier? notifier = null)
     : ICommandHandler<AdvanceNextPatientCommand, NextPatientResponse>
 {
     public async Task<Result<NextPatientResponse>> Handle(AdvanceNextPatientCommand request, CancellationToken cancellationToken)
@@ -72,9 +76,9 @@ internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbC
             activeTicket.CompletedAt = DateTime.UtcNow;
         }
 
-        // 2. Advance next queued patient (Waiting or Ready state)
+        // 2. Advance next queued patient (Only Ready state — skip patients still in Waiting state)
         var nextTicket = ticketsForDay
-            .Where(t => t.Status == PatientQueueStatus.Waiting || t.Status == PatientQueueStatus.Ready)
+            .Where(t => t.Status == PatientQueueStatus.Ready)
             .OrderBy(t => t.QueueOrder)
             .ThenBy(t => t.CreatedAt)
             .FirstOrDefault();
@@ -87,8 +91,13 @@ internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbC
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        // Count remaining waiting/ready tickets for the day
-        int remainingCount = ticketsForDay.Count(t => t.Status == PatientQueueStatus.Waiting || t.Status == PatientQueueStatus.Ready);
+        if (notifier != null && request.PracticeCentreId.HasValue)
+        {
+            await notifier.NotifyQueueUpdatedAsync(request.PracticeCentreId.Value, request.DoctorId, targetDate, cancellationToken);
+        }
+
+        // Count remaining ready tickets for the day
+        int remainingCount = ticketsForDay.Count(t => t.Status == PatientQueueStatus.Ready);
 
         // Hydrate Patient Names
         var relevantTickets = new List<PatientQueueTicket>();

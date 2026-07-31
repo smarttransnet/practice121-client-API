@@ -13,13 +13,17 @@ builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configu
 
 builder.Services.AddSwaggerGenWithAuth();
 
+builder.Services.AddSignalR();
+builder.Services.AddScoped<Application.Abstractions.Realtime.IPatientQueueNotifier, Web.Api.Infrastructure.PatientQueueNotifier>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.SetIsOriginAllowed(_ => true)
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -36,6 +40,7 @@ WebApplication app = builder.Build();
 app.UseCors("AllowFrontend");
 app.UseStaticFiles();
 app.MapEndpoints();
+app.MapHub<Web.Api.Hubs.PatientQueueHub>("/api/hubs/patient-queue");
 
 if (app.Environment.IsDevelopment())
 {
