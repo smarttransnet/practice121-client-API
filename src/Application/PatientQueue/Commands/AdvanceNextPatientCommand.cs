@@ -10,6 +10,8 @@ using Domain.PatientQueue;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
+using Application.Abstractions.Realtime;
+
 namespace Application.PatientQueue.Commands;
 
 public record NextPatientResponse(
@@ -23,7 +25,9 @@ public record AdvanceNextPatientCommand(
     Guid? PracticeCentreId = null,
     DateTime? VisitDate = null) : ICommand<NextPatientResponse>;
 
-internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbContext)
+internal sealed class AdvanceNextPatientCommandHandler(
+    IApplicationDbContext dbContext,
+    IPatientQueueNotifier? notifier = null)
     : ICommandHandler<AdvanceNextPatientCommand, NextPatientResponse>
 {
     public async Task<Result<NextPatientResponse>> Handle(AdvanceNextPatientCommand request, CancellationToken cancellationToken)
@@ -46,22 +50,25 @@ internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbC
                 .ToListAsync(cancellationToken);
         }
 
-        // Fallback 1: Query any doctor's tickets for targetDate if no match for specified DoctorId
-        if (!ticketsForDay.Any())
+        // Overtime / Extended Session Fallback: If session exceeds scheduled timestamp or crosses date boundary,
+        // include any active (InConsultation) or Ready ticket for this doctor and practice centre.
+        if (!ticketsForDay.Any(t => t.Status == PatientQueueStatus.Ready || t.Status == PatientQueueStatus.InConsultation))
         {
-            ticketsForDay = await query
-                .Where(q => q.VisitDate == targetDate)
+            var overtimeTickets = await query
+                .Where(q => (request.DoctorId == Guid.Empty || q.DoctorId == request.DoctorId)
+                         && (q.Status == PatientQueueStatus.InConsultation || q.Status == PatientQueueStatus.Ready))
                 .ToListAsync(cancellationToken);
-        }
 
-        // Fallback 2: Query active or waiting tickets overall if no tickets found for today
-        if (!ticketsForDay.Any())
-        {
-            ticketsForDay = await query
-                .Where(q => q.Status == PatientQueueStatus.InConsultation 
-                         || q.Status == PatientQueueStatus.Waiting 
-                         || q.Status == PatientQueueStatus.Ready)
-                .ToListAsync(cancellationToken);
+            if (overtimeTickets.Any())
+            {
+                foreach (var ot in overtimeTickets)
+                {
+                    if (!ticketsForDay.Any(existing => existing.Id == ot.Id))
+                    {
+                        ticketsForDay.Add(ot);
+                    }
+                }
+            }
         }
 
         // 1. Finalize current active patient in consultation
@@ -72,9 +79,9 @@ internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbC
             activeTicket.CompletedAt = DateTime.UtcNow;
         }
 
-        // 2. Advance next queued patient (Waiting or Ready state)
+        // 2. Advance next queued patient (Only Ready state — skip patients still in Waiting state)
         var nextTicket = ticketsForDay
-            .Where(t => t.Status == PatientQueueStatus.Waiting || t.Status == PatientQueueStatus.Ready)
+            .Where(t => t.Status == PatientQueueStatus.Ready)
             .OrderBy(t => t.QueueOrder)
             .ThenBy(t => t.CreatedAt)
             .FirstOrDefault();
@@ -87,8 +94,13 @@ internal sealed class AdvanceNextPatientCommandHandler(IApplicationDbContext dbC
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        // Count remaining waiting/ready tickets for the day
-        int remainingCount = ticketsForDay.Count(t => t.Status == PatientQueueStatus.Waiting || t.Status == PatientQueueStatus.Ready);
+        if (notifier != null && request.PracticeCentreId.HasValue)
+        {
+            await notifier.NotifyQueueUpdatedAsync(request.PracticeCentreId.Value, request.DoctorId, targetDate, cancellationToken);
+        }
+
+        // Count remaining ready tickets for the day
+        int remainingCount = ticketsForDay.Count(t => t.Status == PatientQueueStatus.Ready);
 
         // Hydrate Patient Names
         var relevantTickets = new List<PatientQueueTicket>();

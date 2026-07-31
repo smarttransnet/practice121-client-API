@@ -7,13 +7,17 @@ using Domain.PatientQueue;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
+using Application.Abstractions.Realtime;
+
 namespace Application.PatientQueue.Commands;
 
 public record UpdatePatientQueueTicketStatusCommand(
     Guid TicketId,
     PatientQueueStatus Status) : ICommand;
 
-internal sealed class UpdatePatientQueueTicketStatusCommandHandler(IApplicationDbContext dbContext)
+internal sealed class UpdatePatientQueueTicketStatusCommandHandler(
+    IApplicationDbContext dbContext,
+    IPatientQueueNotifier? notifier = null)
     : ICommandHandler<UpdatePatientQueueTicketStatusCommand>
 {
     public async Task<Result> Handle(UpdatePatientQueueTicketStatusCommand request, CancellationToken cancellationToken)
@@ -38,6 +42,11 @@ internal sealed class UpdatePatientQueueTicketStatusCommandHandler(IApplicationD
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        if (notifier != null)
+        {
+            await notifier.NotifyQueueUpdatedAsync(ticket.PracticeCentreId, ticket.DoctorId, ticket.VisitDate, cancellationToken);
+        }
 
         return Result.Success();
     }
