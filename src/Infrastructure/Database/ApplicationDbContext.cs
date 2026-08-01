@@ -34,6 +34,7 @@ public sealed class ApplicationDbContext(
     public DbSet<PatientAccount> PatientAccounts { get; set; }
     public DbSet<PatientQueueTicket> PatientQueueTickets { get; set; }
     public DbSet<PatientDocument> PatientDocuments { get; set; }
+    public DbSet<PatientOtpSession> PatientOtpSessions { get; set; }
 
     public DbSet<Domain.Locations.District> Districts { get; set; }
     public DbSet<Domain.Locations.MohArea> MohAreas { get; set; }

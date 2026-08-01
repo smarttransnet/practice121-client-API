@@ -143,6 +143,7 @@ public static class DependencyInjection
         services.AddScoped<IOtpService, OtpService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ISmsService, SmsService>();
+        services.AddSingleton<Application.Abstractions.SMS.ISmsTemplateService, Infrastructure.SMS.SmsTemplateService>();
 
         return services;
     }

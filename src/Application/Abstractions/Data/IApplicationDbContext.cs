@@ -25,6 +25,7 @@ public interface IApplicationDbContext
     DbSet<PatientAccount> PatientAccounts { get; }
     DbSet<PatientDocument> PatientDocuments { get; }
     DbSet<PatientQueueTicket> PatientQueueTickets { get; }
+    DbSet<PatientOtpSession> PatientOtpSessions { get; }
 
     DbSet<Domain.Locations.District> Districts { get; }
     DbSet<Domain.Locations.MohArea> MohAreas { get; }
