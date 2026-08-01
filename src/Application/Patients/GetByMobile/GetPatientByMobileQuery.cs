@@ -24,7 +24,9 @@ public sealed record PatientLookupResponse(
     PatientResponse PrimaryPatient,
     List<PatientResponse> Children);
 
-public sealed record GetPatientByMobileQuery(string MobileNumber) : IQuery<PatientLookupResponse?>;
+public sealed record GetPatientByMobileQuery(
+    string MobileNumber,
+    string? VerificationToken = null) : IQuery<PatientLookupResponse?>;
 
 internal sealed class GetPatientByMobileQueryHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetPatientByMobileQuery, PatientLookupResponse?>
@@ -33,6 +35,23 @@ internal sealed class GetPatientByMobileQueryHandler(IApplicationDbContext dbCon
     {
         string normalizedMobile = SriLankanPhoneValidator.NormalizeToE164(request.MobileNumber) ?? request.MobileNumber.Trim();
         string rawMobile = request.MobileNumber.Trim();
+
+        // Security Check: Verify valid verification token
+        if (string.IsNullOrWhiteSpace(request.VerificationToken))
+        {
+            return Result.Failure<PatientLookupResponse?>(
+                Error.Problem("Otp.Required", "OTP verification is required before loading patient records."));
+        }
+
+        var otpSession = await dbContext.PatientOtpSessions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.VerificationToken == request.VerificationToken && s.Verified, cancellationToken);
+
+        if (otpSession == null || otpSession.MobileNumber != normalizedMobile && otpSession.MobileNumber != rawMobile)
+        {
+            return Result.Failure<PatientLookupResponse?>(
+                Error.Problem("Otp.Unauthorized", "Invalid or unverified OTP verification token."));
+        }
 
         // Search for primary patient (or matching patient record)
         var primaryPatient = await dbContext.PatientAccounts
