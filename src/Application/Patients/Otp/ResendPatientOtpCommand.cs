@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Application.Abstractions.SMS;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SharedKernel;
 
 namespace Application.Patients.Otp;
@@ -25,7 +27,9 @@ internal sealed class ResendPatientOtpCommandHandler(
     ISmsService smsService,
     ISmsTemplateService smsTemplateService,
     IPasswordHasher passwordHasher,
-    IDateTimeProvider dateTimeProvider)
+    IDateTimeProvider dateTimeProvider,
+    FeatureFlags featureFlags,
+    ILogger<ResendPatientOtpCommandHandler> logger)
     : ICommandHandler<ResendPatientOtpCommand, ResendPatientOtpResponse>
 {
     private const int CooldownDurationSeconds = 60;
@@ -68,25 +72,37 @@ internal sealed class ResendPatientOtpCommandHandler(
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        string smsMessage = smsTemplateService.RenderTemplate(
-            SmsTemplateType.OtpVerification,
-            new Dictionary<string, string>
-            {
-                { "OTP", otpCode },
-                { "ApplicationName", "Practice121" }
-            });
-
-        _ = Task.Run(async () =>
+        bool smsOtpEnabled = featureFlags.SmsOtpEnabled;
+        if (smsOtpEnabled)
         {
-            try
+            string smsMessage = smsTemplateService.RenderTemplate(
+                SmsTemplateType.OtpVerification,
+                new Dictionary<string, string>
+                {
+                    { "OTP", otpCode },
+                    { "ApplicationName", "Practice121" }
+                });
+
+            _ = Task.Run(async () =>
             {
-                await smsService.SendSmsAsync(session.MobileNumber, smsMessage, CancellationToken.None);
-            }
-            catch
-            {
-                // Error logged in SmsService
-            }
-        }, CancellationToken.None);
+                try
+                {
+                    await smsService.SendSmsAsync(session.MobileNumber, smsMessage, CancellationToken.None);
+                }
+                catch
+                {
+                    // Error logged in SmsService
+                }
+            }, CancellationToken.None);
+        }
+        else
+        {
+            logger.LogInformation(
+                "[SMS OTP DISABLED] Skipped resending patient SMS OTP to {MobileNumber}. " +
+                "Any 6-digit numeric code will be accepted during verification. " +
+                "Set Features:SmsOtpEnabled=true to re-enable real SMS delivery.",
+                session.MobileNumber);
+        }
 
         return Result.Success(new ResendPatientOtpResponse(
             Success: true,

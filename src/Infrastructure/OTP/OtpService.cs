@@ -1,3 +1,5 @@
+using System.Linq;
+using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Domain.Doctors;
@@ -13,6 +15,7 @@ internal sealed class OtpService : IOtpService
     private readonly IEmailService _emailService;
     private readonly ISmsService _smsService;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly FeatureFlags _featureFlags;
     private readonly ILogger<OtpService> _logger;
 
     public OtpService(
@@ -20,12 +23,14 @@ internal sealed class OtpService : IOtpService
         IEmailService emailService,
         ISmsService smsService,
         IDateTimeProvider dateTimeProvider,
+        FeatureFlags featureFlags,
         ILogger<OtpService> logger)
     {
         _context = context;
         _emailService = emailService;
         _smsService = smsService;
         _dateTimeProvider = dateTimeProvider;
+        _featureFlags = featureFlags;
         _logger = logger;
     }
 
@@ -58,20 +63,32 @@ internal sealed class OtpService : IOtpService
         await _context.SaveChangesAsync(cancellationToken);
 
         // 4. Send verification message in background task for instant API response
+        bool smsOtpEnabled = _featureFlags.SmsOtpEnabled;
         if (channel == OtpChannel.MOBILE)
         {
-            string smsText = $"Practice121: Your verification code is : {otpCode}. It expires in 10 minutes. If you didn't request this code, please ignore this message.";
-            _ = Task.Run(async () =>
+            if (smsOtpEnabled)
             {
-                try
+                string smsText = $"Practice121: Your verification code is : {otpCode}. It expires in 10 minutes. If you didn't request this code, please ignore this message.";
+                _ = Task.Run(async () =>
                 {
-                    await _smsService.SendSmsAsync(destination, smsText, CancellationToken.None);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to send background SMS OTP to {Destination}", destination);
-                }
-            }, CancellationToken.None);
+                    try
+                    {
+                        await _smsService.SendSmsAsync(destination, smsText, CancellationToken.None);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to send background SMS OTP to {Destination}", destination);
+                    }
+                }, CancellationToken.None);
+            }
+            else
+            {
+                _logger.LogInformation(
+                    "[SMS OTP DISABLED] Skipped sending SMS OTP to {Destination}. " +
+                    "Any 6-digit numeric code will be accepted during verification. " +
+                    "Set Features:SmsOtpEnabled=true to re-enable real SMS delivery.",
+                    destination);
+            }
         }
         else
         {
@@ -142,7 +159,20 @@ internal sealed class OtpService : IOtpService
             return Result.Failure(DoctorErrors.OtpMaxAttemptsExceeded);
         }
 
-        bool isValid = BCrypt.Net.BCrypt.Verify(otpCode.Trim(), session.OtpHash);
+        bool smsOtpEnabled = _featureFlags.SmsOtpEnabled;
+
+        // When SMS OTP is disabled (testing mode), accept any 6-digit numeric code.
+        // When enabled, verify the code against the stored BCrypt hash.
+        bool isValid;
+        if (!smsOtpEnabled)
+        {
+            string trimmed = otpCode.Trim();
+            isValid = trimmed.Length == 6 && trimmed.All(char.IsDigit);
+        }
+        else
+        {
+            isValid = BCrypt.Net.BCrypt.Verify(otpCode.Trim(), session.OtpHash);
+        }
 
         if (!isValid)
         {
