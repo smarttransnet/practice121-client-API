@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Abstractions;
 using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
@@ -21,7 +23,8 @@ public sealed record VerifyPatientOtpCommand(
 internal sealed class VerifyPatientOtpCommandHandler(
     IApplicationDbContext dbContext,
     IPasswordHasher passwordHasher,
-    IDateTimeProvider dateTimeProvider)
+    IDateTimeProvider dateTimeProvider,
+    FeatureFlags featureFlags)
     : ICommandHandler<VerifyPatientOtpCommand, VerifyPatientOtpResponse>
 {
     private const int MaxAttempts = 5;
@@ -65,7 +68,20 @@ internal sealed class VerifyPatientOtpCommandHandler(
                 ErrorMessage: "Maximum verification attempts exceeded. Please request a new code."));
         }
 
-        bool isValid = passwordHasher.Verify(request.OtpCode.Trim(), session.OtpHash);
+        bool smsOtpEnabled = featureFlags.SmsOtpEnabled;
+
+        // When SMS OTP is disabled (testing mode), accept any 6-digit numeric code.
+        // When enabled, verify the code against the stored hash.
+        bool isValid;
+        if (!smsOtpEnabled)
+        {
+            string trimmed = request.OtpCode.Trim();
+            isValid = trimmed.Length == 6 && trimmed.All(char.IsDigit);
+        }
+        else
+        {
+            isValid = passwordHasher.Verify(request.OtpCode.Trim(), session.OtpHash);
+        }
 
         if (!isValid)
         {

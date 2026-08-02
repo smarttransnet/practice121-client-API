@@ -27,6 +27,7 @@ public static class DependencyInjection
         IConfiguration configuration) =>
         services
             .AddAppSettings(configuration)
+            .AddFeatureFlags(configuration)
             .AddServices()
             .AddDatabase(configuration)
             .AddHealthChecks(configuration)
@@ -47,6 +48,14 @@ public static class DependencyInjection
         var appSettings = new Application.Abstractions.AppSettings();
         configuration.GetSection("App").Bind(appSettings);
         services.AddSingleton(appSettings);
+        return services;
+    }
+
+    private static IServiceCollection AddFeatureFlags(this IServiceCollection services, IConfiguration configuration)
+    {
+        var featureFlags = new Application.Abstractions.FeatureFlags();
+        configuration.GetSection("Features").Bind(featureFlags);
+        services.AddSingleton(featureFlags);
         return services;
     }
 
