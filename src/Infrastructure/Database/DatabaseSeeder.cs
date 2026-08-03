@@ -20,94 +20,109 @@ public static class DatabaseSeeder
         {
             await context.Database.MigrateAsync();
 
-            var needsReseed = !await context.Districts.AnyAsync() || !await context.Places.AnyAsync(p => p.Address != null);
-            if (needsReseed)
+            logger.LogInformation("Syncing / Updating Locations data from locations.json...");
+
+            string? json = null;
+            var assembly = typeof(DatabaseSeeder).Assembly;
+            var resourceName = assembly.GetManifestResourceNames()
+                .FirstOrDefault(n => n.EndsWith("locations.json", StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrEmpty(resourceName))
             {
-                logger.LogInformation("Seeding / Re-seeding Locations...");
-
-                if (await context.Districts.AnyAsync())
+                using var stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream != null)
                 {
-                    logger.LogInformation("Clearing legacy locations data...");
-                    context.PracticeCentres.RemoveRange(await context.PracticeCentres.ToListAsync());
-                    context.Places.RemoveRange(await context.Places.ToListAsync());
-                    context.MohAreas.RemoveRange(await context.MohAreas.ToListAsync());
-                    context.Districts.RemoveRange(await context.Districts.ToListAsync());
-                    await context.SaveChangesAsync();
+                    using var reader = new StreamReader(stream);
+                    json = await reader.ReadToEndAsync();
                 }
+            }
 
-                string? json = null;
-                var assembly = typeof(DatabaseSeeder).Assembly;
-                var resourceName = assembly.GetManifestResourceNames()
-                    .FirstOrDefault(n => n.EndsWith("locations.json", StringComparison.OrdinalIgnoreCase));
-
-                if (!string.IsNullOrEmpty(resourceName))
+            if (string.IsNullOrEmpty(json))
+            {
+                var basePath = AppContext.BaseDirectory;
+                var seedDataPath = Path.Combine(basePath, "SeedData", "locations.json");
+                if (!File.Exists(seedDataPath))
                 {
-                    using var stream = assembly.GetManifestResourceStream(resourceName);
-                    if (stream != null)
-                    {
-                        using var reader = new StreamReader(stream);
-                        json = await reader.ReadToEndAsync();
-                    }
+                    seedDataPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Infrastructure", "Database", "SeedData", "locations.json");
                 }
-
-                if (string.IsNullOrEmpty(json))
+                if (File.Exists(seedDataPath))
                 {
-                    var basePath = AppContext.BaseDirectory;
-                    var seedDataPath = Path.Combine(basePath, "SeedData", "locations.json");
-                    if (!File.Exists(seedDataPath))
-                    {
-                        seedDataPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Infrastructure", "Database", "SeedData", "locations.json");
-                    }
-                    if (File.Exists(seedDataPath))
-                    {
-                        json = await File.ReadAllTextAsync(seedDataPath);
-                    }
+                    json = await File.ReadAllTextAsync(seedDataPath);
                 }
+            }
 
-                if (!string.IsNullOrEmpty(json))
+            if (!string.IsNullOrEmpty(json))
+            {
+                var districtsDto = JsonSerializer.Deserialize<List<DistrictDto>>(json, _jsonOptions);
+
+                if (districtsDto != null)
                 {
-                    var districtsDto = JsonSerializer.Deserialize<List<DistrictDto>>(json, _jsonOptions);
-                    
-                    if (districtsDto != null)
+                    var existingDistricts = await context.Districts.Include(d => d.MohAreas).ThenInclude(m => m.Places).ToListAsync();
+                    var districtMap = existingDistricts.ToDictionary(d => d.Name.Trim(), StringComparer.OrdinalIgnoreCase);
+
+                    bool changes = false;
+
+                    foreach (var dDto in districtsDto)
                     {
-                        foreach (var dDto in districtsDto)
+                        var cleanDistName = dDto.Name.Trim();
+                        if (!districtMap.TryGetValue(cleanDistName, out var district))
                         {
-                            var district = District.Create(Guid.NewGuid(), dDto.Name);
+                            district = District.Create(Guid.NewGuid(), cleanDistName);
                             context.Districts.Add(district);
+                            districtMap[cleanDistName] = district;
+                            changes = true;
+                        }
 
-                            foreach (var mDto in dDto.Moh_areas)
+                        var existingMohs = district.MohAreas ?? new List<MohArea>();
+                        var mohMap = existingMohs.ToDictionary(m => m.Name.Trim(), StringComparer.OrdinalIgnoreCase);
+
+                        foreach (var mDto in dDto.Moh_areas)
+                        {
+                            var cleanMohName = mDto.Name.Trim();
+                            if (!mohMap.TryGetValue(cleanMohName, out var mohArea))
                             {
-                                var mohArea = MohArea.Create(Guid.NewGuid(), district.Id, mDto.Name);
+                                mohArea = MohArea.Create(Guid.NewGuid(), district.Id, cleanMohName);
                                 context.MohAreas.Add(mohArea);
+                                mohMap[cleanMohName] = mohArea;
+                                changes = true;
+                            }
 
-                                var seenPlaceNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                                foreach (var pDto in mDto.Places)
+                            var existingPlaces = mohArea.Places ?? new List<Place>();
+                            var seenPlaceNames = new HashSet<string>(existingPlaces.Select(p => p.Name.Trim()), StringComparer.OrdinalIgnoreCase);
+
+                            foreach (var pDto in mDto.Places)
+                            {
+                                var cleanPlaceName = pDto.Name.Trim();
+                                if (seenPlaceNames.Add(cleanPlaceName))
                                 {
-                                    var cleanName = pDto.Name.Trim();
-                                    if (!seenPlaceNames.Add(cleanName))
-                                    {
-                                        continue;
-                                    }
-
                                     var place = Place.Create(
-                                        Guid.NewGuid(), 
-                                        mohArea.Id, 
-                                        cleanName, 
-                                        isVerified: true, 
-                                        address: string.IsNullOrWhiteSpace(pDto.Address) ? null : pDto.Address, 
+                                        Guid.NewGuid(),
+                                        mohArea.Id,
+                                        cleanPlaceName,
+                                        isVerified: true,
+                                        address: string.IsNullOrWhiteSpace(pDto.Address) ? null : pDto.Address,
                                         registrationNumber: string.IsNullOrWhiteSpace(pDto.Registration_Number) ? null : pDto.Registration_Number);
                                     context.Places.Add(place);
+                                    changes = true;
                                 }
                             }
                         }
+                    }
+
+                    if (changes)
+                    {
                         await context.SaveChangesAsync();
-                        logger.LogInformation("Successfully seeded Locations.");
+                        logger.LogInformation("Successfully synced new Districts, MOH Areas, and Places to Database.");
+                    }
+                    else
+                    {
+                        logger.LogInformation("Locations data is up-to-date in Database.");
                     }
                 }
-                else
-                {
-                    logger.LogWarning("locations.json seed data could not be loaded.");
-                }
+            }
+            else
+            {
+                logger.LogWarning("locations.json seed data could not be loaded.");
             }
         }
         catch (Exception ex)
