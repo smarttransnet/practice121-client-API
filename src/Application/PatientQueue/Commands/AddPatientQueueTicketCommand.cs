@@ -52,7 +52,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
                 .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)));
             if (matchingSessionGroup != null)
             {
-                effectiveSessionId = matchingSessionGroup.Id;
+                effectiveSessionId = matchingSessionGroup.TimeBlocks.FirstOrDefault()?.Id ?? matchingSessionGroup.Id;
             }
         }
 

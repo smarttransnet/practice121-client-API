@@ -68,7 +68,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
                 .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
             if (matchingSessionGroup != null)
             {
-                effectiveSessionId = matchingSessionGroup.Id;
+                effectiveSessionId = matchingSessionGroup.TimeBlocks.FirstOrDefault()?.Id ?? matchingSessionGroup.Id;
             }
         }
 
