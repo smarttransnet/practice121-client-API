@@ -124,6 +124,56 @@ public static class DatabaseSeeder
             {
                 logger.LogWarning("locations.json seed data could not be loaded.");
             }
+
+            // Backfill existing tickets where SessionId is null
+            var unassignedTickets = await context.PatientQueueTickets
+                .Where(t => t.SessionId == null)
+                .ToListAsync();
+
+            if (unassignedTickets.Count != 0)
+            {
+                logger.LogInformation("Backfilling {Count} existing tickets with missing SessionId...", unassignedTickets.Count);
+
+                var centreIds = unassignedTickets.Select(t => t.PracticeCentreId).Distinct().ToList();
+                var practiceCentres = await context.PracticeCentres
+                    .Include(pc => pc.SessionGroups)
+                    .ThenInclude(sg => sg.TimeBlocks)
+                    .Where(pc => centreIds.Contains(pc.Id))
+                    .ToListAsync();
+
+                var centreMap = practiceCentres.ToDictionary(pc => pc.Id);
+
+                bool updatedAny = false;
+                foreach (var ticket in unassignedTickets)
+                {
+                    if (centreMap.TryGetValue(ticket.PracticeCentreId, out var pc) && pc.SessionGroups.Count != 0)
+                    {
+                        var dayAbbr = ticket.VisitDate.DayOfWeek.ToString()[..3].ToUpperInvariant();
+                        var matchingSg = pc.SessionGroups.FirstOrDefault(sg =>
+                            sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
+
+                        if (matchingSg != null)
+                        {
+                            var targetId = matchingSg.TimeBlocks.FirstOrDefault()?.Id ?? matchingSg.Id;
+                            ticket.SessionId = targetId;
+                            updatedAny = true;
+                        }
+                        else
+                        {
+                            var firstSg = pc.SessionGroups.First();
+                            var targetId = firstSg.TimeBlocks.FirstOrDefault()?.Id ?? firstSg.Id;
+                            ticket.SessionId = targetId;
+                            updatedAny = true;
+                        }
+                    }
+                }
+
+                if (updatedAny)
+                {
+                    await context.SaveChangesAsync();
+                    logger.LogInformation("Successfully backfilled missing SessionId for legacy tickets.");
+                }
+            }
         }
         catch (Exception ex)
         {
