@@ -60,6 +60,18 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
 
         var visitDateTime = request.VisitDate.ToDateTime(TimeOnly.MinValue);
 
+        // Auto-assign session ID if not explicitly provided
+        var effectiveSessionId = request.SessionId;
+        if (!effectiveSessionId.HasValue || effectiveSessionId.Value == Guid.Empty)
+        {
+            var matchingSessionGroup = practiceCentre.SessionGroups
+                .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
+            if (matchingSessionGroup != null)
+            {
+                effectiveSessionId = matchingSessionGroup.Id;
+            }
+        }
+
         // Capacity check per session (only if MaxPatients is set)
         if (practiceCentre.MaxPatients.HasValue)
         {
@@ -70,9 +82,9 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
                     t.VisitDate == visitDateTime &&
                     t.Status != PatientQueueStatus.Cancelled);
 
-            if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+            if (effectiveSessionId.HasValue && effectiveSessionId.Value != Guid.Empty)
             {
-                countQuery = countQuery.Where(t => t.SessionId == request.SessionId.Value);
+                countQuery = countQuery.Where(t => t.SessionId == effectiveSessionId.Value);
             }
 
             var currentCount = await countQuery.CountAsync(cancellationToken);
@@ -99,13 +111,13 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
 
         // Queue number sequence per session
         int nextNumber = 1;
-        if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+        if (effectiveSessionId.HasValue && effectiveSessionId.Value != Guid.Empty)
         {
             var lastSessionTicket = await dbContext.PatientQueueTickets
                 .Where(q => q.PracticeCentreId == request.PracticeCentreId
                             && q.DoctorId == request.DoctorAccountId
                             && q.VisitDate == visitDateTime
-                            && q.SessionId == request.SessionId.Value)
+                            && q.SessionId == effectiveSessionId.Value)
                 .OrderByDescending(q => q.QueueNumber)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -133,7 +145,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
             DoctorId = request.DoctorAccountId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDateTime,
-            SessionId = request.SessionId,
+            SessionId = effectiveSessionId,
             Status = PatientQueueStatus.Waiting,
             Priority = PatientQueuePriority.Normal,
             CreatedAt = DateTime.UtcNow

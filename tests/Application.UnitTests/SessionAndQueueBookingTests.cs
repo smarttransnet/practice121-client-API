@@ -177,4 +177,52 @@ public class SessionAndQueueBookingTests
         Assert.True(eveningResult.IsSuccess);
         Assert.Equal(2, eveningResult.Value.QueueNumber);
     }
+
+    [Fact]
+    public async Task BookAppointment_NullSessionId_AutoAssignsScheduledSessionId()
+    {
+        using var context = CreateDbContext();
+        var doctorId = Guid.NewGuid();
+        var placeId = Guid.NewGuid();
+
+        var centre = PracticeCentre.Create(doctorId, placeId, "Test Clinic", 20);
+        var sessionGroup = SessionGroup.Create(centre.Id, new List<string> { "MON" });
+        centre.AddSessionGroup(sessionGroup);
+        context.PracticeCentres.Add(centre);
+        await context.SaveChangesAsync();
+
+        var handler = new Application.Appointments.Commands.BookAppointmentCommandHandler(context);
+        var dateOnly = new DateOnly(2026, 8, 31); // Monday
+
+        var result = await handler.Handle(new BookAppointmentCommand("0710000010", doctorId, centre.Id, dateOnly, null, null), CancellationToken.None);
+
+        Assert.True(result.IsSuccess);
+        var ticket = await context.PatientQueueTickets.FirstAsync(t => t.Id == result.Value.TicketId);
+        Assert.NotNull(ticket.SessionId);
+        Assert.Equal(sessionGroup.Id, ticket.SessionId);
+    }
+
+    [Fact]
+    public async Task AddQueueTicket_NullSessionId_AutoAssignsScheduledSessionId()
+    {
+        using var context = CreateDbContext();
+        var doctorId = Guid.NewGuid();
+        var placeId = Guid.NewGuid();
+
+        var centre = PracticeCentre.Create(doctorId, placeId, "Test Clinic", 20);
+        var sessionGroup = SessionGroup.Create(centre.Id, new List<string> { "MON" });
+        centre.AddSessionGroup(sessionGroup);
+        context.PracticeCentres.Add(centre);
+        await context.SaveChangesAsync();
+
+        var handler = new Application.PatientQueue.Commands.AddPatientQueueTicketCommandHandler(context);
+        var visitDate = new DateTime(2026, 8, 31, 0, 0, 0, DateTimeKind.Utc);
+
+        var result = await handler.Handle(new Application.PatientQueue.Commands.AddPatientQueueTicketCommand("0710000011", doctorId, centre.Id, PatientQueuePriority.Normal, visitDate, null, null), CancellationToken.None);
+
+        Assert.True(result.IsSuccess);
+        var ticket = await context.PatientQueueTickets.FirstAsync(t => t.Id == result.Value);
+        Assert.NotNull(ticket.SessionId);
+        Assert.Equal(sessionGroup.Id, ticket.SessionId);
+    }
 }
