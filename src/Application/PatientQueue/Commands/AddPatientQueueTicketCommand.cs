@@ -44,6 +44,18 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             return Result.Failure<Guid>(new Error("PatientQueueTicket.NoSessionOnSelectedDate", "No session group is scheduled for the selected date's day of week.", ErrorType.Validation));
         }
 
+        // Auto-assign session ID if not explicitly provided
+        var effectiveSessionId = request.SessionId;
+        if (!effectiveSessionId.HasValue || effectiveSessionId.Value == Guid.Empty)
+        {
+            var matchingSessionGroup = practiceCentre.SessionGroups
+                .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)));
+            if (matchingSessionGroup != null)
+            {
+                effectiveSessionId = matchingSessionGroup.Id;
+            }
+        }
+
         // Prevent duplicate patient record in the same session
         if (request.PatientId.HasValue && request.PatientId.Value != Guid.Empty)
         {
@@ -51,7 +63,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
                 q.PracticeCentreId == request.PracticeCentreId
                 && q.DoctorId == request.DoctorId
                 && q.VisitDate == visitDate
-                && q.SessionId == request.SessionId
+                && q.SessionId == effectiveSessionId
                 && q.PatientId == request.PatientId.Value
                 && q.Status != PatientQueueStatus.Cancelled
                 && q.Status != PatientQueueStatus.Completed
@@ -70,7 +82,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
                 q.PracticeCentreId == request.PracticeCentreId
                 && q.DoctorId == request.DoctorId
                 && q.VisitDate == visitDate
-                && q.SessionId == request.SessionId
+                && q.SessionId == effectiveSessionId
                 && q.PatientMobile == normalizedMobile
                 && q.PatientId == null
                 && q.Status != PatientQueueStatus.Cancelled
@@ -96,13 +108,13 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
 
         // Queue number sequence is separate for each session on that visitDate
         int nextNumber = 1;
-        if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+        if (effectiveSessionId.HasValue && effectiveSessionId.Value != Guid.Empty)
         {
             var lastSessionTicket = await dbContext.PatientQueueTickets
                 .Where(q => q.PracticeCentreId == request.PracticeCentreId 
                             && q.DoctorId == request.DoctorId 
                             && q.VisitDate == visitDate
-                            && q.SessionId == request.SessionId.Value)
+                            && q.SessionId == effectiveSessionId.Value)
                 .OrderByDescending(q => q.QueueNumber)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -130,7 +142,7 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
             DoctorId = request.DoctorId,
             PracticeCentreId = request.PracticeCentreId,
             VisitDate = visitDate,
-            SessionId = request.SessionId,
+            SessionId = effectiveSessionId,
             Status = PatientQueueStatus.Waiting,
             Priority = request.Priority,
             CreatedAt = DateTime.UtcNow
