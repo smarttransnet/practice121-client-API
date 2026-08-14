@@ -19,10 +19,7 @@ internal sealed class PatientAccountConfiguration : IEntityTypeConfiguration<Pat
         builder.Property(x => x.LastName).HasMaxLength(100);
         builder.Property(x => x.MobileNumber).HasMaxLength(20);
         
-        builder.HasOne(x => x.Parent)
-            .WithMany(x => x.Children)
-            .HasForeignKey(x => x.ParentId)
-            .OnDelete(DeleteBehavior.Restrict);
+
 
         builder.HasMany(x => x.Documents)
             .WithOne(d => d.PatientAccount)

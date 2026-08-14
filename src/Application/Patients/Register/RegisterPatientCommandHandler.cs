@@ -18,25 +18,30 @@ internal sealed class RegisterPatientCommandHandler : ICommandHandler<RegisterPa
 
     public async Task<Result<Guid>> Handle(RegisterPatientCommand request, CancellationToken cancellationToken)
     {
-        string normalizedNic = SriLankanNicDecoder.NormalizeNic(request.NicNumber) ?? request.NicNumber.Trim();
+        string? normalizedNic = !string.IsNullOrWhiteSpace(request.NicNumber) 
+            ? SriLankanNicDecoder.NormalizeNic(request.NicNumber) ?? request.NicNumber.Trim() 
+            : null;
 
-        // Uniqueness check for NIC
-        bool nicExists = await _context.PatientAccounts
-            .AnyAsync(p => p.NicNumber == normalizedNic || p.NicNumber == request.NicNumber, cancellationToken);
-            
-        if (nicExists)
+        if (normalizedNic != null)
         {
-            return Result.Failure<Guid>(Error.Conflict("Patient.DuplicateNic", "An account with this NIC already exists."));
+            // Uniqueness check for NIC
+            bool nicExists = await _context.PatientAccounts
+                .AnyAsync(p => p.NicNumber == normalizedNic || p.NicNumber == request.NicNumber, cancellationToken);
+                
+            if (nicExists)
+            {
+                return Result.Failure<Guid>(Error.Conflict("Patient.DuplicateNic", "An account with this NIC already exists."));
+            }
         }
 
-        var nicDecode = SriLankanNicDecoder.DecodeNic(normalizedNic);
+        var nicDecode = normalizedNic != null ? SriLankanNicDecoder.DecodeNic(normalizedNic) : null;
 
         DateTime? dob = null;
         if (request.DateOfBirth.HasValue)
         {
             dob = DateTime.SpecifyKind(request.DateOfBirth.Value, DateTimeKind.Utc);
         }
-        else if (nicDecode.IsValid && nicDecode.DateOfBirth.HasValue)
+        else if (nicDecode != null && nicDecode.IsValid && nicDecode.DateOfBirth.HasValue)
         {
             dob = DateTime.SpecifyKind(nicDecode.DateOfBirth.Value, DateTimeKind.Utc);
         }
@@ -46,7 +51,7 @@ internal sealed class RegisterPatientCommandHandler : ICommandHandler<RegisterPa
         {
             gender = request.Gender;
         }
-        else if (nicDecode.IsValid)
+        else if (nicDecode != null && nicDecode.IsValid)
         {
             gender = nicDecode.Gender;
         }
@@ -60,6 +65,7 @@ internal sealed class RegisterPatientCommandHandler : ICommandHandler<RegisterPa
             DateOfBirth = dob,
             Gender = gender,
             MobileNumber = SriLankanPhoneValidator.NormalizeToE164(request.MobileNumber) ?? request.MobileNumber,
+            IsMobileOwner = request.IsMobileOwner,
             Verified = false,
             CompletionStatus = ProfileCompletionStatus.MINIMAL,
             CreatedByDoctorId = request.CreatedByDoctorId
