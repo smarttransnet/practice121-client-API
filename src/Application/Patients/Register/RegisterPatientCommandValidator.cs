@@ -7,9 +7,11 @@ internal sealed class RegisterPatientCommandValidator : AbstractValidator<Regist
 {
     public RegisterPatientCommandValidator()
     {
-        RuleFor(x => x.NicNumber)
-            .NotEmpty().WithMessage("NIC is required")
-            .MustBeValidSriLankanNic();
+        When(x => !string.IsNullOrWhiteSpace(x.NicNumber), () => 
+        {
+            RuleFor(x => x.NicNumber!)
+                .MustBeValidSriLankanNic();
+        });
 
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First Name is required")

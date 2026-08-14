@@ -43,16 +43,6 @@ internal sealed class SendPatientOtpCommandHandler(
             .AsNoTracking()
             .AnyAsync(p => p.MobileNumber == normalizedMobile || p.MobileNumber == rawMobile, cancellationToken);
 
-        if (!patientExists)
-        {
-            return Result.Success(new SendPatientOtpResponse(
-                PatientExists: false,
-                SessionId: null,
-                MaskedMobile: null,
-                ExpiresInSeconds: 0,
-                CooldownSeconds: 0));
-        }
-
         int code = RandomNumberGenerator.GetInt32(100000, 1000000);
         string otpCode = code.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
@@ -113,7 +103,7 @@ internal sealed class SendPatientOtpCommandHandler(
         string maskedMobile = MaskMobileNumber(rawMobile);
 
         return Result.Success(new SendPatientOtpResponse(
-            PatientExists: true,
+            PatientExists: patientExists,
             SessionId: session.Id,
             MaskedMobile: maskedMobile,
             ExpiresInSeconds: 600,

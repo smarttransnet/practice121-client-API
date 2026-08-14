@@ -9,12 +9,13 @@ namespace Web.Api.Endpoints.Patients;
 internal sealed class Register : IEndpoint
 {
     public sealed record Request(
-        string NicNumber,
+        string? NicNumber,
         string FirstName,
         string? LastName,
         DateTime? DateOfBirth,
         string? Gender,
         string MobileNumber,
+        bool IsMobileOwner,
         Guid? CreatedByDoctorId);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
@@ -31,6 +32,7 @@ internal sealed class Register : IEndpoint
                 request.DateOfBirth,
                 request.Gender,
                 request.MobileNumber,
+                request.IsMobileOwner,
                 request.CreatedByDoctorId);
 
             Result<Guid> result = await handler.Handle(command, cancellationToken);

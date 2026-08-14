@@ -3,11 +3,12 @@ using Application.Abstractions.Messaging;
 namespace Application.Patients.Register;
 
 public sealed record RegisterPatientCommand(
-    string NicNumber,
+    string? NicNumber,
     string FirstName,
     string? LastName,
     DateTime? DateOfBirth,
     string? Gender,
     string MobileNumber,
+    bool IsMobileOwner,
     Guid? CreatedByDoctorId
 ) : ICommand<Guid>;

@@ -54,7 +54,8 @@ internal sealed class SearchPatientsQueryHandler(IApplicationDbContext dbContext
             p.LastName,
             p.DateOfBirth,
             p.Gender,
-            p.MobileNumber
+            p.MobileNumber,
+            p.IsMobileOwner
         )).ToList();
 
         return Result.Success(response);

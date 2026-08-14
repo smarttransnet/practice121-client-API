@@ -13,10 +13,7 @@ public sealed class PatientAccount : Entity
     public string? Gender { get; set; }
     public string MobileNumber { get; set; } = string.Empty;
     
-    // Parent-Child linkage
-    public Guid? ParentId { get; set; }
-    public PatientAccount? Parent { get; set; }
-    public ICollection<PatientAccount> Children { get; set; } = [];
+    public bool IsMobileOwner { get; set; } = true;
 
     public bool Verified { get; set; }
     public ProfileCompletionStatus CompletionStatus { get; set; }

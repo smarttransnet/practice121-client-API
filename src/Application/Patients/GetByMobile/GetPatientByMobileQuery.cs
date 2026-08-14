@@ -18,11 +18,11 @@ public sealed record PatientResponse(
     DateTime? DateOfBirth,
     string? Gender,
     string MobileNumber,
-    Guid? ParentId = null);
+    bool IsMobileOwner);
 
 public sealed record PatientLookupResponse(
-    PatientResponse PrimaryPatient,
-    List<PatientResponse> Children);
+    PatientResponse? PrimaryPatient,
+    List<PatientResponse> FamilyMembers);
 
 public sealed record GetPatientByMobileQuery(
     string MobileNumber,
@@ -53,63 +53,44 @@ internal sealed class GetPatientByMobileQueryHandler(IApplicationDbContext dbCon
                 Error.Problem("Otp.Unauthorized", "Invalid or unverified OTP verification token."));
         }
 
-        // Search for primary patient (or matching patient record)
-        var primaryPatient = await dbContext.PatientAccounts
+        var patients = await dbContext.PatientAccounts
             .AsNoTracking()
-            .Include(p => p.Children)
-            .FirstOrDefaultAsync(p => (p.MobileNumber == normalizedMobile || p.MobileNumber == rawMobile) && p.ParentId == null, cancellationToken);
-
-        if (primaryPatient == null)
-        {
-            // Fallback: check if any record matched (even if ParentId != null)
-            var anyMatch = await dbContext.PatientAccounts
-                .AsNoTracking()
-                .Include(p => p.Children)
-                .FirstOrDefaultAsync(p => p.MobileNumber == normalizedMobile || p.MobileNumber == rawMobile, cancellationToken);
-
-            if (anyMatch == null)
-            {
-                return Result.Success<PatientLookupResponse?>(null);
-            }
-
-            if (anyMatch.ParentId.HasValue)
-            {
-                // Load parent as primary
-                primaryPatient = await dbContext.PatientAccounts
-                    .AsNoTracking()
-                    .Include(p => p.Children)
-                    .FirstOrDefaultAsync(p => p.Id == anyMatch.ParentId.Value, cancellationToken);
-            }
-
-            primaryPatient ??= anyMatch;
-        }
-
-        var primaryResponse = new PatientResponse(
-            primaryPatient.Id,
-            primaryPatient.NicNumber,
-            primaryPatient.FirstName,
-            primaryPatient.LastName,
-            primaryPatient.DateOfBirth,
-            primaryPatient.Gender,
-            primaryPatient.MobileNumber,
-            primaryPatient.ParentId);
-
-        // Fetch children attached to this primary patient
-        var childrenList = await dbContext.PatientAccounts
-            .AsNoTracking()
-            .Where(p => p.ParentId == primaryPatient.Id)
-            .Select(c => new PatientResponse(
-                c.Id,
-                c.NicNumber,
-                c.FirstName,
-                c.LastName,
-                c.DateOfBirth,
-                c.Gender,
-                c.MobileNumber,
-                c.ParentId))
+            .Where(p => p.MobileNumber == normalizedMobile || p.MobileNumber == rawMobile)
             .ToListAsync(cancellationToken);
 
-        var lookupResponse = new PatientLookupResponse(primaryResponse, childrenList);
+        if (patients.Count == 0)
+        {
+            return Result.Success<PatientLookupResponse?>(null);
+        }
+
+        var primaryPatientRecord = patients.FirstOrDefault(p => p.IsMobileOwner);
+        var familyMemberRecords = patients.Where(p => !p.IsMobileOwner).ToList();
+
+        PatientResponse? primaryResponse = null;
+        if (primaryPatientRecord != null)
+        {
+            primaryResponse = new PatientResponse(
+                primaryPatientRecord.Id,
+                primaryPatientRecord.NicNumber,
+                primaryPatientRecord.FirstName,
+                primaryPatientRecord.LastName,
+                primaryPatientRecord.DateOfBirth,
+                primaryPatientRecord.Gender,
+                primaryPatientRecord.MobileNumber,
+                primaryPatientRecord.IsMobileOwner);
+        }
+
+        var familyResponses = familyMemberRecords.Select(p => new PatientResponse(
+            p.Id,
+            p.NicNumber,
+            p.FirstName,
+            p.LastName,
+            p.DateOfBirth,
+            p.Gender,
+            p.MobileNumber,
+            p.IsMobileOwner)).ToList();
+
+        var lookupResponse = new PatientLookupResponse(primaryResponse, familyResponses);
         return Result.Success<PatientLookupResponse?>(lookupResponse);
     }
 }
