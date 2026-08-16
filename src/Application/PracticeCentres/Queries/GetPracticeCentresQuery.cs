@@ -24,7 +24,9 @@ public record PracticeCentreResponse(
 public record SessionGroupResponse(
     Guid Id,
     List<string> DaysOfWeek,
-    List<TimeBlockResponse> TimeBlocks);
+    string? SpecificDate,
+    List<TimeBlockResponse> TimeBlocks,
+    List<string> DaysOff);
 
 public record TimeBlockResponse(
     Guid Id,
@@ -49,7 +51,8 @@ internal sealed class GetPracticeCentresQueryHandler(IApplicationDbContext dbCon
                 .ThenInclude(p => p.MohArea)
                     .ThenInclude(m => m.District)
             .Include(pc => pc.SessionGroups)
-                .ThenInclude(sg => sg.TimeBlocks)
+            .Include(pc => pc.SessionGroups)
+                .ThenInclude(sg => sg.DaysOff)
             .Include(pc => pc.Nurses)
             .Where(pc => pc.DoctorId == request.DoctorId)
             .ToListAsync(cancellationToken);
@@ -66,7 +69,9 @@ internal sealed class GetPracticeCentresQueryHandler(IApplicationDbContext dbCon
             pc.SessionGroups.Select(sg => new SessionGroupResponse(
                 sg.Id,
                 sg.DaysOfWeek.ToList(),
-                sg.TimeBlocks.Select(tb => new TimeBlockResponse(tb.Id, tb.Label, tb.StartTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture), tb.EndTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture))).ToList()
+                sg.SpecificDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                sg.TimeBlocks.Select(tb => new TimeBlockResponse(tb.Id, tb.Label, tb.StartTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture), tb.EndTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture))).ToList(),
+                sg.DaysOff.Select(d => d.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)).ToList()
             )).ToList(),
             pc.Nurses.Select(n => new NurseResponse(n.Id, n.Name, n.PhoneNumber, n.IsActive)).ToList()
         )).ToList();

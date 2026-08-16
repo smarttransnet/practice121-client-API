@@ -21,6 +21,7 @@ public sealed class PracticeCentre : Entity
     private readonly List<Nurse> _nurses = new();
     public IReadOnlyCollection<Nurse> Nurses => _nurses.AsReadOnly();
 
+
     private PracticeCentre() { } // For EF Core
 
     public static PracticeCentre Create(Guid doctorId, Guid placeId, string clinicName, int? maxPatients)
@@ -61,4 +62,5 @@ public sealed class PracticeCentre : Entity
     {
         _nurses.Clear();
     }
+
 }

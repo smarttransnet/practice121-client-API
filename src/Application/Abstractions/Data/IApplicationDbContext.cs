@@ -35,6 +35,7 @@ public interface IApplicationDbContext
     DbSet<Domain.PracticeCentres.SessionGroup> SessionGroups { get; }
     DbSet<Domain.PracticeCentres.TimeBlock> TimeBlocks { get; }
     DbSet<Domain.PracticeCentres.Nurse> Nurses { get; }
+    DbSet<Domain.PracticeCentres.SessionGroupDayOff> SessionGroupDaysOff { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
