@@ -61,8 +61,16 @@ internal sealed class GetProfileQueryHandler : IQueryHandler<GetProfileQuery, Do
             .ToList();
 
         // 5. Map Signature
+        string signatureDataUrl = string.Empty;
+        if (profile.ESignature != null)
+        {
+            signatureDataUrl = profile.ESignature.SignatureData != null 
+                ? $"/api/files/signature/{account.Id}" 
+                : profile.ESignature.SignatureDataUrl;
+        }
+
         SignatureDto? signature = profile.ESignature != null
-            ? new SignatureDto(profile.ESignature.SignatureDataUrl, profile.ESignature.SignedAt)
+            ? new SignatureDto(signatureDataUrl, profile.ESignature.SignedAt)
             : null;
 
         string? profilePictureUrl = profile.ProfilePictureData != null 
