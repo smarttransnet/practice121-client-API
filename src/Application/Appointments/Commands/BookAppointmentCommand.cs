@@ -49,7 +49,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
         // Validate session availability for chosen day of week or specific date, excluding days off
         var dayAbbr = request.VisitDate.DayOfWeek.ToString()[..3].ToUpperInvariant();
         var hasSession = practiceCentre.SessionGroups
-            .Any(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == request.VisitDate) && !sg.DaysOff.Any(off => off.Date == request.VisitDate));
+            .Any(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDates.Contains(request.VisitDate)) && !sg.DaysOff.Any(off => off.Date == request.VisitDate));
 
         if (!hasSession)
         {
@@ -66,7 +66,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
         if (!effectiveSessionId.HasValue || effectiveSessionId.Value == Guid.Empty)
         {
             var matchingSessionGroup = practiceCentre.SessionGroups
-                .FirstOrDefault(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == request.VisitDate) && !sg.DaysOff.Any(off => off.Date == request.VisitDate));
+                .FirstOrDefault(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDates.Contains(request.VisitDate)) && !sg.DaysOff.Any(off => off.Date == request.VisitDate));
             if (matchingSessionGroup != null)
             {
                 effectiveSessionId = matchingSessionGroup.TimeBlocks.FirstOrDefault()?.Id ?? matchingSessionGroup.Id;

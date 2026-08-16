@@ -52,7 +52,7 @@ internal sealed class GetCentreAvailabilityQueryHandler(IApplicationDbContext db
         {
             var dayAbbr = d.DayOfWeek.ToString()[..3].ToUpperInvariant();
             var activeSessionGroupCount = practiceCentre.SessionGroups
-                .Count(sg => (sg.DaysOfWeek.Any(day => day.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == d) && !sg.DaysOff.Any(off => off.Date == d));
+                .Count(sg => (sg.DaysOfWeek.Any(day => day.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDates.Contains(d)) && !sg.DaysOff.Any(off => off.Date == d));
 
             if (activeSessionGroupCount > 0)
             {
@@ -95,14 +95,14 @@ internal sealed class GetCentreAvailabilityQueryHandler(IApplicationDbContext db
             {
                 var dayAbbr = date.DayOfWeek.ToString()[..3].ToUpperInvariant();
                 var activeSessionsCount = practiceCentre.SessionGroups
-                    .Where(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == date) && !sg.DaysOff.Any(off => off.Date == date))
+                    .Where(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDates.Contains(date)) && !sg.DaysOff.Any(off => off.Date == date))
                     .SelectMany(sg => sg.TimeBlocks)
                     .Count();
 
                 if (activeSessionsCount == 0)
                 {
                     activeSessionsCount = practiceCentre.SessionGroups
-                        .Count(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == date) && !sg.DaysOff.Any(off => off.Date == date));
+                        .Count(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDates.Contains(date)) && !sg.DaysOff.Any(off => off.Date == date));
                 }
 
                 int totalCapacity = (activeSessionsCount > 0 ? activeSessionsCount : 1) * maxPatients.Value;

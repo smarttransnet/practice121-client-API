@@ -45,9 +45,9 @@ internal sealed class UpdatePracticeCentreCommandHandler(IApplicationDbContext d
         foreach (var sg in request.SessionGroups)
         {
             var days = sg.DaysOfWeek.ToList();
-            if (!string.IsNullOrEmpty(sg.SpecificDate) && days.Count == 0)
+            if (sg.SpecificDates != null && sg.SpecificDates.Any())
             {
-                days.Add(sg.SpecificDate);
+                days.AddRange(sg.SpecificDates);
             }
 
             foreach (var day in days)
@@ -75,9 +75,9 @@ internal sealed class UpdatePracticeCentreCommandHandler(IApplicationDbContext d
             foreach (var sg in existingCentre.SessionGroups)
             {
                 var days = sg.DaysOfWeek.ToList();
-                if (sg.SpecificDate.HasValue && days.Count == 0)
+                if (sg.SpecificDates != null && sg.SpecificDates.Any() && days.Count == 0)
                 {
-                    days.Add(sg.SpecificDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+                    days.AddRange(sg.SpecificDates.Select(d => d.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)));
                 }
 
                 foreach (var day in days)
@@ -111,12 +111,16 @@ internal sealed class UpdatePracticeCentreCommandHandler(IApplicationDbContext d
         
         foreach (var sg in request.SessionGroups)
         {
-            DateOnly? specificDate = null;
-            if (!string.IsNullOrEmpty(sg.SpecificDate) && DateOnly.TryParse(sg.SpecificDate, CultureInfo.InvariantCulture, out var date))
+            List<DateOnly>? specificDates = null;
+            if (sg.SpecificDates != null && sg.SpecificDates.Any())
             {
-                specificDate = date;
+                specificDates = sg.SpecificDates
+                    .Select(d => DateOnly.TryParse(d, CultureInfo.InvariantCulture, out var date) ? date : (DateOnly?)null)
+                    .Where(d => d.HasValue)
+                    .Select(d => d!.Value)
+                    .ToList();
             }
-            var sessionGroup = SessionGroup.Create(centre.Id, sg.DaysOfWeek, specificDate);
+            var sessionGroup = SessionGroup.Create(centre.Id, sg.DaysOfWeek, specificDates);
             foreach (var tb in sg.TimeBlocks)
             {
                 var timeBlock = TimeBlock.Create(sessionGroup.Id, tb.Label, TimeSpan.Parse(tb.StartTime, CultureInfo.InvariantCulture), TimeSpan.Parse(tb.EndTime, CultureInfo.InvariantCulture));
