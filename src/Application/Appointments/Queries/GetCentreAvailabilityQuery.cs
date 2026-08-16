@@ -29,10 +29,11 @@ internal sealed class GetCentreAvailabilityQueryHandler(IApplicationDbContext db
         GetCentreAvailabilityQuery request,
         CancellationToken cancellationToken)
     {
-        // Load practice centre with session groups
+        // Load practice centre with session groups and days off
         var practiceCentre = await dbContext.PracticeCentres
             .AsNoTracking()
             .Include(pc => pc.SessionGroups)
+                .ThenInclude(sg => sg.DaysOff)
             .FirstOrDefaultAsync(
                 pc => pc.Id == request.PracticeCentreId && pc.DoctorId == request.DoctorAccountId,
                 cancellationToken);
@@ -45,18 +46,15 @@ internal sealed class GetCentreAvailabilityQueryHandler(IApplicationDbContext db
                     ErrorType.NotFound));
         }
 
-        // Build set of active days-of-week from session groups
-        var activeDays = practiceCentre.SessionGroups
-            .SelectMany(sg => sg.DaysOfWeek)
-            .Select(d => d.ToUpperInvariant())
-            .ToHashSet();
-
-        // Collect all dates in range that match active days
+        // Collect all dates in range that have at least one active session group not on a day off
         var availableDates = new List<DateOnly>();
         for (var d = request.From; d <= request.To; d = d.AddDays(1))
         {
             var dayAbbr = d.DayOfWeek.ToString()[..3].ToUpperInvariant();
-            if (activeDays.Contains(dayAbbr))
+            var activeSessionGroupCount = practiceCentre.SessionGroups
+                .Count(sg => (sg.DaysOfWeek.Any(day => day.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == d) && !sg.DaysOff.Any(off => off.Date == d));
+
+            if (activeSessionGroupCount > 0)
             {
                 availableDates.Add(d);
             }
@@ -97,14 +95,14 @@ internal sealed class GetCentreAvailabilityQueryHandler(IApplicationDbContext db
             {
                 var dayAbbr = date.DayOfWeek.ToString()[..3].ToUpperInvariant();
                 var activeSessionsCount = practiceCentre.SessionGroups
-                    .Where(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)))
+                    .Where(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == date) && !sg.DaysOff.Any(off => off.Date == date))
                     .SelectMany(sg => sg.TimeBlocks)
                     .Count();
 
                 if (activeSessionsCount == 0)
                 {
                     activeSessionsCount = practiceCentre.SessionGroups
-                        .Count(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
+                        .Count(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == date) && !sg.DaysOff.Any(off => off.Date == date));
                 }
 
                 int totalCapacity = (activeSessionsCount > 0 ? activeSessionsCount : 1) * maxPatients.Value;

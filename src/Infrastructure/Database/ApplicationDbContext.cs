@@ -44,6 +44,7 @@ public sealed class ApplicationDbContext(
     public DbSet<Domain.PracticeCentres.SessionGroup> SessionGroups { get; set; }
     public DbSet<Domain.PracticeCentres.TimeBlock> TimeBlocks { get; set; }
     public DbSet<Domain.PracticeCentres.Nurse> Nurses { get; set; }
+    public DbSet<Domain.PracticeCentres.SessionGroupDayOff> SessionGroupDaysOff { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

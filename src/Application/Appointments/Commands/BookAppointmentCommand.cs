@@ -30,9 +30,10 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
         BookAppointmentCommand request,
         CancellationToken cancellationToken)
     {
-        // Load practice centre with session groups
+        // Load practice centre with session groups and days off
         var practiceCentre = await dbContext.PracticeCentres
             .Include(pc => pc.SessionGroups)
+                .ThenInclude(sg => sg.DaysOff)
             .FirstOrDefaultAsync(
                 pc => pc.Id == request.PracticeCentreId && pc.DoctorId == request.DoctorAccountId,
                 cancellationToken);
@@ -45,16 +46,16 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
                     ErrorType.NotFound));
         }
 
-        // Validate session availability for chosen day of week
+        // Validate session availability for chosen day of week or specific date, excluding days off
         var dayAbbr = request.VisitDate.DayOfWeek.ToString()[..3].ToUpperInvariant();
         var hasSession = practiceCentre.SessionGroups
-            .Any(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
+            .Any(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == request.VisitDate) && !sg.DaysOff.Any(off => off.Date == request.VisitDate));
 
         if (!hasSession)
         {
             return Result.Failure<BookAppointmentResult>(
                 new Error("Appointment.NoSessionOnSelectedDate",
-                    "No session is scheduled for the selected date.",
+                    "No session is scheduled for the selected date, or it has been marked as a day off.",
                     ErrorType.Validation));
         }
 
@@ -65,7 +66,7 @@ internal sealed class BookAppointmentCommandHandler(IApplicationDbContext dbCont
         if (!effectiveSessionId.HasValue || effectiveSessionId.Value == Guid.Empty)
         {
             var matchingSessionGroup = practiceCentre.SessionGroups
-                .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)));
+                .FirstOrDefault(sg => (sg.DaysOfWeek.Any(d => d.Equals(dayAbbr, StringComparison.OrdinalIgnoreCase)) || sg.SpecificDate == request.VisitDate) && !sg.DaysOff.Any(off => off.Date == request.VisitDate));
             if (matchingSessionGroup != null)
             {
                 effectiveSessionId = matchingSessionGroup.TimeBlocks.FirstOrDefault()?.Id ?? matchingSessionGroup.Id;

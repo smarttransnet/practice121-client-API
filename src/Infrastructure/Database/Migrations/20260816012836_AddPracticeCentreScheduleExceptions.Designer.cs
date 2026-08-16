@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260816012836_AddPracticeCentreScheduleExceptions")]
+    partial class AddPracticeCentreScheduleExceptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -951,6 +954,30 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("practice_centres", "public");
                 });
 
+            modelBuilder.Entity("Domain.PracticeCentres.PracticeCentreDayOff", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
+
+                    b.Property<Guid>("PracticeCentreId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("practice_centre_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_practice_centre_days_off");
+
+                    b.HasIndex("PracticeCentreId")
+                        .HasDatabaseName("ix_practice_centre_days_off_practice_centre_id");
+
+                    b.ToTable("practice_centre_days_off", "public");
+                });
+
             modelBuilder.Entity("Domain.PracticeCentres.SessionGroup", b =>
                 {
                     b.Property<Guid>("Id")
@@ -959,6 +986,7 @@ namespace Infrastructure.Database.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("DaysOfWeekRaw")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("days_of_week_raw");
@@ -978,30 +1006,6 @@ namespace Infrastructure.Database.Migrations
                         .HasDatabaseName("ix_session_groups_practice_centre_id");
 
                     b.ToTable("session_groups", "public");
-                });
-
-            modelBuilder.Entity("Domain.PracticeCentres.SessionGroupDayOff", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date")
-                        .HasColumnName("date");
-
-                    b.Property<Guid>("SessionGroupId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("session_group_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_session_group_days_off");
-
-                    b.HasIndex("SessionGroupId")
-                        .HasDatabaseName("ix_session_group_days_off_session_group_id");
-
-                    b.ToTable("session_group_days_off", "public");
                 });
 
             modelBuilder.Entity("Domain.PracticeCentres.TimeBlock", b =>
@@ -1309,6 +1313,18 @@ namespace Infrastructure.Database.Migrations
                     b.Navigation("Place");
                 });
 
+            modelBuilder.Entity("Domain.PracticeCentres.PracticeCentreDayOff", b =>
+                {
+                    b.HasOne("Domain.PracticeCentres.PracticeCentre", "PracticeCentre")
+                        .WithMany("DaysOff")
+                        .HasForeignKey("PracticeCentreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_practice_centre_days_off_practice_centres_practice_centre_id");
+
+                    b.Navigation("PracticeCentre");
+                });
+
             modelBuilder.Entity("Domain.PracticeCentres.SessionGroup", b =>
                 {
                     b.HasOne("Domain.PracticeCentres.PracticeCentre", "PracticeCentre")
@@ -1319,18 +1335,6 @@ namespace Infrastructure.Database.Migrations
                         .HasConstraintName("fk_session_groups_practice_centres_practice_centre_id");
 
                     b.Navigation("PracticeCentre");
-                });
-
-            modelBuilder.Entity("Domain.PracticeCentres.SessionGroupDayOff", b =>
-                {
-                    b.HasOne("Domain.PracticeCentres.SessionGroup", "SessionGroup")
-                        .WithMany("DaysOff")
-                        .HasForeignKey("SessionGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_session_group_days_off_session_groups_session_group_id");
-
-                    b.Navigation("SessionGroup");
                 });
 
             modelBuilder.Entity("Domain.PracticeCentres.TimeBlock", b =>
@@ -1392,6 +1396,8 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.PracticeCentres.PracticeCentre", b =>
                 {
+                    b.Navigation("DaysOff");
+
                     b.Navigation("Nurses");
 
                     b.Navigation("SessionGroups");
@@ -1399,8 +1405,6 @@ namespace Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Domain.PracticeCentres.SessionGroup", b =>
                 {
-                    b.Navigation("DaysOff");
-
                     b.Navigation("TimeBlocks");
                 });
 #pragma warning restore 612, 618

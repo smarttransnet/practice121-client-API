@@ -18,7 +18,9 @@ public record CreatePracticeCentreCommand(
 
 public record SessionGroupDto(
     List<string> DaysOfWeek,
-    List<TimeBlockDto> TimeBlocks);
+    string? SpecificDate,
+    List<TimeBlockDto> TimeBlocks,
+    List<string>? DaysOff = null);
 
 public record TimeBlockDto(
     string Label,
@@ -46,7 +48,13 @@ internal sealed class CreatePracticeCentreCommandHandler(IApplicationDbContext d
         var newSessions = new List<(string Day, TimeSpan Start, TimeSpan End, string ClinicName)>();
         foreach (var sg in request.SessionGroups)
         {
-            foreach (var day in sg.DaysOfWeek)
+            var days = sg.DaysOfWeek.ToList();
+            if (!string.IsNullOrEmpty(sg.SpecificDate) && days.Count == 0)
+            {
+                days.Add(sg.SpecificDate);
+            }
+
+            foreach (var day in days)
             {
                 foreach (var tb in sg.TimeBlocks)
                 {
@@ -70,7 +78,13 @@ internal sealed class CreatePracticeCentreCommandHandler(IApplicationDbContext d
         {
             foreach (var sg in centre.SessionGroups)
             {
-                foreach (var day in sg.DaysOfWeek)
+                var days = sg.DaysOfWeek.ToList();
+                if (sg.SpecificDate.HasValue && days.Count == 0)
+                {
+                    days.Add(sg.SpecificDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+                }
+
+                foreach (var day in days)
                 {
                     foreach (var tb in sg.TimeBlocks)
                     {
@@ -97,12 +111,28 @@ internal sealed class CreatePracticeCentreCommandHandler(IApplicationDbContext d
 
         foreach (var sg in request.SessionGroups)
         {
-            var sessionGroup = SessionGroup.Create(practiceCentre.Id, sg.DaysOfWeek);
+            DateOnly? specificDate = null;
+            if (!string.IsNullOrEmpty(sg.SpecificDate) && DateOnly.TryParse(sg.SpecificDate, CultureInfo.InvariantCulture, out var date))
+            {
+                specificDate = date;
+            }
+            var sessionGroup = SessionGroup.Create(practiceCentre.Id, sg.DaysOfWeek, specificDate);
             foreach (var tb in sg.TimeBlocks)
             {
                 var timeBlock = TimeBlock.Create(sessionGroup.Id, tb.Label, TimeSpan.Parse(tb.StartTime, CultureInfo.InvariantCulture), TimeSpan.Parse(tb.EndTime, CultureInfo.InvariantCulture));
                 sessionGroup.AddTimeBlock(timeBlock);
             }
+            if (sg.DaysOff != null)
+            {
+                foreach (var d in sg.DaysOff)
+                {
+                    if (DateOnly.TryParse(d, CultureInfo.InvariantCulture, out var dateOff))
+                    {
+                        sessionGroup.AddDayOff(SessionGroupDayOff.Create(sessionGroup.Id, dateOff));
+                    }
+                }
+            }
+
             practiceCentre.AddSessionGroup(sessionGroup);
         }
 
