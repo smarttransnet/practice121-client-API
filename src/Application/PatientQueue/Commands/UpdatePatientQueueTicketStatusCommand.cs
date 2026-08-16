@@ -30,6 +30,13 @@ internal sealed class UpdatePatientQueueTicketStatusCommandHandler(
             return Result.Failure(new Error("PatientQueueTicket.NotFound", "The specified queue ticket does not exist.", ErrorType.NotFound));
         }
 
+        if (request.Status == PatientQueueStatus.InConsultation && !ticket.PatientId.HasValue)
+        {
+            return Result.Failure(Error.Validation(
+                "PatientQueueTicket.PatientIdRequired",
+                "A linked patientId is required before starting consultation."));
+        }
+
         ticket.Status = request.Status;
 
         if (request.Status == PatientQueueStatus.Called || request.Status == PatientQueueStatus.InConsultation)

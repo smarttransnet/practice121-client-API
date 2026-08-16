@@ -88,6 +88,13 @@ internal sealed class AdvanceNextPatientCommandHandler(
 
         if (nextTicket != null)
         {
+            if (!nextTicket.PatientId.HasValue)
+            {
+                return Result.Failure<NextPatientResponse>(Error.Validation(
+                    "PatientQueueTicket.PatientIdRequired",
+                    "The next patient in queue is not linked to a patientId. Link or register the patient before consultation."));
+            }
+
             nextTicket.Status = PatientQueueStatus.InConsultation;
             nextTicket.CalledAt = DateTime.UtcNow;
         }
