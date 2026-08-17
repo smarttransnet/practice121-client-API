@@ -41,7 +41,7 @@ internal sealed class GetPatientQueueListQueryHandler(IApplicationDbContext dbCo
         var targetDate = request.VisitDate?.Date ?? DateTime.UtcNow.Date;
 
         var query = dbContext.PatientQueueTickets.AsNoTracking()
-            .Where(q => q.PracticeCentreId == request.PracticeCentreId && q.VisitDate == targetDate);
+            .Where(q => q.PracticeCentreId == request.PracticeCentreId && q.VisitDate == targetDate && q.Status != PatientQueueStatus.Cancelled);
 
         if (request.DoctorId.HasValue && request.DoctorId.Value != Guid.Empty)
         {
