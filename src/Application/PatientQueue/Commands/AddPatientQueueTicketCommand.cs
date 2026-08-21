@@ -35,10 +35,11 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
 
         var visitDate = request.VisitDate?.Date ?? DateTime.UtcNow.Date;
 
-        // Validate doctor availability for selected date
         var dayOfWeekString = visitDate.DayOfWeek.ToString().Substring(0, 3).ToUpperInvariant();
+        var visitDateOnly = DateOnly.FromDateTime(visitDate);
         var hasSession = practiceCentre.SessionGroups.Any(sg => 
-            sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)));
+            sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)) ||
+            sg.SpecificDates.Contains(visitDateOnly));
         if (!hasSession)
         {
             return Result.Failure<Guid>(new Error("PatientQueueTicket.NoSessionOnSelectedDate", "No session group is scheduled for the selected date's day of week.", ErrorType.Validation));
@@ -49,7 +50,8 @@ internal sealed class AddPatientQueueTicketCommandHandler(IApplicationDbContext 
         if (!effectiveSessionId.HasValue || effectiveSessionId.Value == Guid.Empty)
         {
             var matchingSessionGroup = practiceCentre.SessionGroups
-                .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)));
+                .FirstOrDefault(sg => sg.DaysOfWeek.Any(d => d.Equals(dayOfWeekString, StringComparison.OrdinalIgnoreCase)) ||
+                                      sg.SpecificDates.Contains(visitDateOnly));
             if (matchingSessionGroup != null)
             {
                 effectiveSessionId = matchingSessionGroup.TimeBlocks.FirstOrDefault()?.Id ?? matchingSessionGroup.Id;
