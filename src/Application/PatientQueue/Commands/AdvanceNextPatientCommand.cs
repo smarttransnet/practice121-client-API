@@ -79,10 +79,11 @@ internal sealed class AdvanceNextPatientCommandHandler(
             activeTicket.CompletedAt = DateTime.UtcNow;
         }
 
-        // 2. Advance next queued patient (Only Ready state — skip patients still in Waiting state)
+        // 2. Advance next queued patient (Prioritize Ready, then Waiting)
         var nextTicket = ticketsForDay
-            .Where(t => t.Status == PatientQueueStatus.Ready)
-            .OrderBy(t => t.QueueOrder)
+            .Where(t => t.Status == PatientQueueStatus.Ready || t.Status == PatientQueueStatus.Waiting)
+            .OrderByDescending(t => t.Status == PatientQueueStatus.Ready)
+            .ThenBy(t => t.QueueOrder)
             .ThenBy(t => t.CreatedAt)
             .FirstOrDefault();
 
