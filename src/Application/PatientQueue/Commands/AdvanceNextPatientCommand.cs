@@ -23,7 +23,8 @@ public record NextPatientResponse(
 public record AdvanceNextPatientCommand(
     Guid DoctorId,
     Guid? PracticeCentreId = null,
-    DateTime? VisitDate = null) : ICommand<NextPatientResponse>;
+    DateTime? VisitDate = null,
+    Guid? SessionId = null) : ICommand<NextPatientResponse>;
 
 internal sealed class AdvanceNextPatientCommandHandler(
     IApplicationDbContext dbContext,
@@ -39,6 +40,11 @@ internal sealed class AdvanceNextPatientCommandHandler(
         if (request.PracticeCentreId.HasValue && request.PracticeCentreId.Value != Guid.Empty)
         {
             query = query.Where(q => q.PracticeCentreId == request.PracticeCentreId.Value);
+        }
+
+        if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+        {
+            query = query.Where(q => q.SessionId == request.SessionId.Value);
         }
 
         List<PatientQueueTicket> ticketsForDay = new();
