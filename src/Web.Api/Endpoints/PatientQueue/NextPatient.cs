@@ -15,7 +15,8 @@ internal sealed class NextPatient : IEndpoint
     public sealed record Request(
         Guid DoctorId,
         Guid? PracticeCentreId = null,
-        DateTime? VisitDate = null);
+        DateTime? VisitDate = null,
+        Guid? SessionId = null);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -34,7 +35,8 @@ internal sealed class NextPatient : IEndpoint
         var command = new AdvanceNextPatientCommand(
             request.DoctorId,
             request.PracticeCentreId,
-            request.VisitDate);
+            request.VisitDate,
+            request.SessionId);
 
         Result<NextPatientResponse> result = await handler.Handle(command, cancellationToken);
         return result.Match(Results.Ok, CustomResults.Problem);

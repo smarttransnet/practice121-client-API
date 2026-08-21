@@ -23,7 +23,8 @@ public record NextPatientResponse(
 public record AdvanceNextPatientCommand(
     Guid DoctorId,
     Guid? PracticeCentreId = null,
-    DateTime? VisitDate = null) : ICommand<NextPatientResponse>;
+    DateTime? VisitDate = null,
+    Guid? SessionId = null) : ICommand<NextPatientResponse>;
 
 internal sealed class AdvanceNextPatientCommandHandler(
     IApplicationDbContext dbContext,
@@ -39,6 +40,11 @@ internal sealed class AdvanceNextPatientCommandHandler(
         if (request.PracticeCentreId.HasValue && request.PracticeCentreId.Value != Guid.Empty)
         {
             query = query.Where(q => q.PracticeCentreId == request.PracticeCentreId.Value);
+        }
+
+        if (request.SessionId.HasValue && request.SessionId.Value != Guid.Empty)
+        {
+            query = query.Where(q => q.SessionId == request.SessionId.Value);
         }
 
         List<PatientQueueTicket> ticketsForDay = new();
@@ -79,10 +85,11 @@ internal sealed class AdvanceNextPatientCommandHandler(
             activeTicket.CompletedAt = DateTime.UtcNow;
         }
 
-        // 2. Advance next queued patient (Only Ready state — skip patients still in Waiting state)
+        // 2. Advance next queued patient (Prioritize Ready, then Waiting)
         var nextTicket = ticketsForDay
-            .Where(t => t.Status == PatientQueueStatus.Ready)
-            .OrderBy(t => t.QueueOrder)
+            .Where(t => t.Status == PatientQueueStatus.Ready || t.Status == PatientQueueStatus.Waiting)
+            .OrderByDescending(t => t.Status == PatientQueueStatus.Ready)
+            .ThenBy(t => t.QueueOrder)
             .ThenBy(t => t.CreatedAt)
             .FirstOrDefault();
 

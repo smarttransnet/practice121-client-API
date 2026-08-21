@@ -79,7 +79,7 @@ internal sealed class CreatePracticeCentreCommandHandler(IApplicationDbContext d
             foreach (var sg in centre.SessionGroups)
             {
                 var days = sg.DaysOfWeek.ToList();
-                if (sg.SpecificDates != null && sg.SpecificDates.Any() && days.Count == 0)
+                if (sg.SpecificDates != null && sg.SpecificDates.Any())
                 {
                     days.AddRange(sg.SpecificDates.Select(d => d.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)));
                 }
@@ -115,7 +115,7 @@ internal sealed class CreatePracticeCentreCommandHandler(IApplicationDbContext d
             if (sg.SpecificDates != null && sg.SpecificDates.Any())
             {
                 specificDates = sg.SpecificDates
-                    .Select(d => DateOnly.TryParse(d, CultureInfo.InvariantCulture, out var date) ? date : (DateOnly?)null)
+                    .Select(d => DateTime.TryParse(d, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var date) ? DateOnly.FromDateTime(date) : (DateOnly?)null)
                     .Where(d => d.HasValue)
                     .Select(d => d!.Value)
                     .ToList();
